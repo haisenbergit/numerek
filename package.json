@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "concurrently --names \"NEXT,CONVEX\" --prefix-colors \"yellow.bold,blue.bold\" --prefix \"[{time}] [{name}]\" --timestamp-format \"HH:mm:ss\" --kill-others-on-fail \"npm run dev:next\" \"npm run dev:convex\"",
+    "dev:next": "next dev --turbopack",
+    "dev:convex": "npx convex dev",
     "build": "next build --turbopack",
     "start": "next start"
   },
@@ -26,6 +28,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^9.1.2",
     "eslint": "^9.38.0",
     "eslint-config-next": "^15.5.6",
     "postcss": "^8.5.6",
