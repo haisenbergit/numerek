@@ -24,7 +24,6 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: Add sign up logic here
-    console.log({ email, password, confirmPassword });
   };
 
   return (

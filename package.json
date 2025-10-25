@@ -7,7 +7,12 @@
     "dev:next": "next dev --turbopack",
     "dev:convex": "npx convex dev",
     "build": "next build --turbopack",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,css,json}\"",
+    "type-check": "tsc --noEmit",
+    "validate-all": "npm run lint && npm run type-check && npm run format:check && npm run build"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.7",

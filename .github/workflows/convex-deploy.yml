@@ -1,0 +1,63 @@
+name: Convex Deployment
+
+on:
+  push:
+    paths:
+      - 'convex/**'
+  pull_request:
+    paths:
+      - 'convex/**'
+
+jobs:
+  validate-convex:
+    name: Validate Convex Functions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check Convex TypeScript
+        run: npx tsc --project convex/tsconfig.json --noEmit
+
+      - name: Validate Convex schema
+        run: |
+          if [ -f "convex/schema.ts" ]; then
+            echo "✅ Schema file exists"
+          else
+            echo "⚠️ Warning: No schema.ts found in convex/"
+          fi
+
+  deploy-convex:
+    name: Deploy to Convex
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: validate-convex
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy to Convex
+        run: npx convex deploy --cmd 'npm run build'
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
+
