@@ -23,7 +23,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: Add sign in logic here
-    console.log({ email, password });
+    // console.log({ email, password });
   };
 
   return (
