@@ -1,0 +1,33 @@
+name: Dependency Updates
+
+on:
+  schedule:
+    # Uruchamia się w każdy poniedziałek o 9:00 UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Możliwość ręcznego uruchomienia
+
+jobs:
+  check-updates:
+    name: Check for outdated dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Check for outdated packages
+        run: |
+          npm outdated || true
+          echo "---"
+          echo "Sprawdź powyższe pakiety i rozważ aktualizację"
+
+      - name: Check npm audit
+        run: |
+          npm audit --production || true
+
