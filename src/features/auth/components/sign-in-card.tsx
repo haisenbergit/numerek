@@ -20,16 +20,22 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // TODO: Add sign in logic here
+    console.log({ email, password });
+  };
+
   return (
     <Card className="h-full w-full space-y-2 p-8">
       <CardHeader className="px-1 pt-0">
         <CardTitle>Login to continue</CardTitle>
       </CardHeader>
       <CardDescription className="px-1">
-        Use your email ora another service to continue
+        Use your email or another service to continue
       </CardDescription>
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5">
+        <form onSubmit={onSubmit} className="space-y-2.5">
           <Input
             disabled={false}
             value={email}
@@ -47,15 +53,14 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
             required
           />
           <Button type="submit" className="w-full" size="lg" disabled={false}>
-            {" "}
-            Continue{" "}
+            Continue
           </Button>
         </form>
         <Separator />
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={false}
-            onClick={() => {}}
+            // onClick={() => {}} // Add your Google sign-in logic here
             variant="outline"
             size="lg"
             className="relative w-full"
