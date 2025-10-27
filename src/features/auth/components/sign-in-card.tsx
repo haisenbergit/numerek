@@ -11,14 +11,21 @@ import { Separator } from "@/components/ui/separator";
 import { FcGoogle } from "react-icons/fc";
 import { SignInFlow } from "@/features/auth/types";
 import { useState } from "react";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 interface SignInCardProps {
   setState?: (state: SignInFlow) => void;
 }
 
 export const SignInCard = ({ setState }: SignInCardProps) => {
+  const { signIn } = useAuthActions();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const onProviderSignIn = (provider: string) => {
+    signIn(provider);
+  };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,7 +66,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={false}
-            // onClick={() => {}} // Add your Google sign-in logic here
+            onClick={() => onProviderSignIn("google")}
             variant="outline"
             size="lg"
             className="relative w-full"
