@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
-      <div>Logged in! Welcome on the man page!</div>
+      <div>Logged in! Welcome on the main page!</div>
       <Button onClick={() => signOut()}>Log out!</Button>
     </div>
   );

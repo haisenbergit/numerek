@@ -29,7 +29,9 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
 
   const onProviderSignUp = (provider: string) => {
     setPending(true);
-    signIn(provider).finally(() => setPending(false));
+    signIn(provider)
+      .catch((err) => setError("Failed to sign up with provider"))
+      .finally(() => setPending(false));
   };
 
   const onPasswordSignUp = (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,7 +48,7 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
 
   return (
     <Card className="h-full w-full p-8">
-      <CardHeader className="px-1 pt-0">
+      <CardHeader className="px-0 pt-0">
         <CardTitle>Sign up to continue</CardTitle>
         <CardDescription>
           Use your email or another service to continue

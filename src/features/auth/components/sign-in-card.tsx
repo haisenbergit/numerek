@@ -28,12 +28,15 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
 
   const onProviderSignIn = (provider: string) => {
     setPending(true);
-    signIn(provider).finally(() => setPending(false));
+    signIn(provider)
+      .catch((err) => setError("Failed to sign in with provider"))
+      .finally(() => setPending(false));
   };
 
   const onPasswordSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPending(true);
+    setError("");
     signIn("password", { email, password, flow: "signIn" })
       .catch((err) => setError("Invalid email or password"))
       .finally(() => setPending(false));
