@@ -21,7 +21,11 @@ export async function createOrUpdateUser(
   // Jeśli użytkownik już istnieje, zaktualizuj go
   if (args.existingUserId !== undefined && args.existingUserId !== null) {
     if (args.profile) {
-      const updateData: Record<string, any> = {};
+      const updateData: Partial<{
+        name: string;
+        image: string;
+        emailVerificationTime: number;
+      }> = {};
 
       if (args.profile.name !== undefined) {
         updateData.name = args.profile.name;
@@ -45,7 +49,7 @@ export async function createOrUpdateUser(
     // Szukaj istniejącego użytkownika z tym emailem
     const existingUser = await ctx.db
       .query("users")
-      .filter((q: any) => q.eq(q.field("email"), args.profile!.email))
+      .filter((q) => q.eq(q.field("email"), args.profile!.email))
       .first();
 
     if (existingUser) {
@@ -57,7 +61,11 @@ export async function createOrUpdateUser(
       );
 
       // Opcjonalnie zaktualizuj dane (np. name, image) z nowego providera
-      const updateData: Record<string, any> = {};
+      const updateData: Partial<{
+        name: string;
+        image: string;
+        emailVerificationTime: number;
+      }> = {};
 
       if (args.profile.name && !existingUser.name) {
         updateData.name = args.profile.name;
