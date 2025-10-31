@@ -20,7 +20,7 @@ export const ResendOTP = Email({
   async sendVerificationRequest({ identifier: email, provider, token }) {
     const resend = new ResendAPI(provider.apiKey);
     const { error } = await resend.emails.send({
-      from: "Grupa Rodziców <noreply@auth.gruparodzicow.pl>",
+      from: "Grupa Rodziców <info@auth.gruparodzicow.pl>",
       to: [email],
       subject: `Logowanie do Grupy Rodziców`,
       text: "Użyj kodu: " + token + "\nTwój kod jest ważny przez 15 minut.",

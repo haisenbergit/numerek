@@ -65,7 +65,15 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
     setError("");
     const formData = new FormData(e.currentTarget);
     signIn("resend-otp", formData)
-      .catch(() => setError("Invalid code. Please try again."))
+      .then(() => {
+        // Reset state after successful verification
+        setOtpStep("idle");
+        setOtpCode("");
+        setEmail("");
+      })
+      .catch(() => {
+        setError("Invalid code. Please try again.");
+      })
       .finally(() => setPending(false));
   };
 
@@ -103,7 +111,12 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
                 type="password"
                 required
               />
-              <Button type="submit" className="w-full" size="lg" disabled={pending}>
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={pending}
+              >
                 Continue
               </Button>
             </form>
@@ -141,7 +154,12 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
               required
             />
             <input name="email" value={email} type="hidden" />
-            <Button type="submit" className="w-full" size="lg" disabled={pending}>
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              disabled={pending}
+            >
               Verify code
             </Button>
             <Button
