@@ -125,6 +125,13 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
   const renderOtpVerifyForm = () => (
     <form onSubmit={onOtpVerifyCode} className="space-y-2.5">
       <Input
+        readOnly
+        name="email"
+        value={email}
+        className="cursor-not-allowed bg-muted text-foreground"
+      />
+      <Input
+        autoFocus
         disabled={pending}
         name="code"
         value={otpCode}
@@ -181,13 +188,23 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
     </p>
   );
 
+  const isOtpCodeWaitingForApplication = () => otpStep === OtpStep.CodeSent;
+  const isOtpCodeIdle = () => otpStep === OtpStep.Idle;
+
   return (
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
         <CardTitle>Login to continue</CardTitle>
-        <CardDescription>
-          Use your email or another service to continue
-        </CardDescription>
+        {isOtpCodeIdle() && (
+          <CardDescription>
+            Use your email or another service to continue
+          </CardDescription>
+        )}
+        {isOtpCodeWaitingForApplication() && (
+          <CardDescription>
+            Sprawdź swoją skrzynkę pocztową i wprowadź otrzymany kod.
+          </CardDescription>
+        )}
       </CardHeader>
       {!!error && (
         <div className="mb-6 flex items-center gap-x-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
@@ -196,7 +213,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         </div>
       )}
       <CardContent className="space-y-5 px-0 pb-0">
-        {otpStep === OtpStep.Idle && (
+        {isOtpCodeIdle() && (
           <>
             {renderPasswordForm()}
             <Separator />
@@ -204,10 +221,10 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
           </>
         )}
 
-        {otpStep === OtpStep.CodeSent && renderOtpVerifyForm()}
-        {otpStep !== OtpStep.CodeSent && <Separator />}
-        {otpStep !== OtpStep.CodeSent && renderGoogleButton()}
-        {otpStep !== OtpStep.CodeSent && renderSignUpLink()}
+        {isOtpCodeWaitingForApplication() && renderOtpVerifyForm()}
+        {isOtpCodeIdle() && <Separator />}
+        {isOtpCodeIdle() && renderGoogleButton()}
+        {isOtpCodeIdle() && renderSignUpLink()}
       </CardContent>
     </Card>
   );
