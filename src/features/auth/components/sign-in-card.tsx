@@ -31,7 +31,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
   const onProviderSignIn = (provider: string) => {
     setPending(true);
     signIn(provider)
-      .catch(() => setError("Failed to sign in with provider"))
+      .catch(() => setError("Nie udało się zalogować przez Google"))
       .finally(() => setPending(false));
   };
 
@@ -55,7 +55,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         setEmail(otpEmail);
         setOtpStep(OtpStep.CodeSent);
       })
-      .catch(() => setError("Failed to send code. Please try again."))
+      .catch(() => setError("Nie udało się wysłać kodu. Spróbuj ponownie"))
       .finally(() => setPending(false));
   };
 
@@ -106,7 +106,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
       <Input
         disabled={pending}
         name="email"
-        placeholder="Email for OTP"
+        placeholder="Wpisz e-mail"
         type="email"
         required
       />
@@ -117,7 +117,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         size="lg"
         disabled={pending}
       >
-        Send code via email
+        Wyślij kod
       </Button>
     </form>
   );
@@ -171,7 +171,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         className="relative w-full"
       >
         <FcGoogle className="absolute left-2.5 top-2.5 size-4" />
-        Continue with Google
+        Zaloguj przez Google
       </Button>
     </div>
   );
@@ -190,15 +190,14 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
 
   const isOtpCodeWaitingForApplication = () => otpStep === OtpStep.CodeSent;
   const isOtpCodeIdle = () => otpStep === OtpStep.Idle;
+  const isVisiblePasswordSignIn = false;
 
   return (
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
-        <CardTitle>Login to continue</CardTitle>
+        <CardTitle>Zaloguj się, aby kontynuować</CardTitle>
         {isOtpCodeIdle() && (
-          <CardDescription>
-            Use your email or another service to continue
-          </CardDescription>
+          <CardDescription>Użyj e-mail lub Google</CardDescription>
         )}
         {isOtpCodeWaitingForApplication() && (
           <CardDescription>
@@ -215,8 +214,12 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
       <CardContent className="space-y-5 px-0 pb-0">
         {isOtpCodeIdle() && (
           <>
-            {renderPasswordForm()}
-            <Separator />
+            {isVisiblePasswordSignIn && (
+              <>
+                {renderPasswordForm()}
+                <Separator />
+              </>
+            )}
             {renderOtpSendForm()}
           </>
         )}
