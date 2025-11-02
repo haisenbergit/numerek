@@ -73,6 +73,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
       })
       .catch(() => {
         setError("Nieprawidłowy kod. Spróbuj ponownie.");
+        setOtpCode("");
       })
       .finally(() => setPending(false));
   };
@@ -141,7 +142,6 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         type="text"
         required
       />
-      <input name="email" value={email} type="hidden" />
       <Button type="submit" className="w-full" size="lg" disabled={pending}>
         Zweryfikuj kod
       </Button>
