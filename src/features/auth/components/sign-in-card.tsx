@@ -72,7 +72,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         setEmail("");
       })
       .catch(() => {
-        setError("Invalid code. Please try again.");
+        setError("Nieprawidłowy kod. Spróbuj ponownie.");
       })
       .finally(() => setPending(false));
   };
@@ -83,7 +83,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         disabled={pending}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
+        placeholder="E-mail"
         type="email"
         required
       />
@@ -91,12 +91,12 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         disabled={pending}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
+        placeholder="Hasło"
         type="password"
         required
       />
       <Button type="submit" className="w-full" size="lg" disabled={pending}>
-        Continue
+        Kontynuuj
       </Button>
     </form>
   );
@@ -136,13 +136,13 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         name="code"
         value={otpCode}
         onChange={(e) => setOtpCode(e.target.value)}
-        placeholder="Enter code"
+        placeholder="Wprowadź kod"
         type="text"
         required
       />
       <input name="email" value={email} type="hidden" />
       <Button type="submit" className="w-full" size="lg" disabled={pending}>
-        Verify code
+        Zweryfikuj kod
       </Button>
       <Button
         type="button"
@@ -156,7 +156,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
           setError("");
         }}
       >
-        Cancel
+        Anuluj
       </Button>
     </form>
   );
@@ -178,12 +178,12 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
 
   const renderSignUpLink = () => (
     <p className="text-xs text-muted-foreground">
-      Don&apos;t have an account?{" "}
+      Nie masz konta?{" "}
       <span
         onClick={() => setState && setState("signUp")}
         className="cursor-pointer text-sky-700 hover:underline"
       >
-        Sign up
+        Zarejestruj się
       </span>
     </p>
   );
