@@ -77,6 +77,98 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
       .finally(() => setPending(false));
   };
 
+  const renderPasswordForm = () => (
+    <form onSubmit={onPasswordSignIn} className="space-y-2.5">
+      <Input
+        disabled={pending}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+        type="email"
+        required
+      />
+      <Input
+        disabled={pending}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        type="password"
+        required
+      />
+      <Button type="submit" className="w-full" size="lg" disabled={pending}>
+        Continue
+      </Button>
+    </form>
+  );
+
+  const renderOtpSendForm = () => (
+    <form onSubmit={onOtpSendCode} className="space-y-2.5">
+      <Input
+        disabled={pending}
+        name="email"
+        placeholder="Email for OTP"
+        type="email"
+        required
+      />
+      <Button
+        type="submit"
+        variant="outline"
+        className="w-full"
+        size="lg"
+        disabled={pending}
+      >
+        Send code via email
+      </Button>
+    </form>
+  );
+
+  const renderOtpVerifyForm = () => (
+    <form onSubmit={onOtpVerifyCode} className="space-y-2.5">
+      <Input
+        disabled={pending}
+        name="code"
+        value={otpCode}
+        onChange={(e) => setOtpCode(e.target.value)}
+        placeholder="Enter code"
+        type="text"
+        required
+      />
+      <input name="email" value={email} type="hidden" />
+      <Button type="submit" className="w-full" size="lg" disabled={pending}>
+        Verify code
+      </Button>
+      <Button
+        type="button"
+        variant="outline"
+        className="w-full"
+        size="lg"
+        disabled={pending}
+        onClick={() => {
+          setOtpStep("idle");
+          setOtpCode("");
+          setError("");
+        }}
+      >
+        Cancel
+      </Button>
+    </form>
+  );
+
+  const renderGoogleButton = () => (
+    <div className="flex flex-col gap-y-2.5">
+      <Button
+        disabled={pending}
+        onClick={() => onProviderSignIn("google")}
+        variant="outline"
+        size="lg"
+        className="relative w-full"
+      >
+        <FcGoogle className="absolute left-2.5 top-2.5 size-4" />
+        Continue with Google
+      </Button>
+    </div>
+  );
+
   return (
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
@@ -94,103 +186,15 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
       <CardContent className="space-y-5 px-0 pb-0">
         {otpStep === "idle" && (
           <>
-            <form onSubmit={onPasswordSignIn} className="space-y-2.5">
-              <Input
-                disabled={pending}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-                type="email"
-                required
-              />
-              <Input
-                disabled={pending}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                type="password"
-                required
-              />
-              <Button
-                type="submit"
-                className="w-full"
-                size="lg"
-                disabled={pending}
-              >
-                Continue
-              </Button>
-            </form>
+            {renderPasswordForm()}
             <Separator />
-            <form onSubmit={onOtpSendCode} className="space-y-2.5">
-              <Input
-                disabled={pending}
-                name="email"
-                placeholder="Email for OTP"
-                type="email"
-                required
-              />
-              <Button
-                type="submit"
-                variant="outline"
-                className="w-full"
-                size="lg"
-                disabled={pending}
-              >
-                Send code via email
-              </Button>
-            </form>
+            {renderOtpSendForm()}
           </>
         )}
 
-        {otpStep === "codeSent" && (
-          <form onSubmit={onOtpVerifyCode} className="space-y-2.5">
-            <Input
-              disabled={pending}
-              name="code"
-              value={otpCode}
-              onChange={(e) => setOtpCode(e.target.value)}
-              placeholder="Enter code"
-              type="text"
-              required
-            />
-            <input name="email" value={email} type="hidden" />
-            <Button
-              type="submit"
-              className="w-full"
-              size="lg"
-              disabled={pending}
-            >
-              Verify code
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full"
-              size="lg"
-              disabled={pending}
-              onClick={() => {
-                setOtpStep("idle");
-                setOtpCode("");
-                setError("");
-              }}
-            >
-              Cancel
-            </Button>
-          </form>
-        )}
+        {otpStep === "codeSent" && renderOtpVerifyForm()}
         <Separator />
-        <div className="flex flex-col gap-y-2.5">
-          <Button
-            disabled={pending}
-            onClick={() => onProviderSignIn("google")}
-            variant="outline"
-            size="lg"
-            className="relative w-full"
-          >
-            <FcGoogle className="absolute left-2.5 top-2.5 size-4" />
-            Continue with Google
-          </Button>
-        </div>
+        {renderGoogleButton()}
         <p className="text-xs text-muted-foreground">
           Don&apos;t have an account?{" "}
           <span
