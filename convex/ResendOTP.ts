@@ -29,7 +29,16 @@ export const ResendOTP = Email({
       from: "Grupa Rodziców <info@auth.gruparodzicow.pl>",
       to: [email],
       subject: `Logowanie do Grupy Rodziców`,
-      text: "Użyj kodu: " + token + "\nTwój kod jest ważny przez 15 minut.",
+      text: [
+        "Oto Twój kod uwierzytelniający: ",
+        token,
+        "",
+        "Ten kod jest ważny przez 15 minut i można go użyć tylko raz.",
+        "Prosimy nie udostępniaj tego kodu nikomu! Nigdy nie poprosimy o niego przez telefon ani e-mail.",
+        "",
+        "Dziękujemy,",
+        "Zespół gruparodzicow.pl",
+      ].join("\n"),
     });
 
     if (error) {
