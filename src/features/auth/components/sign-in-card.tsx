@@ -129,6 +129,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         name="email"
         value={email}
         className="cursor-not-allowed bg-muted text-foreground"
+        aria-label="Email address (read-only)"
       />
       <Input
         autoFocus
