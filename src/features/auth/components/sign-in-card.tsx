@@ -112,7 +112,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
       />
       <Button
         type="submit"
-        variant="outline"
+        variant="default"
         className="w-full"
         size="lg"
         disabled={pending}
@@ -162,15 +162,15 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
   );
 
   const renderGoogleButton = () => (
-    <div className="flex flex-col gap-y-2.5">
+    <div className="flex flex-col gap-y-2.5 pb-3 pt-2">
       <Button
         disabled={pending}
         onClick={() => onProviderSignIn("google")}
-        variant="outline"
+        variant="secondary"
         size="lg"
         className="relative w-full"
       >
-        <FcGoogle className="absolute left-2.5 top-2.5 size-4" />
+        <FcGoogle className="absolute left-2.5 top-3 size-4" />
         Zaloguj przez Google
       </Button>
     </div>
@@ -197,8 +197,10 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
       <CardHeader className="px-0 pt-0">
         <CardTitle>Zaloguj się, aby kontynuować</CardTitle>
         {isOtpCodeIdle() && (
-          <CardDescription>Użyj e-mail lub Google</CardDescription>
+          <CardDescription>Użyj Google lub e-mail</CardDescription>
         )}
+        {isOtpCodeIdle() && renderGoogleButton()}
+        {isOtpCodeIdle() && <Separator />}
         {isOtpCodeWaitingForApplication() && (
           <CardDescription>
             Sprawdź swoją skrzynkę pocztową i wprowadź otrzymany kod.
@@ -225,8 +227,6 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         )}
 
         {isOtpCodeWaitingForApplication() && renderOtpVerifyForm()}
-        {isOtpCodeIdle() && <Separator />}
-        {isOtpCodeIdle() && renderGoogleButton()}
         {isOtpCodeIdle() && renderSignUpLink()}
       </CardContent>
     </Card>
