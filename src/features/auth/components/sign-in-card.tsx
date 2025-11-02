@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FcGoogle } from "react-icons/fc";
-import { SignInFlow } from "@/features/auth/types";
+import { OtpStep, SignInFlow } from "@/features/auth/types";
 import React, { useState } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { TriangleAlert } from "lucide-react";
@@ -25,7 +25,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
-  const [otpStep, setOtpStep] = useState<"idle" | "codeSent">("idle");
+  const [otpStep, setOtpStep] = useState<OtpStep>(OtpStep.Idle);
   const [otpCode, setOtpCode] = useState("");
 
   const onProviderSignIn = (provider: string) => {
@@ -53,7 +53,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
     signIn("resend-otp", formData)
       .then(() => {
         setEmail(otpEmail);
-        setOtpStep("codeSent");
+        setOtpStep(OtpStep.CodeSent);
       })
       .catch(() => setError("Failed to send code. Please try again."))
       .finally(() => setPending(false));
@@ -67,7 +67,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
     signIn("resend-otp", formData)
       .then(() => {
         // Reset state after successful verification
-        setOtpStep("idle");
+        setOtpStep(OtpStep.Idle);
         setOtpCode("");
         setEmail("");
       })
@@ -144,7 +144,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         size="lg"
         disabled={pending}
         onClick={() => {
-          setOtpStep("idle");
+          setOtpStep(OtpStep.Idle);
           setOtpCode("");
           setError("");
         }}
@@ -169,6 +169,18 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
     </div>
   );
 
+  const renderSignUpLink = () => (
+    <p className="text-xs text-muted-foreground">
+      Don&apos;t have an account?{" "}
+      <span
+        onClick={() => setState && setState("signUp")}
+        className="cursor-pointer text-sky-700 hover:underline"
+      >
+        Sign up
+      </span>
+    </p>
+  );
+
   return (
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
@@ -184,7 +196,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         </div>
       )}
       <CardContent className="space-y-5 px-0 pb-0">
-        {otpStep === "idle" && (
+        {otpStep === OtpStep.Idle && (
           <>
             {renderPasswordForm()}
             <Separator />
@@ -192,18 +204,10 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
           </>
         )}
 
-        {otpStep === "codeSent" && renderOtpVerifyForm()}
-        <Separator />
-        {renderGoogleButton()}
-        <p className="text-xs text-muted-foreground">
-          Don&apos;t have an account?{" "}
-          <span
-            onClick={() => setState && setState("signUp")}
-            className="cursor-pointer text-sky-700 hover:underline"
-          >
-            Sign up
-          </span>
-        </p>
+        {otpStep === OtpStep.CodeSent && renderOtpVerifyForm()}
+        {otpStep !== OtpStep.CodeSent && <Separator />}
+        {otpStep !== OtpStep.CodeSent && renderGoogleButton()}
+        {otpStep !== OtpStep.CodeSent && renderSignUpLink()}
       </CardContent>
     </Card>
   );

@@ -19,6 +19,12 @@ export const ResendOTP = Email({
   },
   async sendVerificationRequest({ identifier: email, provider, token }) {
     const resend = new ResendAPI(provider.apiKey);
+
+    if (email === "test@gmail.com") {
+      console.log("MOCK EMAIL:", { email, token });
+      return;
+    }
+
     const { error } = await resend.emails.send({
       from: "Grupa Rodziców <info@auth.gruparodzicow.pl>",
       to: [email],
