@@ -30,7 +30,7 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
   const onProviderSignUp = (provider: string) => {
     setPending(true);
     signIn(provider)
-      .catch((err) => setError("Failed to sign up with provider"))
+      .catch(() => setError("Failed to sign up with provider"))
       .finally(() => setPending(false));
   };
 
@@ -42,17 +42,15 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
     }
     setPending(true);
     signIn("password", { email, password, flow: "signUp" })
-      .catch((err) => setError("Failed to sign up. Please try again."))
+      .catch(() => setError("Failed to sign up. Please try again."))
       .finally(() => setPending(false));
   };
 
   return (
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
-        <CardTitle>Sign up to continue</CardTitle>
-        <CardDescription>
-          Use your email or another service to continue
-        </CardDescription>
+        <CardTitle>Zarejestruj się, aby kontynuować</CardTitle>
+        <CardDescription>Użyj Google lub e-mail</CardDescription>
       </CardHeader>
       {!!error && (
         <div className="mb-6 flex items-center gap-x-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
@@ -61,6 +59,24 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
         </div>
       )}
       <CardContent className="space-y-5 px-0 pb-0">
+        <div className="flex flex-col gap-y-2.5">
+          <Button
+            disabled={pending}
+            onClick={() => {
+              onProviderSignUp("google");
+            }}
+            variant="secondary"
+            size="lg"
+            className="relative w-full"
+          >
+            <FcGoogle
+              className="absolute left-2.5"
+              style={{ width: 20, height: 20 }}
+            />
+            Continue with Google
+          </Button>
+        </div>
+        <Separator />
         <form onSubmit={onPasswordSignUp} className="space-y-2.5">
           <Input
             disabled={pending}
@@ -86,33 +102,18 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             type="password"
             required
           />
-
           <Button type="submit" className="w-full" size="lg" disabled={false}>
             Continue
           </Button>
         </form>
-        <Separator />
-        <div className="flex flex-col gap-y-2.5">
-          <Button
-            disabled={pending}
-            onClick={() => {
-              onProviderSignUp("google");
-            }}
-            variant="outline"
-            size="lg"
-            className="relative w-full"
-          >
-            <FcGoogle className="absolute left-2.5 top-2.5 size-4" />
-            Continue with Google
-          </Button>
-        </div>
+
         <p className="text-xs text-muted-foreground">
-          Already have an account?{" "}
+          Masz już konto?{" "}
           <span
             onClick={() => setState && setState("signIn")}
             className="cursor-pointer text-sky-700 hover:underline"
           >
-            Sign in
+            Zaloguj się
           </span>
         </p>
       </CardContent>

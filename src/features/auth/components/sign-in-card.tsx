@@ -131,6 +131,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         value={email}
         className="cursor-not-allowed bg-muted text-foreground"
         aria-label="Email address (read-only)"
+        type="email"
       />
       <Input
         autoFocus
@@ -171,7 +172,10 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         size="lg"
         className="relative w-full"
       >
-        <FcGoogle className="absolute left-2.5 top-3 size-4" />
+        <FcGoogle
+          className="absolute left-2.5"
+          style={{ width: 20, height: 20 }}
+        />
         Zaloguj przez Google
       </Button>
     </div>
