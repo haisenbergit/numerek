@@ -56,9 +56,6 @@ export async function createOrUpdateUser(
       // Znaleziono użytkownika z tym samym emailem!
       // Zamiast tworzyć nowego, zwróć ID istniejącego
       // Convex Auth automatycznie połączy authAccount z tym użytkownikiem
-      console.log(
-        `Account linking: Łączenie konta dla ${args.profile.email} z istniejącym użytkownikiem ${existingUser._id}`
-      );
 
       // Opcjonalnie zaktualizuj dane (np. name, image) z nowego providera
       const updateData: Partial<{
