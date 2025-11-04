@@ -1,16 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useAuthActions } from "@convex-dev/auth/react";
 import { UserAvatar } from "@/features/auth/components/user-avatar";
 
 export default function Home() {
-  const { signOut } = useAuthActions();
-
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
+    <div className="justify-top flex h-screen w-screen flex-col items-end gap-4 p-5">
       <div>Logged in! Welcome on the main page!</div>
-      {/*<Button onClick={() => signOut()}>Log out!</Button>*/}
       <UserAvatar />
     </div>
   );
