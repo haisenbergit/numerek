@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { UseCreateWorkspaceModal } from "@/features/workspaces/store/use-create-workspace-modal";
+import { useCreateWorkspaceModal } from "@/features/workspaces/store/use-create-workspace-modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useCreateWorkspace } from "@/features/workspaces/api/use-create-workspace";
@@ -16,7 +16,7 @@ import { toast } from "sonner";
 
 export const CreateWorkspaceModal = () => {
   const router = useRouter();
-  const [open, setOpen] = UseCreateWorkspaceModal();
+  const [open, setOpen] = useCreateWorkspaceModal();
   const [name, setName] = useState("");
 
   const { mutate, isPending } = useCreateWorkspace();
