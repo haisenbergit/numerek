@@ -5,7 +5,13 @@ import { v } from "convex/values";
 export const get = query({
   args: {},
   handler: async (ctx) => {
-    return await ctx.db.query("workspaces").collect();
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) throw new Error("Not authenticated");
+
+    return await ctx.db
+      .query("workspaces")
+      .filter((q) => q.eq(q.field("userId"), userId))
+      .collect();
   },
 });
 
@@ -15,8 +21,7 @@ export const create = mutation({
     const userId = await getAuthUserId(ctx);
     if (userId === null) throw new Error("Not authenticated");
 
-    const joinCode = "123456";
-    // const joinCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const joinCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
     return await ctx.db.insert("workspaces", {
       name: args.name,
