@@ -57,7 +57,7 @@ export const CreateWorkspaceModal = () => {
             required
             autoFocus
             minLength={3}
-            placeholder={"Workspace name e.g 'Work', 'Personal', 'School'"}
+            placeholder="Workspace name e.g 'Work', 'Personal', 'School'"
           />
           <div className="flex justify-end">
             <Button disabled={isPending}>Create</Button>
