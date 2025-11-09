@@ -1,16 +1,6 @@
-import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
-import type { Id } from "./_generated/dataModel";
-import { MutationCtx, QueryCtx, mutation, query } from "./_generated/server";
-
-async function getAuthenticatedUserId(
-  ctx: QueryCtx | MutationCtx
-): Promise<Id<"users">> {
-  const userId = await getAuthUserId(ctx);
-  if (userId === null) throw new Error(`Not authenticated userId: ${userId}`);
-
-  return userId as Id<"users">;
-}
+import { mutation, query } from "./_generated/server";
+import { getAuthenticatedUserId } from "./utils";
 
 export const get = query({
   args: {},
