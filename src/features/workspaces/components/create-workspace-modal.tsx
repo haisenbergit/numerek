@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -25,16 +25,19 @@ export const CreateWorkspaceModal = () => {
     setName("");
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    await mutate(
+    void mutate(
       { name },
       {
         onSuccess(id) {
           toast.success("Workspace created successfully!");
           router.push(`/workspace/${id}`);
           handleClose();
+        },
+        onError() {
+          toast.error("Failed to create workspace");
         },
       }
     );
