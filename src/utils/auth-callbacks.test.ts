@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { createOrUpdateUser } from "./auth-callbacks";
-import type { MutationCtx } from "@convex/_generated/server";
 import type { Id } from "@convex/_generated/dataModel";
+import type { MutationCtx } from "@convex/_generated/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createOrUpdateUser } from "./auth-callbacks";
 
 // Helper do tworzenia mock context
 function createMockContext() {

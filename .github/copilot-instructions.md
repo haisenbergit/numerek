@@ -42,3 +42,13 @@
 ## Formatting
 
 - Import order: React → Next.js → External → Internal → Types
+- Jednoliniowe `if` bez nawiasów klamrowych:
+  ```typescript
+  // ✅ Dobrze
+  if (condition) throw new Error("message");
+  
+  // ❌ Źle
+  if (condition) {
+    throw new Error("message");
+  }
+  ```

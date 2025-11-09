@@ -1,5 +1,5 @@
-import { MutationCtx } from "../../convex/_generated/server";
 import { Id } from "../../convex/_generated/dataModel";
+import { MutationCtx } from "../../convex/_generated/server";
 
 /**
  * Funkcja callback do automatycznego łączenia kont użytkowników.
