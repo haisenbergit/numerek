@@ -22,7 +22,7 @@ export default function Home() {
   }, [isLoading, workspaceId, open, setOpen, router]);
 
   return (
-    <div className="justify-top flex h-screen w-screen flex-col items-end gap-4 p-5">
+    <div className="flex h-screen w-screen flex-col items-end justify-start gap-4 p-5">
       <div>Logged in! Welcome on the main page!</div>
       <UserAvatar />
     </div>
