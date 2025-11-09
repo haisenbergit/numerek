@@ -1,14 +1,21 @@
-interface WorkspaceIdPageProps {
-  params: Promise<{ workspaceId: string }>;
-}
+"use client";
 
-export default async function WorkspaceIdPage({
-  params,
-}: WorkspaceIdPageProps) {
-  const { workspaceId } = await params;
+import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
+
+const WorkspaceIdPage = () => {
+  const workspaceId = useWorkspaceId();
+  const { data } = useGetWorkspace({ id: workspaceId });
+
   return (
     <div className="justify-top flex h-screen w-screen flex-col items-center gap-4 p-5">
-      <div>Welcome to Workspace: {workspaceId}</div>
+      <div>
+        Welcome to Workspace:
+        <br />
+        {JSON.stringify(data)}
+      </div>
     </div>
   );
-}
+};
+
+export default WorkspaceIdPage;
