@@ -45,6 +45,7 @@ export const useCreateWorkspace = () => {
         if (options?.throwOnError) throw error;
         return null;
       } finally {
+        setStatus("settled");
         options?.onSettled?.();
       }
     },
