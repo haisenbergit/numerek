@@ -32,5 +32,5 @@ export const create = mutation({
 
 function validateWorkspaceNameLength(name: string) {
   if (name.length < 4)
-    throw new Error("Workspace name must be at least 3 characters long");
+    throw new Error("Workspace name must be at least 4 characters long");
 }
