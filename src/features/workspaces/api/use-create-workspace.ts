@@ -34,14 +34,17 @@ export const useCreateWorkspace = () => {
         setStatus("pending");
 
         const response = await mutation(values);
+        setData(response);
+        setStatus("success");
         options?.onSuccess?.(response);
         return response;
       } catch (error) {
+        setError(error as Error);
+        setStatus("error");
         options?.onError?.(error as Error);
         if (options?.throwOnError) throw error;
         return null;
       } finally {
-        setStatus("settled");
         options?.onSettled?.();
       }
     },
