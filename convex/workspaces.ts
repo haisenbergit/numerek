@@ -24,8 +24,8 @@ export const create = mutation({
 
     return await ctx.db.insert("workspaces", {
       name: args.name,
-      userId: userId,
-      joinCode: joinCode,
+      userId,
+      joinCode,
     });
   },
 });
