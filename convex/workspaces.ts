@@ -17,6 +17,8 @@ export const get = query({
 export const create = mutation({
   args: { name: v.string() },
   handler: async (ctx, args) => {
+    validateWorkspaceNameLength(args.name);
+
     const userId = await getAuthenticatedUserId(ctx);
     const joinCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
@@ -27,3 +29,8 @@ export const create = mutation({
     });
   },
 });
+
+function validateWorkspaceNameLength(name: string) {
+  if (name.length < 3)
+    throw new Error("Workspace name must be at least 3 characters long");
+}
