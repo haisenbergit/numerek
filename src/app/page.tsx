@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { UserAvatar } from "@/features/auth/components/user-avatar";
 import { useGetWorkspaces } from "@/features/workspaces/api/use-get-workspaces";
 import { useCreateWorkspaceModal } from "@/features/workspaces/store/use-create-workspace-modal";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();

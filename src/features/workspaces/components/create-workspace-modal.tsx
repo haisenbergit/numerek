@@ -1,18 +1,18 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useCreateWorkspaceModal } from "@/features/workspaces/store/use-create-workspace-modal";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useCreateWorkspace } from "@/features/workspaces/api/use-create-workspace";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useCreateWorkspaceModal } from "@/features/workspaces/store/use-create-workspace-modal";
 
 export const CreateWorkspaceModal = () => {
   const router = useRouter();
