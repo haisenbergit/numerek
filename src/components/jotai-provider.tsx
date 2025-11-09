@@ -1,7 +1,7 @@
 "use client";
 
-import { Provider } from "jotai";
 import { ReactNode } from "react";
+import { Provider } from "jotai";
 
 interface JotaiProviderProps {
   children: ReactNode;
