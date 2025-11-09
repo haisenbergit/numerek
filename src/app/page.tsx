@@ -21,10 +21,19 @@ export default function Home() {
     }
   }, [isLoading, workspaceId, open, setOpen, router]);
 
+  if (shouldBlockRender(isLoading, workspaceId)) return null;
+
   return (
     <div className="flex h-screen w-screen flex-col items-end justify-start gap-4 p-5">
       <div>Logged in! Welcome on the main page!</div>
       <UserAvatar />
     </div>
   );
+}
+
+function shouldBlockRender(
+  isLoading: boolean,
+  workspaceId: string | undefined | null
+) {
+  return isLoading || Boolean(workspaceId);
 }
