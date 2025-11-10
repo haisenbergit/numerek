@@ -34,7 +34,7 @@ export const UserAvatar = () => {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="center" side="bottom" className="w-30">
+      <DropdownMenuContent align="center" side="right" className="w-30">
         <DropdownMenuItem onClick={() => signOut()}>
           <LogOut className="mr-2 size-4" />
           Wyloguj mnie
