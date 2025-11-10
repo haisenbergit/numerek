@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +13,7 @@ import { useCreateWorkspaceModal } from "@/features/workspaces/store/use-create-
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 export const WorkspaceSwitcher = () => {
+  const router = useRouter();
   const workspaceId = useWorkspaceId();
   const [_open, setOpen] = useCreateWorkspaceModal();
 
@@ -35,12 +37,24 @@ export const WorkspaceSwitcher = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" align="start" className="w-64">
-        <DropdownMenuItem className="flex cursor-pointer flex-col items-start justify-start">
+        <DropdownMenuItem
+          onClick={() => router.push(`/workspace/${workspaceId}`)}
+          className="flex cursor-pointer flex-col items-start justify-start"
+        >
           {workspace?.name}
           <span className="text-xs text-muted-foreground">
             Active workspace
           </span>
         </DropdownMenuItem>
+        {otherWorkspacesThanCurrentOne?.map((ws) => (
+          <DropdownMenuItem
+            key={ws!._id}
+            onClick={() => router.push(`/workspace/${ws!._id}`)}
+            className="flex cursor-pointer flex-col items-start justify-start"
+          >
+            {ws?.name}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
