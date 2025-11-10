@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { Loader } from "lucide-react";
+import { Loader, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -27,7 +27,7 @@ export const WorkspaceSwitcher = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button className="relative size-9 overflow-hidden bg-[#ABABAD] text-xl font-semibold text-slate-800 hover:bg-[#ABABAD]/80">
           {workspaceLoading ? (
             <Loader className="size-5 shrink-0 animate-spin" />
@@ -55,6 +55,12 @@ export const WorkspaceSwitcher = () => {
             {ws?.name}
           </DropdownMenuItem>
         ))}
+        <DropdownMenuItem>
+          <div className="lext-lg relative mr-2 flex size-9 items-center justify-center overflow-hidden rounded-md bg-[#F2F2F2] font-semibold text-slate-800">
+            <Plus />
+          </div>
+          Create New Workspace
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
