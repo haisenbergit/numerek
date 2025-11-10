@@ -28,7 +28,10 @@ export const WorkspaceSwitcher = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="relative size-9 overflow-hidden bg-[#ABABAD] text-xl font-semibold text-slate-800 hover:bg-[#ABABAD]/80">
+        <Button
+          className="relative size-9 overflow-hidden bg-[#ABABAD] text-xl font-semibold text-slate-800 hover:bg-[#ABABAD]/80"
+          title={workspace?.name}
+        >
           {workspaceLoading ? (
             <Loader className="size-5 shrink-0 animate-spin" />
           ) : (
@@ -41,7 +44,7 @@ export const WorkspaceSwitcher = () => {
           onClick={() => router.push(`/workspace/${workspaceId}`)}
           className="flex cursor-pointer flex-col items-start justify-start"
         >
-          {workspace?.name}
+          <span title={workspace?.name}>{workspace?.name}</span>
           <span className="text-xs text-muted-foreground">
             as Active workspace
           </span>
@@ -52,10 +55,12 @@ export const WorkspaceSwitcher = () => {
             onClick={() => router.push(`/workspace/${workspace!._id}`)}
             className="flex cursor-pointer items-center justify-start"
           >
-            <div className="lext-lg relative mr-2 flex size-9 items-center justify-center overflow-hidden rounded-md bg-[#616061] font-semibold text-white">
+            <div className="lext-lg relative mr-2 flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#616061] font-semibold text-white">
               {workspace?.name.charAt(0).toUpperCase()}
             </div>
-            {workspace?.name}
+            <p className="truncate" title={workspace?.name}>
+              {workspace?.name}
+            </p>
           </DropdownMenuItem>
         ))}
         <DropdownMenuItem
