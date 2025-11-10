@@ -46,13 +46,13 @@ export const WorkspaceSwitcher = () => {
             Active workspace
           </span>
         </DropdownMenuItem>
-        {otherWorkspacesThanCurrentOne?.map((ws) => (
+        {otherWorkspacesThanCurrentOne?.map((workspace) => (
           <DropdownMenuItem
-            key={ws!._id}
-            onClick={() => router.push(`/workspace/${ws!._id}`)}
+            key={workspace!._id}
+            onClick={() => router.push(`/workspace/${workspace!._id}`)}
             className="flex cursor-pointer flex-col items-start justify-start"
           >
-            {ws?.name}
+            {workspace?.name}
           </DropdownMenuItem>
         ))}
         <DropdownMenuItem>
