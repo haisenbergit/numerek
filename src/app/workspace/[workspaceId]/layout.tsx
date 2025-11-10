@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Toolbar } from "@/app/workspace/[workspaceId]/toolbar";
 
