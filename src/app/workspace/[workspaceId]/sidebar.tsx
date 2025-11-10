@@ -1,9 +1,10 @@
 import { UserAvatar } from "@/features/auth/components/user-avatar";
+import { WorkspaceSwitcher } from "@/app/workspace/[workspaceId]/workspace-switcher";
 
 export const Sidebar = () => {
   return (
-    <aside className="pt-b-[4px] flex h-full w-[70px] flex-col items-center gap-y-4 bg-[#481349] pt-[9px]">
-      <div>A</div>
+    <aside className="flex h-full w-[70px] flex-col items-center gap-y-4 bg-[#481349] py-[19px]">
+      <WorkspaceSwitcher />
       <div className="mt-auto flex flex-col items-center justify-center gap-y-1">
         <UserAvatar />
       </div>
