@@ -31,11 +31,19 @@ export const create = mutation({
     const userId = await getAuthenticatedUserId(ctx);
     const joinCode = Math.random().toString(36).substring(2, 8).toUpperCase();
 
-    return await ctx.db.insert("workspaces", {
+    const workspaceId = await ctx.db.insert("workspaces", {
       name: args.name,
       userId,
       joinCode,
     });
+
+    await ctx.db.insert("members", {
+      userId,
+      workspaceId,
+      role: "admin",
+    });
+
+    return workspaceId;
   },
 });
 
