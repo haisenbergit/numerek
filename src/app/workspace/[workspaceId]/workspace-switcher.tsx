@@ -55,7 +55,7 @@ export const WorkspaceSwitcher = () => {
             onClick={() => router.push(`/workspace/${workspace!._id}`)}
             className="flex cursor-pointer items-center justify-start"
           >
-            <div className="lext-lg relative mr-2 flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#616061] font-semibold text-white">
+            <div className="relative mr-2 flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#616061] text-lg font-semibold text-white">
               {workspace?.name.charAt(0).toUpperCase()}
             </div>
             <p className="truncate" title={workspace?.name}>
@@ -67,7 +67,7 @@ export const WorkspaceSwitcher = () => {
           className="cursor-pointer"
           onClick={() => setOpen(true)}
         >
-          <div className="lext-lg relative mr-2 flex size-9 items-center justify-center overflow-hidden rounded-md bg-[#F2F2F2] font-semibold text-slate-800">
+          <div className="relative mr-2 flex size-9 items-center justify-center overflow-hidden rounded-md bg-[#F2F2F2] text-lg font-semibold text-slate-800">
             <Plus />
           </div>
           Create New Workspace
