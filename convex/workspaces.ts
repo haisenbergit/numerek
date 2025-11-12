@@ -47,16 +47,25 @@ export const getById = query({
   },
 });
 
+function generateJoinCode(): string {
+  const length = 6;
+  const chars = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";
+  return Array.from({ length }, () =>
+    chars.charAt(Math.floor(Math.random() * chars.length))
+  ).join("");
+}
+
 export const create = mutation({
   args: { name: v.string() },
   handler: async (ctx, args) => {
     validateWorkspaceNameLength(args.name);
 
+    const name = args.name.trim();
     const userId = await getAuthenticatedUserId(ctx);
-    const joinCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const joinCode = generateJoinCode();
 
     const workspaceId = await ctx.db.insert("workspaces", {
-      name: args.name,
+      name,
       userId,
       joinCode,
     });
