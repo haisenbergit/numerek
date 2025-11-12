@@ -1,4 +1,5 @@
 import { v } from "convex/values";
+import type { Doc } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { getAuthenticatedUserId } from "./utils";
 
@@ -6,11 +7,25 @@ export const get = query({
   args: {},
   handler: async (ctx) => {
     const userId = await getAuthenticatedUserId(ctx);
+    if (!userId) return [];
 
-    return await ctx.db
-      .query("workspaces")
-      .filter((q) => q.eq(q.field("userId"), userId))
+    const members = await ctx.db
+      .query("members")
+      .withIndex("by_user_id", (q) => q.eq("userId", userId))
       .collect();
+
+    const workspaceIds = members.map((member) => member.workspaceId);
+
+    const workspaces: Doc<"workspaces">[] = [];
+
+    for (const workspaceId of workspaceIds) {
+      const workspace = await ctx.db.get(workspaceId);
+      if (workspace) {
+        workspaces.push(workspace);
+      }
+    }
+
+    return workspaces;
   },
 });
 
