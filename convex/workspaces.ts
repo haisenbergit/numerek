@@ -32,7 +32,16 @@ export const get = query({
 export const getById = query({
   args: { id: v.id("workspaces") },
   handler: async (ctx, args) => {
-    await getAuthenticatedUserId(ctx);
+    const userId = await getAuthenticatedUserId(ctx);
+
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.id).eq("userId", userId)
+      )
+      .first();
+
+    if (!member) return null;
 
     return await ctx.db.get(args.id);
   },
