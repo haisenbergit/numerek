@@ -7,9 +7,18 @@ export const get = query({
   handler: async (ctx) => {
     const userId = await getAuthenticatedUserId(ctx);
 
+    const members = await ctx.db
+      .query("members")
+      .withIndex("by_user_id", (q) => q.eq("userId", userId))
+      .collect();
+
+    const workspaceIds = members.map((member) => member.workspaceId);
+
     return await ctx.db
       .query("workspaces")
-      .filter((q) => q.eq(q.field("userId"), userId))
+      .filter((q) =>
+        q.or(...workspaceIds.map((id) => q.eq(q.field("_id"), id)))
+      )
       .collect();
   },
 });
@@ -17,25 +26,51 @@ export const get = query({
 export const getById = query({
   args: { id: v.id("workspaces") },
   handler: async (ctx, args) => {
-    await getAuthenticatedUserId(ctx);
+    const userId = await getAuthenticatedUserId(ctx);
+
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.id).eq("userId", userId)
+      )
+      .first();
+
+    if (!member) return null;
 
     return await ctx.db.get(args.id);
   },
 });
+
+function generateJoinCode(): string {
+  const length = 6;
+  const chars = "ABCDEFGHJKMNPQRSTUVWXYZ123456789";
+  return Array.from({ length }, () =>
+    chars.charAt(Math.floor(Math.random() * chars.length))
+  ).join("");
+}
 
 export const create = mutation({
   args: { name: v.string() },
   handler: async (ctx, args) => {
     validateWorkspaceNameLength(args.name);
 
+    const name = args.name.trim();
     const userId = await getAuthenticatedUserId(ctx);
-    const joinCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const joinCode = generateJoinCode();
 
-    return await ctx.db.insert("workspaces", {
-      name: args.name,
+    const workspaceId = await ctx.db.insert("workspaces", {
+      name,
       userId,
       joinCode,
     });
+
+    await ctx.db.insert("members", {
+      userId,
+      workspaceId,
+      role: "admin",
+    });
+
+    return workspaceId;
   },
 });
 
