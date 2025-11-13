@@ -7,7 +7,6 @@ export const get = query({
   args: {},
   handler: async (ctx) => {
     const userId = await getAuthenticatedUserId(ctx);
-    if (!userId) return [];
 
     const members = await ctx.db
       .query("members")
