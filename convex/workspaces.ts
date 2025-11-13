@@ -49,7 +49,7 @@ export const getById = query({
 
 function generateJoinCode(): string {
   const length = 6;
-  const chars = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789";
+  const chars = "ABCDEFGHJKMNPQRSTUVWXYZ123456789";
   return Array.from({ length }, () =>
     chars.charAt(Math.floor(Math.random() * chars.length))
   ).join("");
