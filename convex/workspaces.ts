@@ -1,5 +1,4 @@
 import { v } from "convex/values";
-import type { Doc } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { getAuthenticatedUserId } from "./utils";
 
@@ -15,16 +14,12 @@ export const get = query({
 
     const workspaceIds = members.map((member) => member.workspaceId);
 
-    const workspaces: Doc<"workspaces">[] = [];
-
-    for (const workspaceId of workspaceIds) {
-      const workspace = await ctx.db.get(workspaceId);
-      if (workspace) {
-        workspaces.push(workspace);
-      }
-    }
-
-    return workspaces;
+    return await ctx.db
+      .query("workspaces")
+      .filter((q) =>
+        q.or(...workspaceIds.map((id) => q.eq(q.field("_id"), id)))
+      )
+      .collect();
   },
 });
 
