@@ -30,7 +30,7 @@ export const WorkspaceSidebar = () => {
 
   return (
     <div className="flex h-full flex-col bg-[#5E2C5F]">
-      <WorkspaceHeader />
+      <WorkspaceHeader workspace={workspace} />
     </div>
   );
 };
