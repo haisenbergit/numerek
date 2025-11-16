@@ -5,14 +5,19 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 interface WorkspaceHeaderProps {
   workspace: Doc<"workspaces">;
+  isAdmin: boolean;
 }
 
-export const WorkspaceHeader = ({ workspace }: WorkspaceHeaderProps) => {
+export const WorkspaceHeader = ({
+  workspace,
+  isAdmin,
+}: WorkspaceHeaderProps) => {
   return (
     <div className="flex h-[49px] items-center justify-between gap-0.5 px-4">
       <DropdownMenu>
@@ -36,6 +41,18 @@ export const WorkspaceHeader = ({ workspace }: WorkspaceHeaderProps) => {
               <p className="text-xs text-muted-foreground">Active workspace</p>
             </div>
           </DropdownMenuItem>
+          {isAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer py-2">
+                Invite People to {workspace.name}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer py-2">
+                Preferences
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
