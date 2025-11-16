@@ -3,6 +3,8 @@ import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -24,6 +26,17 @@ export const WorkspaceHeader = ({ workspace }: WorkspaceHeaderProps) => {
             <ChevronDown className="ml-1 size-4 shrink-0" />
           </Button>
         </DropdownMenuTrigger>
+        <DropdownMenuContent side="bottom" align="start" className="w-64">
+          <DropdownMenuItem className="cursor-pointer capitalize">
+            <div className="text-semibold relative mr-2 flex size-9 items-center justify-center overflow-hidden rounded-md bg-[#616061] text-xl text-white">
+              {workspace.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="flex flex-col items-start">
+              <p className="text-sm font-semibold">{workspace.name}</p>
+              <p className="text-xs text-muted-foreground">Active workspace</p>
+            </div>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
       </DropdownMenu>
     </div>
   );
