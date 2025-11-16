@@ -10,3 +10,9 @@ export async function getAuthenticatedUserId(
 
   return userId as Id<"users">;
 }
+
+export async function getAuthenticatedUserIdForQuery(
+  ctx: QueryCtx | MutationCtx
+): Promise<Id<"users"> | null> {
+  return (await getAuthUserId(ctx)) as Id<"users"> | null;
+}
