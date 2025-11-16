@@ -1,5 +1,6 @@
 import { Doc } from "@convex/_generated/dataModel";
 import { ChevronDown, ListFilter, SquarePen } from "lucide-react";
+import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -55,12 +56,16 @@ export const WorkspaceHeader = ({
           )}
         </DropdownMenuContent>
         <div className="flex items-center gap-0.5">
-          <Button variant="transparent" size="icon">
-            <ListFilter />
-          </Button>
-          <Button variant="transparent" size="icon">
-            <SquarePen className="size-4" />
-          </Button>
+          <Hint label="Filter views" side="bottom">
+            <Button variant="transparent" size="icon">
+              <ListFilter />
+            </Button>
+          </Hint>
+          <Hint label="Edit workspace" side="bottom">
+            <Button variant="transparent" size="icon">
+              <SquarePen className="size-4" />
+            </Button>
+          </Hint>
         </div>
       </DropdownMenu>
     </div>
