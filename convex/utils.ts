@@ -14,8 +14,5 @@ export async function getAuthenticatedUserId(
 export async function getAuthenticatedUserIdForQuery(
   ctx: QueryCtx | MutationCtx
 ): Promise<Id<"users"> | null> {
-  const userId = await getAuthUserId(ctx);
-  if (!userId) return null;
-
-  return userId as Id<"users">;
+  return (await getAuthUserId(ctx)) as Id<"users"> | null;
 }

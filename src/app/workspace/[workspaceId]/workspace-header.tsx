@@ -34,7 +34,7 @@ export const WorkspaceHeader = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent side="bottom" align="start" className="w-64">
           <DropdownMenuItem className="cursor-pointer capitalize">
-            <div className="text-semibold relative mr-2 flex size-9 items-center justify-center overflow-hidden rounded-md bg-[#616061] text-xl text-white">
+            <div className="relative mr-2 flex size-9 items-center justify-center overflow-hidden rounded-md bg-[#616061] text-xl font-semibold text-white">
               {workspace.name.charAt(0).toUpperCase()}
             </div>
             <div className="flex flex-col items-start">
@@ -58,7 +58,7 @@ export const WorkspaceHeader = ({
         <div className="flex items-center gap-0.5">
           <Hint label="Filter views" side="bottom">
             <Button variant="transparent" size="icon">
-              <ListFilter />
+              <ListFilter className="size-4" />
             </Button>
           </Hint>
           <Hint label="Edit workspace" side="bottom">
