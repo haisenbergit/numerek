@@ -96,6 +96,39 @@ export const rename = mutation({
   },
 });
 
+export const remove = mutation({
+  args: { id: v.id("workspaces") },
+  handler: async (ctx, args) => {
+    const userId = await getAuthenticatedUserId(ctx);
+
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.id).eq("userId", userId)
+      )
+      .first();
+
+    if (!member || member.role !== "admin") {
+      throw new Error("Unauthorized: Only admins can rename the workspace");
+    }
+
+    const [members] = await Promise.all([
+      ctx.db
+        .query("members")
+        .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id))
+        .collect(),
+    ]);
+
+    for (const member of members) {
+      await ctx.db.delete(member._id);
+    }
+
+    await ctx.db.delete(args.id);
+
+    return args.id;
+  },
+});
+
 function validateWorkspaceNameLength(name: string) {
   if (name.length < 4)
     throw new Error("Workspace name must be at least 4 characters long");
