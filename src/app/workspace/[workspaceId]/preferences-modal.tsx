@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useRenameWorkspace } from "@/features/workspaces/api/use-rename-workspace";
 
 interface PreferencesModalProps {
   open: boolean;
@@ -19,6 +20,8 @@ export const PreferencesModal = ({
   initialValue,
 }: PreferencesModalProps) => {
   const [value, setValue] = useState(initialValue);
+  const { mutate: renameWorkspace, isPending: isRenamingWorkspace } =
+    useRenameWorkspace();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
