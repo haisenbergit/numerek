@@ -109,7 +109,7 @@ export const remove = mutation({
       .first();
 
     if (!member || member.role !== "admin") {
-      throw new Error("Unauthorized: Only admins can rename the workspace");
+      throw new Error("Unauthorized: Only admins can delete the workspace");
     }
 
     const [members] = await Promise.all([

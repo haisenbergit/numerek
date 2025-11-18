@@ -113,7 +113,7 @@ export const PreferencesModal = ({
                     autoFocus
                     minLength={3}
                     maxLength={50}
-                    placeholder="Workspace new name"
+                    placeholder="New workspace name"
                   />
                   <DialogFooter>
                     <DialogClose asChild>
@@ -129,7 +129,7 @@ export const PreferencesModal = ({
             <button
               disabled={isRemovingWorkspace}
               onClick={handleRemove}
-              className="hover:bg-grey-50 flex cursor-pointer items-center gap-x-2 rounded-lg border bg-white px-5 py-4 text-rose-600"
+              className="flex cursor-pointer items-center gap-x-2 rounded-lg border bg-white px-5 py-4 text-rose-600 hover:bg-gray-50"
             >
               <TrashIcon className="size-4" />
               <p className="text-sm font-semibold">Delete Workspace</p>
