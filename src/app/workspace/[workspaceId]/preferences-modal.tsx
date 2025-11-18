@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { TrashIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ export const PreferencesModal = ({
   setOpen,
   initialValue,
 }: PreferencesModalProps) => {
+  const router = useRouter();
   const workspaceId = useWorkspaceId();
   const [value, setValue] = useState(initialValue);
   const [editOpen, setEditOpen] = useState(false);
@@ -35,6 +37,21 @@ export const PreferencesModal = ({
     useRenameWorkspace();
   const { mutate: removeWorkspace, isPending: isRemovingWorkspace } =
     useRemoveWorkspace();
+
+  const handleRemove = async () => {
+    await removeWorkspace(
+      { id: workspaceId },
+      {
+        onSuccess: () => {
+          toast.success("Workspace deleted successfully");
+          router.replace("/");
+        },
+        onError: () => {
+          toast.error("Failed to delete workspace");
+        },
+      }
+    );
+  };
 
   const handleRename = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,8 +116,8 @@ export const PreferencesModal = ({
             </DialogContent>
           </Dialog>
           <button
-            disabled={false}
-            onClick={() => {}}
+            disabled={isRemovingWorkspace}
+            onClick={handleRemove}
             className="hover:bg-grey-50 flex cursor-pointer items-center gap-x-2 rounded-lg border bg-white px-5 py-4 text-rose-600"
           >
             <TrashIcon className="size-4" />
