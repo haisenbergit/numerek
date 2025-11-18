@@ -31,13 +31,13 @@ export const PreferencesModal = ({
 }: PreferencesModalProps) => {
   const router = useRouter();
   const workspaceId = useWorkspaceId();
-  const [ConfirmationDialog, confirmation] = useConfirmationWindow(
-    "Are you sure?",
-    "This action cannot be undone."
-  );
-
   const [value, setValue] = useState(initialValue);
   const [editOpen, setEditOpen] = useState(false);
+
+  const [ConfirmationDialog, confirmation] = useConfirmationWindow(
+    `Delete workspace: ${value}?`,
+    "This action cannot be undone."
+  );
 
   const { mutate: renameWorkspace, isPending: isRenamingWorkspace } =
     useRenameWorkspace();
