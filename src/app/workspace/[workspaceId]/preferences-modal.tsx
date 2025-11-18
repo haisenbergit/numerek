@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRemoveWorkspace } from "@/features/workspaces/api/use-remove-workspace";
 import { useRenameWorkspace } from "@/features/workspaces/api/use-rename-workspace";
-import { useConfirm } from "@/hooks/use-confirm";
+import { useConfirmationWindow } from "@/hooks/use-confirmation-window";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 interface PreferencesModalProps {
@@ -31,7 +31,7 @@ export const PreferencesModal = ({
 }: PreferencesModalProps) => {
   const router = useRouter();
   const workspaceId = useWorkspaceId();
-  const [ConfirmDialog, confirm] = useConfirm(
+  const [ConfirmationDialog, confirmation] = useConfirmationWindow(
     "Are you sure?",
     "This action cannot be undone."
   );
@@ -45,7 +45,7 @@ export const PreferencesModal = ({
     useRemoveWorkspace();
 
   const handleRemove = async () => {
-    const isConfirmed = await confirm();
+    const isConfirmed = await confirmation();
     if (!isConfirmed) return;
 
     await removeWorkspace(
@@ -81,7 +81,7 @@ export const PreferencesModal = ({
 
   return (
     <>
-      <ConfirmDialog />
+      <ConfirmationDialog />
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="overflow-hidden bg-gray-50 p-0">
           <DialogHeader className="border-b bg-white p-4">

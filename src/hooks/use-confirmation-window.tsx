@@ -9,35 +9,35 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export const useConfirm = (
+export const useConfirmationWindow = (
   title: string,
   message: string
 ): [() => JSX.Element, () => Promise<unknown>] => {
-  const [promise, setPromise] = useState<{
+  const [confirmationResolver, setConfirmationResolver] = useState<{
     resolve: (value: boolean) => void;
   } | null>(null);
 
-  const confirm = () =>
+  const confirmation = () =>
     new Promise((resolve) => {
-      setPromise({ resolve });
+      setConfirmationResolver({ resolve });
     });
 
   const handleClose = () => {
-    setPromise(null);
+    setConfirmationResolver(null);
   };
 
   const handleCancel = () => {
-    promise?.resolve(false);
+    confirmationResolver?.resolve(false);
     handleClose();
   };
 
   const handleConfirm = () => {
-    promise?.resolve(true);
+    confirmationResolver?.resolve(true);
     handleClose();
   };
 
-  const ConfirmDialog = () => (
-    <Dialog open={promise !== null} onOpenChange={handleClose}>
+  const ConfirmationDialog = () => (
+    <Dialog open={confirmationResolver !== null} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -53,5 +53,5 @@ export const useConfirm = (
     </Dialog>
   );
 
-  return [ConfirmDialog, confirm];
+  return [ConfirmationDialog, confirmation];
 };
