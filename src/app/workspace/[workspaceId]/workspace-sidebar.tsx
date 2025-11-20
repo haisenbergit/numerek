@@ -10,6 +10,7 @@ import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { SidebarItem } from "@/app/workspace/[workspaceId]/sidebar-item";
 import { WorkspaceHeader } from "@/app/workspace/[workspaceId]/workspace-header";
+import { WorkspaceSection } from "@/app/workspace/[workspaceId]/workspace-section";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 export const WorkspaceSidebar = () => {
@@ -52,14 +53,16 @@ export const WorkspaceSidebar = () => {
           id="drafts-sent"
           icon={SendHorizontal}
         />
-        {channels?.map((item) => (
-          <SidebarItem
-            key={item._id}
-            label={item.name}
-            id={item._id}
-            icon={HashIcon}
-          />
-        ))}
+        <WorkspaceSection label="Channels" hint="New channel" onNew={() => {}}>
+          {channels?.map((item) => (
+            <SidebarItem
+              key={item._id}
+              label={item.name}
+              id={item._id}
+              icon={HashIcon}
+            />
+          ))}
+        </WorkspaceSection>
       </div>
     </div>
   );
