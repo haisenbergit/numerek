@@ -21,7 +21,7 @@ export const WorkspaceSidebar = () => {
   const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({
     id: workspaceId,
   });
-  const { data: channels, isLoading: chnnelsLoading } = useGetChannels({
+  const { data: channels, isLoading: channelsLoading } = useGetChannels({
     workspaceId,
   });
 
@@ -53,17 +53,17 @@ export const WorkspaceSidebar = () => {
           id="drafts-sent"
           icon={SendHorizontal}
         />
-        <WorkspaceSection label="Channels" hint="New channel" onNew={() => {}}>
-          {channels?.map((item) => (
-            <SidebarItem
-              key={item._id}
-              label={item.name}
-              id={item._id}
-              icon={HashIcon}
-            />
-          ))}
-        </WorkspaceSection>
       </div>
+      <WorkspaceSection label="Channels" hint="New channel" onNew={() => {}}>
+        {channels?.map((item) => (
+          <SidebarItem
+            key={item._id}
+            label={item.name}
+            id={item._id}
+            icon={HashIcon}
+          />
+        ))}
+      </WorkspaceSection>
     </div>
   );
 };
