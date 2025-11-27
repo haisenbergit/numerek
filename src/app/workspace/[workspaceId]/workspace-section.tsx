@@ -1,7 +1,9 @@
 import { PlusIcon } from "lucide-react";
 import { FaCaretDown } from "react-icons/fa";
+import { useToggle } from "react-use";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface WorkspaceSectionProps {
   children: React.ReactNode;
@@ -16,14 +18,22 @@ export const WorkspaceSection = ({
   hint,
   onNew,
 }: WorkspaceSectionProps) => {
+  const [isOpen, toggleOpen] = useToggle(true);
+
   return (
     <div className="mt-3 flex flex-col px-2">
       <div className="group flex items-center px-3.5">
         <Button
           variant="transparent"
+          onClick={toggleOpen}
           className="size-6 shrink-0 p-0.5 text-sm text-[#f9edffcc]"
         >
-          <FaCaretDown className="size-4" />
+          <FaCaretDown
+            className={cn(
+              "size-4 transition-transform",
+              isOpen && "-rotate-90"
+            )}
+          />
         </Button>
         <Button
           variant="transparent"
@@ -45,7 +55,7 @@ export const WorkspaceSection = ({
           </Hint>
         )}
       </div>
-      {children}
+      {isOpen && children}
     </div>
   );
 };
