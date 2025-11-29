@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -6,22 +8,51 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useCreateChannel } from "@/features/channels/api/use-create-channel";
 import { useCreateChannelModal } from "@/features/channels/store/use-create-channel-modal";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 export const CreateChannelModal = () => {
+  const workspaceId = useWorkspaceId();
+  const { mutate, isPending } = useCreateChannel();
   const [open, setOpen] = useCreateChannelModal();
+  const [name, setName] = useState<string>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\s+/g, "-").toLowerCase();
+    setName(value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutate(
+      { name, workspaceId },
+      {
+        onSuccess: (id) => {
+          toast.success(`Channel [${name}] created successfully!`);
+          // TODO: Redirect to new channel
+          handleClose();
+        },
+      }
+    );
+  };
+
+  const handleClose = () => {
+    setName("");
+    setOpen(false);
+  };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add a channel</DialogTitle>
         </DialogHeader>
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            value=""
-            disabled={false}
-            onChange={() => {}}
+            value={name}
+            disabled={isPending}
+            onChange={handleChange}
             required
             autoFocus
             minLength={3}
