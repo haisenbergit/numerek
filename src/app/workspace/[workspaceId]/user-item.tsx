@@ -18,7 +18,7 @@ const userItemVariants = cva(
   {
     variants: {
       variant: {
-        default: "text-[#f9edfcc]",
+        default: "text-[#f9edffcc]",
         active: "text-[#481349] bg-white/90 hover:bg-white/90",
       },
     },
@@ -47,11 +47,11 @@ export const UserItem = ({
       <Link href={`/workspace/${workspaceId}/member/${id}`}>
         <Avatar className="mr-1 size-5 rounded-md">
           <AvatarImage className="rounded-md" src={image} />
-          <AvatarFallback className="font-xs rounded-md bg-green-600 text-white">
+          <AvatarFallback className="rounded-md bg-green-600 text-xs text-white">
             {avatarFallback}
           </AvatarFallback>
         </Avatar>
-        <span className="truncate text-sm text-white">{label}</span>
+        <span className="truncate text-sm">{label}</span>
       </Link>
     </Button>
   );

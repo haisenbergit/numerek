@@ -6,7 +6,7 @@ export const get = query({
   args: { workspaceId: v.id("workspaces") },
   handler: async (ctx, args) => {
     const userId = await getAuthenticatedUserIdForQuery(ctx);
-    if (!userId) return null;
+    if (!userId) return [];
 
     const member = await ctx.db
       .query("members")
@@ -15,7 +15,7 @@ export const get = query({
       )
       .first();
 
-    if (!member) return null;
+    if (!member) return [];
 
     return await ctx.db
       .query("channels")

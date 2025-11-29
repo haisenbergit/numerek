@@ -38,7 +38,7 @@ export const WorkspaceSection = ({
         <Button
           variant="transparent"
           size="sm"
-          className="jus group h-[28px] items-center justify-start overflow-hidden px-1.5 text-sm text-[#f9edffcc]"
+          className="group h-[28px] items-center justify-start overflow-hidden px-1.5 text-sm text-[#f9edffcc]"
         >
           <span className="truncate">{label}</span>
         </Button>
