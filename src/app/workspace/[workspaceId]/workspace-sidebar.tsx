@@ -10,6 +10,7 @@ import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetMembers } from "@/features/members/api/use-get-member";
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { SidebarItem } from "@/app/workspace/[workspaceId]/sidebar-item";
+import { UserItem } from "@/app/workspace/[workspaceId]/user-item";
 import { WorkspaceHeader } from "@/app/workspace/[workspaceId]/workspace-header";
 import { WorkspaceSection } from "@/app/workspace/[workspaceId]/workspace-section";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
@@ -68,9 +69,20 @@ export const WorkspaceSidebar = () => {
           />
         ))}
       </WorkspaceSection>
-      {members?.map((item) => (
-        <div>{item.user.name}</div>
-      ))}
+      <WorkspaceSection
+        label="Direct messages"
+        hint="New direct message"
+        onNew={() => {}}
+      >
+        {members?.map((item) => (
+          <UserItem
+            key={item._id}
+            id={item._id}
+            label={item.user.name}
+            image={item.user.image}
+          />
+        ))}
+      </WorkspaceSection>
     </div>
   );
 };
