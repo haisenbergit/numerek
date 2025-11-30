@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { InviteModal } from "@/app/workspace/[workspaceId]/invite-model";
+import { InviteModal } from "@/app/workspace/[workspaceId]/invite-modal";
 import { PreferencesModal } from "@/app/workspace/[workspaceId]/preferences-modal";
 
 interface WorkspaceHeaderProps {

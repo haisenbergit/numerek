@@ -52,7 +52,8 @@ export const InviteModal = ({
 
     navigator.clipboard
       .writeText(inviteLink)
-      .then(() => toast.success("Invite link copied to clipboard"));
+      .then(() => toast.success("Invite link copied to clipboard"))
+      .catch(() => toast.error("Failed to copy invite link"));
   };
 
   return (
