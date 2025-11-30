@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { InviteModal } from "@/app/workspace/[workspaceId]/invite-model";
 import { PreferencesModal } from "@/app/workspace/[workspaceId]/preferences-modal";
 
 interface WorkspaceHeaderProps {
@@ -22,9 +23,11 @@ export const WorkspaceHeader = ({
   isAdmin,
 }: WorkspaceHeaderProps) => {
   const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   return (
     <>
+      <InviteModal open={inviteOpen} setOpen={setInviteOpen} />
       <PreferencesModal
         open={preferencesOpen}
         setOpen={setPreferencesOpen}
@@ -57,7 +60,10 @@ export const WorkspaceHeader = ({
             {isAdmin && (
               <>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer py-2">
+                <DropdownMenuItem
+                  className="cursor-pointer py-2"
+                  onClick={() => setInviteOpen(true)}
+                >
                   Invite People to {workspace.name}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
