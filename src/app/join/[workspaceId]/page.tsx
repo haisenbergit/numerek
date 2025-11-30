@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import VerificationInput from "react-verification-input";
+import { Button } from "@/components/ui/button";
 
 const JoinPage = () => {
   return (
@@ -25,6 +27,11 @@ const JoinPage = () => {
           }}
           autoFocus
         />
+      </div>
+      <div className="flex gap-x-4">
+        <Button size="lg" variant="outline" asChild>
+          <Link href="/">Back to home</Link>
+        </Button>
       </div>
     </div>
   );
