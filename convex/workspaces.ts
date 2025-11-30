@@ -49,6 +49,30 @@ function generateJoinCode(): string {
   ).join("");
 }
 
+export const newJoinCode = mutation({
+  args: { workspaceId: v.id("workspaces") },
+  handler: async (ctx, args) => {
+    const userId = await getAuthenticatedUserId(ctx);
+
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.workspaceId).eq("userId", userId)
+      )
+      .first();
+
+    if (!member || member.role !== "admin") {
+      throw new Error("Unauthorized: Only admins can generate a new join code");
+    }
+
+    const newCode = generateJoinCode();
+
+    await ctx.db.patch(args.workspaceId, { joinCode: newCode });
+
+    return args.workspaceId;
+  },
+});
+
 export const create = mutation({
   args: { name: v.string() },
   handler: async (ctx, args) => {

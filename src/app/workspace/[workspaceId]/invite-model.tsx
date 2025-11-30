@@ -1,13 +1,15 @@
-import { CopyIcon } from "lucide-react";
+import { CopyIcon, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useNewJoinCode } from "@/features/workspaces/api/use-new-join-code";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 interface InviteModalProps {
@@ -24,6 +26,18 @@ export const InviteModal = ({
   joinCode,
 }: InviteModalProps) => {
   const workspaceId = useWorkspaceId();
+
+  const { mutate, isPending } = useNewJoinCode();
+
+  const handleNewCode = () => {
+    mutate(
+      { workspaceId },
+      {
+        onSuccess: () => toast.success("Invite code regenerated"),
+        onError: () => toast.error("Failed to regenerate invite code"),
+      }
+    );
+  };
 
   const handleCopy = () => {
     const inviteLink = `${window.location.origin}/join/${workspaceId}`;
@@ -50,6 +64,19 @@ export const InviteModal = ({
             Copy link
             <CopyIcon className="ml-2 size-4" />
           </Button>
+        </div>
+        <div className="flex w-full items-center justify-between">
+          <Button
+            disabled={isPending}
+            onClick={handleNewCode}
+            variant="outline"
+          >
+            New code
+            <RefreshCcw className="ml-2 size-4" />
+          </Button>
+          <DialogClose asChild>
+            <Button>Close</Button>
+          </DialogClose>
         </div>
       </DialogContent>
     </Dialog>
