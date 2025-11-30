@@ -20,9 +20,30 @@ export const create = mutation({
       )
       .unique();
 
-    if (!member || member.role !== "admin") throw new Error("Unauthorized");
+    if (!member || member.role !== "admin")
+      throw new Error("Unauthorized: Only admins can create channels");
 
-    const parsedName = args.name.replace(/\s+/g, "_").toLowerCase();
+    const parsedName = args.name.replace(/\s+/g, "-").toLowerCase();
+
+    // Validate channel name length
+    if (parsedName.length < 3 || parsedName.length > 80)
+      throw new Error("Channel name must be between 3 and 80 characters.");
+
+    // Validate channel name is not empty or only dashes
+    if (!parsedName.replace(/-/g, "").length)
+      throw new Error("Channel name cannot be empty or whitespace only.");
+
+    // Check for duplicate channel name in the workspace
+    const existing = await ctx.db
+      .query("channels")
+      .withIndex("by_workspace_id_name", (q) =>
+        q.eq("workspaceId", args.workspaceId).eq("name", parsedName)
+      )
+      .first();
+    if (existing)
+      throw new Error(
+        "A channel with this name already exists in the workspace."
+      );
 
     return await ctx.db.insert("channels", {
       name: parsedName,

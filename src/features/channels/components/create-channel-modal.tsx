@@ -16,7 +16,7 @@ export const CreateChannelModal = () => {
   const workspaceId = useWorkspaceId();
   const { mutate, isPending } = useCreateChannel();
   const [open, setOpen] = useCreateChannelModal();
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\s+/g, "-").toLowerCase();
@@ -32,6 +32,9 @@ export const CreateChannelModal = () => {
           toast.success(`Channel [${name}] created successfully!`);
           // TODO: Redirect to new channel
           handleClose();
+        },
+        onError: () => {
+          toast.error(`Failed to create channel [${name}]`);
         },
       }
     );
@@ -60,7 +63,7 @@ export const CreateChannelModal = () => {
             placeholder="e.g. plan-budget"
           />
           <div className="flex justify-end">
-            <Button disabled={false}>Create</Button>
+            <Button disabled={isPending}>Create</Button>
           </div>
         </form>
       </DialogContent>
