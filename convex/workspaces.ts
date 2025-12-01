@@ -1,6 +1,9 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { getAuthenticatedUserId } from "./utils";
+import {
+  getAuthenticatedUserId,
+  getAuthenticatedUserIdForQuery,
+} from "./utils";
 
 export const get = query({
   args: {},
@@ -20,6 +23,28 @@ export const get = query({
         q.or(...workspaceIds.map((id) => q.eq(q.field("_id"), id)))
       )
       .collect();
+  },
+});
+
+export const getInfoById = query({
+  args: { id: v.id("workspaces") },
+  handler: async (ctx, args) => {
+    const userId = await getAuthenticatedUserIdForQuery(ctx);
+    if (!userId) return null;
+
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.id).eq("userId", userId)
+      )
+      .first();
+
+    const workspace = await ctx.db.get(args.id);
+
+    return {
+      name: workspace?.name,
+      isMember: !!member,
+    };
   },
 });
 
