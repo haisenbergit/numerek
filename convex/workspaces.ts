@@ -77,12 +77,16 @@ function generateJoinCode(): string {
 export const join = mutation({
   args: { joinCode: v.string(), workspaceId: v.id("workspaces") },
   handler: async (ctx, args) => {
+    const normalizedCode = args.joinCode.toUpperCase();
+    if (normalizedCode.length !== 6 || !/^[A-Z0-9]+$/.test(normalizedCode))
+      throw new Error("Invalid join code format");
+
     const userId = await getAuthenticatedUserId(ctx);
 
     const workspace = await ctx.db.get(args.workspaceId);
     if (!workspace) throw new Error("Workspace not found");
 
-    if (workspace.joinCode !== args.joinCode.toUpperCase())
+    if (workspace.joinCode !== normalizedCode)
       throw new Error("Invalid join code");
 
     const existingMember = await ctx.db
@@ -93,7 +97,7 @@ export const join = mutation({
       .first();
 
     if (existingMember)
-      throw Error("User is already a member of the workspace");
+      throw new Error("User is already a member of the workspace");
 
     await ctx.db.insert("members", {
       userId,

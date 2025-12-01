@@ -45,6 +45,16 @@ const JoinPage = () => {
       </div>
     );
 
+  if (!data)
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-y-8">
+        <p className="text-muted-foreground">Workspace not found</p>
+        <Button size="lg" variant="outline" asChild>
+          <Link href="/">Back to home</Link>
+        </Button>
+      </div>
+    );
+
   return (
     <div className="flex h-full flex-col items-center justify-center gap-y-8 rounded-lg bg-white p-8 shadow-md">
       <Image src="/verification.svg" width={60} height={60} alt="Logo" />
@@ -64,7 +74,7 @@ const JoinPage = () => {
               isPending && "opacity-50 cursor-not-allowed"
             ),
             character:
-              "uppercase h-auto rounded-md border border-gray-300 flex items-center justify-center text-lg font-medium text-grey-500",
+              "uppercase h-auto rounded-md border border-gray-300 flex items-center justify-center text-lg font-medium text-gray-500",
             characterInactive: "bg-muted",
             characterSelected: "bg-white text-black",
             characterFilled: "bg-white text-black",
