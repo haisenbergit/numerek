@@ -14,7 +14,7 @@ const WorkspaceIdPage = () => {
   const workspaceId = useWorkspaceId();
   const [open, setOpen] = useCreateChannelModal();
 
-  const { data: memeber, isLoading: memberLoading } = useCurrentMember({
+  const { data: member, isLoading: memberLoading } = useCurrentMember({
     workspaceId,
   });
   const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({
@@ -25,14 +25,14 @@ const WorkspaceIdPage = () => {
   });
 
   const channelId = useMemo(() => channels?.[0]?._id, [channels]);
-  const isAdmin = useMemo(() => memeber?.role === "admin", [memeber?.role]);
+  const isAdmin = useMemo(() => member?.role === "admin", [member?.role]);
 
   useEffect(() => {
     if (
       workspaceLoading ||
       channelsLoading ||
       memberLoading ||
-      !memeber ||
+      !member ||
       !workspace
     )
       return;
@@ -41,7 +41,7 @@ const WorkspaceIdPage = () => {
       router.push(`/workspace/${workspaceId}/channel/${channelId}`);
     else if (!open && isAdmin) setOpen(true);
   }, [
-    memeber,
+    member,
     memberLoading,
     isAdmin,
     channelId,
