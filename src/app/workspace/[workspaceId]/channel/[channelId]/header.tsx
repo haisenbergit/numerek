@@ -1,3 +1,4 @@
+import { TrashIcon } from "lucide-react";
 import { FaChevronDown } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,6 +41,10 @@ export const Header = ({ title }: HeaderProps) => {
               </div>
               <p className="text-sm"># {title}</p>
             </div>
+            <button className="flex items-center gap-x-2 rounded-lg border bg-white px-5 py-4 text-rose-600 hover:bg-gray-50">
+              <TrashIcon className="size-4" />
+              <p className="text-sm font-semibold">Delete channel</p>
+            </button>
           </div>
         </DialogContent>
       </Dialog>
