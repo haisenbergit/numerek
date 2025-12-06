@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { TrashIcon } from "lucide-react";
 import { FaChevronDown } from "react-icons/fa";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,17 +14,75 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useRemoveChannel } from "@/features/channels/api/use-remove-channel";
+import { useUpdateNameChannel } from "@/features/channels/api/use-update-name-channel";
+import { useChannelId } from "@/hooks/use-channel-id";
+import { useConfirmationWindow } from "@/hooks/use-confirmation-window";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 interface HeaderProps {
   title: string;
 }
 
 export const Header = ({ title }: HeaderProps) => {
+  const router = useRouter();
+  const workspaceId = useWorkspaceId();
+  const channelId = useChannelId();
+  const [ConfirmDialog, confirm] = useConfirmationWindow(
+    "Delete this Channel?",
+    "Are you sure you want to delete this channel? This action cannot be undone."
+  );
+
   const [value, setValue] = useState(title);
   const [editOpen, setEditOpen] = useState(false);
 
+  const { mutate: updateChannel, isPending: isUpdatingChannel } =
+    useUpdateNameChannel();
+  const { mutate: removeChannel, isPending: isRemovingChannel } =
+    useRemoveChannel();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\s+/g, "-").toLowerCase();
+    setValue(value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    updateChannel(
+      { name: value, id: channelId },
+      {
+        onSuccess: () => {
+          toast.success("Channel name updated successfully!");
+          setEditOpen(false);
+        },
+        onError: () => {
+          toast.error("Failed to update channel name.");
+        },
+      }
+    );
+  };
+
+  const handleDelete = async () => {
+    const confirmed = await confirm();
+    if (!confirmed) return;
+
+    await removeChannel(
+      { id: channelId },
+      {
+        onSuccess: () => {
+          toast.success("Channel deleted successfully!");
+          router.push(`/workspace/${workspaceId}`);
+        },
+        onError: () => {
+          toast.error("Failed to delete channel.");
+        },
+      }
+    );
+  };
+
   return (
     <div className="flex h-[49px] items-center overflow-hidden border-b bg-white px-4">
+      <ConfirmDialog />
       <Dialog>
         <DialogTrigger asChild>
           <Button
@@ -55,11 +115,11 @@ export const Header = ({ title }: HeaderProps) => {
                 <DialogHeader>
                   <DialogTitle>Rename this channel</DialogTitle>
                 </DialogHeader>
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
                     value={value}
-                    disabled={false}
-                    onChange={() => {}}
+                    disabled={isUpdatingChannel}
+                    onChange={handleChange}
                     required
                     autoFocus
                     minLength={3}
@@ -68,16 +128,20 @@ export const Header = ({ title }: HeaderProps) => {
                   />
                   <DialogFooter>
                     <DialogClose asChild>
-                      <Button variant="outline" disabled={false}>
+                      <Button variant="outline" disabled={isUpdatingChannel}>
                         Cancel
                       </Button>
                     </DialogClose>
-                    <Button disabled={false}>Save</Button>
+                    <Button disabled={isUpdatingChannel}>Save</Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
             </Dialog>
-            <button className="flex items-center gap-x-2 rounded-lg border bg-white px-5 py-4 text-rose-600 hover:bg-gray-50">
+            <button
+              onClick={handleDelete}
+              disabled={isRemovingChannel}
+              className="flex items-center gap-x-2 rounded-lg border bg-white px-5 py-4 text-rose-600 hover:bg-gray-50"
+            >
               <TrashIcon className="size-4" />
               <p className="text-sm font-semibold">Delete channel</p>
             </button>
