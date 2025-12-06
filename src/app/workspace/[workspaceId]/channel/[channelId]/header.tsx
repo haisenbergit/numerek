@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRemoveChannel } from "@/features/channels/api/use-remove-channel";
 import { useUpdateNameChannel } from "@/features/channels/api/use-update-name-channel";
+import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useChannelId } from "@/hooks/use-channel-id";
 import { useConfirmationWindow } from "@/hooks/use-confirmation-window";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
@@ -36,10 +37,16 @@ export const Header = ({ title }: HeaderProps) => {
   const [value, setValue] = useState(title);
   const [editOpen, setEditOpen] = useState(false);
 
+  const { data: member } = useCurrentMember({ workspaceId });
   const { mutate: updateChannel, isPending: isUpdatingChannel } =
     useUpdateNameChannel();
   const { mutate: removeChannel, isPending: isRemovingChannel } =
     useRemoveChannel();
+
+  const handleEditOpen = (open: boolean) => {
+    if (member?.role !== "admin") return;
+    setEditOpen(open);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\s+/g, "-").toLowerCase();
@@ -99,7 +106,7 @@ export const Header = ({ title }: HeaderProps) => {
             <DialogTitle># {title}</DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-y-2 px-4 pb-4">
-            <Dialog open={editOpen} onOpenChange={setEditOpen}>
+            <Dialog open={editOpen} onOpenChange={handleEditOpen}>
               <DialogTrigger asChild>
                 <div className="cursor-pointer rounded-lg border bg-white px-5 py-4 hover:bg-gray-50">
                   <div className="flex items-center justify-between">
