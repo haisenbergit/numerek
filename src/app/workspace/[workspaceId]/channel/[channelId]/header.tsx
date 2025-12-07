@@ -111,9 +111,11 @@ export const Header = ({ title }: HeaderProps) => {
                 <div className="cursor-pointer rounded-lg border bg-white px-5 py-4 hover:bg-gray-50">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold">Channel name</p>
-                    <p className="text-sm font-semibold text-[#1264a3] hover:underline">
-                      Edit
-                    </p>
+                    {member?.role === "admin" && (
+                      <p className="text-sm font-semibold text-[#1264a3] hover:underline">
+                        Edit
+                      </p>
+                    )}
                   </div>
                   <p className="text-sm"># {title}</p>
                 </div>
@@ -144,14 +146,16 @@ export const Header = ({ title }: HeaderProps) => {
                 </form>
               </DialogContent>
             </Dialog>
-            <button
-              onClick={handleDelete}
-              disabled={isRemovingChannel}
-              className="flex items-center gap-x-2 rounded-lg border bg-white px-5 py-4 text-rose-600 hover:bg-gray-50"
-            >
-              <TrashIcon className="size-4" />
-              <p className="text-sm font-semibold">Delete channel</p>
-            </button>
+            {member?.role === "admin" && (
+              <button
+                onClick={handleDelete}
+                disabled={isRemovingChannel}
+                className="flex items-center gap-x-2 rounded-lg border bg-white px-5 py-4 text-rose-600 hover:bg-gray-50"
+              >
+                <TrashIcon className="size-4" />
+                <p className="text-sm font-semibold">Delete channel</p>
+              </button>
+            )}
           </div>
         </DialogContent>
       </Dialog>
