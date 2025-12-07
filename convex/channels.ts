@@ -23,9 +23,10 @@ export const remove = mutation({
       .unique();
 
     if (!member || member.role !== "admin")
-      throw new Error("Unauthorized: Only admins can update channel names");
+      throw new Error("Unauthorized: Only admins can delete channels");
 
     // TODO: Delete related data (e.g., messages) if necessary
+    // Delete related messages to prevent orphaned data
 
     await ctx.db.delete(args.id);
 

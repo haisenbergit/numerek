@@ -53,9 +53,9 @@ export const Header = ({ title }: HeaderProps) => {
     setValue(value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    updateChannel(
+    await updateChannel(
       { name: value, id: channelId },
       {
         onSuccess: () => {
