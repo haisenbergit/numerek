@@ -7,7 +7,11 @@ import { PiTextAa } from "react-icons/pi";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 
-const Editor = () => {
+interface EditorProps {
+  variant?: "create" | "edit";
+}
+
+const Editor = ({ variant = "create" }: EditorProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,24 +58,50 @@ const Editor = () => {
               <Smile className="size-4" />
             </Button>
           </Hint>
-          <Hint label="Image">
-            <Button
-              disabled={false}
-              size="iconSm"
-              variant="ghost"
-              onClick={() => {}}
-            >
-              <ImageIcon className="size-4" />
-            </Button>
-          </Hint>
-          <Button
-            disabled={false}
-            onClick={() => {}}
-            size="iconSm"
-            className="ml-auto bg-[#007a5a] text-white hover:bg-[#007a5a]/80"
-          >
-            <MdSend className="size-4" />
-          </Button>
+          {variant === "create" && (
+            <Hint label="Image">
+              <Button
+                disabled={false}
+                size="iconSm"
+                variant="ghost"
+                onClick={() => {}}
+              >
+                <ImageIcon className="size-4" />
+              </Button>
+            </Hint>
+          )}
+          {variant === "edit" && (
+            <div className="ml-auto flex items-center gap-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {}}
+                disabled={false}
+              >
+                Cancel
+              </Button>
+              <Button
+                disabled={false}
+                onClick={() => {}}
+                size="sm"
+                className="bg-[#007a5a] text-white hover:bg-[#007a5a]/80"
+              >
+                Save
+              </Button>
+            </div>
+          )}
+          {variant === "create" && (
+            <Hint label="Send Message">
+              <Button
+                disabled={false}
+                onClick={() => {}}
+                size="iconSm"
+                className="ml-auto bg-[#007a5a] text-white hover:bg-[#007a5a]/80"
+              >
+                <MdSend className="size-4" />
+              </Button>
+            </Hint>
+          )}
         </div>
       </div>
       <div className="flex justify-end p-2 text-[10px] text-muted-foreground">
