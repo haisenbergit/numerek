@@ -1,4 +1,10 @@
-import { MutableRefObject, useEffect, useLayoutEffect, useRef } from "react";
+import {
+  MutableRefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { ImageIcon, Smile } from "lucide-react";
 import Quill, { type QuillOptions } from "quill";
 import Delta, { Op } from "quill-delta";
@@ -7,6 +13,7 @@ import { MdSend } from "react-icons/md";
 import { PiTextAa } from "react-icons/pi";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type EditorValue = {
   image: File | null;
@@ -32,6 +39,8 @@ const Editor = ({
   innerRef,
   variant = "create",
 }: EditorProps) => {
+  const [text, setText] = useState("");
+
   const submitRef = useRef(onSubmit);
   const placeholderRef = useRef(placeholder);
   const quillRef = useRef<Quill | null>(null);
@@ -57,14 +66,49 @@ const Editor = ({
     const options: QuillOptions = {
       theme: "snow",
       placeholder: placeholderRef.current,
+      modules: {
+        keyboard: {
+          bindings: {
+            // enter: {
+            //   key: "Enter",
+            //   handler: () => {
+            //     // TODO Submit form
+            //     return;
+            //   },
+            // },
+            shift_enter: {
+              key: "Enter",
+              shiftKey: true,
+              handler: () => {
+                quill.insertText(quill.getSelection()?.index || 0, "\n");
+              },
+            },
+          },
+        },
+      },
     };
 
-    new Quill(editorContainer, options);
+    const quill = new Quill(editorContainer, options);
+    quillRef.current = quill;
+    quillRef.current.focus();
+    if (innerRef) innerRef.current = quill;
+
+    quill.setContents(defaultValueRef.current);
+    setText(quill.getText());
+
+    quill.on(Quill.events.TEXT_CHANGE, () => {
+      setText(quill.getText());
+    });
 
     return () => {
+      quill.off(Quill.events.TEXT_CHANGE);
       if (container) container.innerHTML = "";
+      if (quillRef.current) quillRef.current = null;
+      if (innerRef) innerRef.current = null;
     };
-  }, []);
+  }, [innerRef]);
+
+  const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
 
   return (
     <div className="flex flex-col">
@@ -126,10 +170,15 @@ const Editor = ({
           {variant === "create" && (
             <Hint label="Send Message">
               <Button
-                disabled={false}
+                disabled={disabled || isEmpty}
                 onClick={() => {}}
                 size="iconSm"
-                className="ml-auto bg-[#007a5a] text-white hover:bg-[#007a5a]/80"
+                className={cn(
+                  "ml-auto",
+                  isEmpty
+                    ? "bg-white text-muted-foreground hover:bg-white"
+                    : "bg-[#007a5a] text-white hover:bg-[#007a5a]/80"
+                )}
               >
                 <MdSend className="size-4" />
               </Button>
