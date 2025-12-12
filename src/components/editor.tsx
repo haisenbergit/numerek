@@ -13,6 +13,7 @@ import Delta, { Op } from "quill-delta";
 import "quill/dist/quill.snow.css";
 import { MdSend } from "react-icons/md";
 import { PiTextAa } from "react-icons/pi";
+import { EmojiPopover } from "@/components/emoji-popover";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -123,6 +124,11 @@ const Editor = ({
     if (toolbarElement) toolbarElement.classList.toggle("hidden");
   };
 
+  const onEmojiSelect = (emoji: any) => {
+    const quill = quillRef.current;
+    quill?.insertText(quill?.getSelection()?.index || 0, emoji.native);
+  };
+
   const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
 
   return (
@@ -143,14 +149,11 @@ const Editor = ({
             </Button>
           </Hint>
           <Hint label="Emoji">
-            <Button
-              disabled={disabled}
-              size="iconSm"
-              variant="ghost"
-              onClick={() => {}}
-            >
-              <Smile className="size-4" />
-            </Button>
+            <EmojiPopover onEmojiSelect={onEmojiSelect}>
+              <Button disabled={disabled} size="iconSm" variant="ghost">
+                <Smile className="size-4" />
+              </Button>
+            </EmojiPopover>
           </Hint>
           {variant === "create" && (
             <Hint label="Image">
