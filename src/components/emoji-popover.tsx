@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -13,10 +15,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+export interface Emoji {
+  id: string;
+  name: string;
+  native: string;
+  unified: string;
+  keywords: string[];
+  shortcodes: string;
+}
+
 interface EmojiPopoverProps {
   children: React.ReactNode;
   hint?: string;
-  onEmojiSelect: (emoji: any) => void;
+  onEmojiSelect: (emoji: Emoji) => void;
 }
 
 export const EmojiPopover = ({
@@ -27,7 +38,7 @@ export const EmojiPopover = ({
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  const onSelect = (emoji: any) => {
+  const onSelect = (emoji: Emoji) => {
     onEmojiSelect(emoji);
     setPopoverOpen(false);
 

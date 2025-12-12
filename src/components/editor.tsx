@@ -13,7 +13,7 @@ import Delta, { Op } from "quill-delta";
 import "quill/dist/quill.snow.css";
 import { MdSend } from "react-icons/md";
 import { PiTextAa } from "react-icons/pi";
-import { EmojiPopover } from "@/components/emoji-popover";
+import { type Emoji, EmojiPopover } from "@/components/emoji-popover";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -124,7 +124,7 @@ const Editor = ({
     if (toolbarElement) toolbarElement.classList.toggle("hidden");
   };
 
-  const onEmojiSelect = (emoji: any) => {
+  const onEmojiSelect = (emoji: Emoji) => {
     const quill = quillRef.current;
     quill?.insertText(quill?.getSelection()?.index || 0, emoji.native);
   };
