@@ -67,6 +67,11 @@ const Editor = ({
       theme: "snow",
       placeholder: placeholderRef.current,
       modules: {
+        toolbar: [
+          ["bold", "italic", "strike"],
+          ["link"],
+          [{ list: "ordered" }, { list: "bullet" }],
+        ],
         keyboard: {
           bindings: {
             // enter: {
