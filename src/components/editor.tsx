@@ -1,3 +1,5 @@
+"use client";
+
 import {
   MutableRefObject,
   useEffect,
@@ -125,7 +127,7 @@ const Editor = ({
 
   return (
     <div className="flex flex-col">
-      <div className="transit flex flex-col overflow-hidden rounded-md border border-slate-200 focus-within:border-slate-300 focus-within:shadow-sm">
+      <div className="flex flex-col overflow-hidden rounded-md border border-slate-200 transition focus-within:border-slate-300 focus-within:shadow-sm">
         <div ref={containerRef} className="ql-custom h-full" />
         <div className="z-[5] flex px-2 pb-2">
           <Hint
