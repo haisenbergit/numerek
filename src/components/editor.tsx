@@ -81,13 +81,22 @@ const Editor = ({
         ],
         keyboard: {
           bindings: {
-            // enter: {
-            //   key: "Enter",
-            //   handler: () => {
-            //     // TODO Submit form
-            //     return;
-            //   },
-            // },
+            enter: {
+              key: "Enter",
+              handler: () => {
+                const text = quill.getText();
+                const addedImage = imageElementRef.current?.files?.[0] || null;
+
+                const isEmpty =
+                  !addedImage &&
+                  text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+
+                if (isEmpty) return;
+
+                const body = JSON.stringify(quill.getContents());
+                submitRef.current?.({ body, image: addedImage });
+              },
+            },
             shift_enter: {
               key: "Enter",
               shiftKey: true,
@@ -132,7 +141,7 @@ const Editor = ({
     quill?.insertText(quill?.getSelection()?.index || 0, emoji.native);
   };
 
-  const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+  const isEmpty = !image && text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
 
   return (
     <div className="flex flex-col">
@@ -206,14 +215,19 @@ const Editor = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {}}
+                onClick={onCancel}
                 disabled={disabled}
               >
                 Cancel
               </Button>
               <Button
                 disabled={disabled || isEmpty}
-                onClick={() => {}}
+                onClick={() => {
+                  onSubmit({
+                    body: JSON.stringify(quillRef.current?.getContents()),
+                    image,
+                  });
+                }}
                 size="sm"
                 className="bg-[#007a5a] text-white hover:bg-[#007a5a]/80"
               >
@@ -225,7 +239,12 @@ const Editor = ({
             <Hint label="Send Message">
               <Button
                 disabled={disabled || isEmpty}
-                onClick={() => {}}
+                onClick={() => {
+                  onSubmit({
+                    body: JSON.stringify(quillRef.current?.getContents()),
+                    image,
+                  });
+                }}
                 size="iconSm"
                 className={cn(
                   "ml-auto",
