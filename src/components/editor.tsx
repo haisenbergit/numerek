@@ -136,7 +136,7 @@ const Editor = ({
 
   return (
     <div className="flex flex-col">
-      <input
+      <input // TODO: add validation - https://github.com/haisenbergit/grupa/pull/25#discussion_r2617002642
         type="file"
         accept="image/*"
         ref={imageElementRef}
@@ -159,7 +159,7 @@ const Editor = ({
                   <XIcon className="size-3.5" />
                 </button>
               </Hint>
-              <Image
+              <Image // TODO: use img - https://github.com/haisenbergit/grupa/pull/25#discussion_r2617002653
                 src={URL.createObjectURL(image)}
                 alt="Uploaded"
                 fill
