@@ -23,6 +23,19 @@ const schema = defineSchema({
   })
     .index("by_workspace_id", ["workspaceId"])
     .index("by_workspace_id_name", ["workspaceId", "name"]),
+  messages: defineTable({
+    body: v.string(),
+    image: v.optional(v.id("_storage")),
+    memberId: v.id("members"),
+    workspaceId: v.id("workspaces"),
+    channelId: v.optional(v.id("channels")),
+    parentMessageId: v.optional(v.id("messages")),
+    // TODO: add conversationId for DMs
+    updatedAt: v.number(),
+  })
+    .index("by_workspace_id", ["workspaceId"])
+    .index("by_channel_id", ["channelId"])
+    .index("by_parent_message_id", ["parentMessageId"]),
 });
 
 export default schema;
