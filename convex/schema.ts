@@ -32,7 +32,10 @@ const schema = defineSchema({
     parentMessageId: v.optional(v.id("messages")),
     // TODO: add conversationId for DMs
     updatedAt: v.number(),
-  }),
+  })
+    .index("by_workspace_id", ["workspaceId"])
+    .index("by_channel_id", ["channelId"])
+    .index("by_parent_message_id", ["parentMessageId"]),
 });
 
 export default schema;
