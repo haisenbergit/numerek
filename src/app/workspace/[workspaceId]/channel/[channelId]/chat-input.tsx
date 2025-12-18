@@ -52,7 +52,10 @@ export const ChatInput = ({ placeholder }: ChatInputProps) => {
 
       if (image) {
         const url = await generateUploadUrl({}, { throwOnError: true });
-        if (!url) throw new Error("Failed to generate upload URL");
+        if (!url)
+          throw new Error(
+            "Unable to prepare image upload. Please check your internet connection and try again"
+          );
 
         const result = await fetch(url, {
           method: "POST",
