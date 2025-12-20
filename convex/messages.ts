@@ -40,6 +40,17 @@ export const create = mutation({
       _conversationId = parentMessage.conversationId;
     }
 
+    // validation to ensure messages belong to either a channel OR a conversation, but not both or neither
+    // (except for thread replies). The current logic allows creating a message with both channelId and conversationId set,
+    // or with neither set (when not a thread reply), which could lead to data inconsistencies.
+    // This validation enforce this business rule.
+    const hasChannel = !!args.channelId;
+    const hasConversation = !!_conversationId;
+    if ((hasChannel && hasConversation) || (!hasChannel && !hasConversation))
+      throw new Error(
+        "Message must belong to either a channel or a conversation, but not both or neither"
+      );
+
     return await ctx.db.insert("messages", {
       body: args.body,
       image: args.image,
