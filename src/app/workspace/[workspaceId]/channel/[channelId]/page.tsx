@@ -2,6 +2,7 @@
 
 import { Loader, TriangleAlert } from "lucide-react";
 import { useGetChannel } from "@/features/channels/api/use-get-channel";
+import { useGetMessages } from "@/features/messages/api/use-get-messages";
 import { ChatInput } from "@/app/workspace/[workspaceId]/channel/[channelId]/chat-input";
 import { Header } from "@/app/workspace/[workspaceId]/channel/[channelId]/header";
 import { useChannelId } from "@/hooks/use-channel-id";
@@ -9,6 +10,7 @@ import { useChannelId } from "@/hooks/use-channel-id";
 const ChannelIdPage = () => {
   const channelId = useChannelId();
 
+  const { results } = useGetMessages({ channelId });
   const { data: channel, isLoading: channelLoading } = useGetChannel({
     id: channelId,
   });
@@ -28,10 +30,13 @@ const ChannelIdPage = () => {
       </div>
     );
 
+  // TODO: The JSON.stringify output is debug code that should be replaced
+  //  with proper message rendering components before merging to production.
+  // https://github.com/haisenbergit/grupa/pull/29#discussion_r2637726451
   return (
     <div className="flex h-full flex-col">
       <Header title={channel.name} />
-      <div className="flex-1" />
+      <div className="flex-1">{JSON.stringify(results)}</div>
       <ChatInput placeholder={`Message # ${channel.name}`} />
     </div>
   );
