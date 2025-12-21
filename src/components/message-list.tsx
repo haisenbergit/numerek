@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { GetMessagesReturnType } from "@/features/messages/api/use-get-messages";
 
 interface MessageListProps {
@@ -23,14 +24,22 @@ export const MessageList = ({
   isLoadingMore,
   canLoadMore,
 }: MessageListProps) => {
-  return (
-    <div className="flex-1 flex flex-col-reverse pb-4 overflow-y-auto messages-scrollbar">
-      {data?.map((message) => (
-        <div>
-          {JSON.stringify(message)}
-        </div>
-      ))}
-  </div>
-);
+  const groupedMessages = data?.reduce(
+    (groups, message) => {
+      const date = new Date(message._creationTime);
+      const dateKey = format(date, "yyyy-MM-dd");
+      if (!groups[dateKey]) groups[dateKey] = [];
+      groups[dateKey].unshift(message);
+      return groups;
+    },
+    {} as Record<string, typeof data>
+  );
 
+  return (
+    <div className="messages-scrollbar flex flex-1 flex-col-reverse overflow-y-auto pb-4">
+      {data?.map((message) => (
+        <div>{JSON.stringify(message)}</div>
+      ))}
+    </div>
+  );
 };
