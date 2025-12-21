@@ -204,7 +204,6 @@ export const create = mutation({
       channelId: args.channelId,
       conversationId: _conversationId,
       parentMessageId: args.parentMessageId,
-      updatedAt: Date.now(),
     });
   },
 });
