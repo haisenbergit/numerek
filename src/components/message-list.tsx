@@ -51,6 +51,9 @@ export const MessageList = ({
               {formatDateLabel(dateKey)}
             </span>
           </div>
+          {messages.map((message, index) => {
+            return <div key={message._id}>{JSON.stringify(message)}</div>;
+          })}
         </div>
       ))}
     </div>
