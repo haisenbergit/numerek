@@ -70,7 +70,7 @@ export const get = query({
     channelId: v.optional(v.id("channels")),
     conversationId: v.optional(v.id("conversations")),
     parentMessageId: v.optional(v.id("messages")),
-    paginationOps: paginationOptsValidator,
+    paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
     const userId = await getAuthenticatedUserId(ctx);
@@ -92,7 +92,7 @@ export const get = query({
           .eq("conversationId", _conversationId)
       )
       .order("desc")
-      .paginate(args.paginationOps);
+      .paginate(args.paginationOpts);
   },
 });
 
