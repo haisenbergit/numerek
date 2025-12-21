@@ -109,6 +109,10 @@ export const get = query({
               ? await ctx.storage.getUrl(message.image)
               : undefined;
 
+            // TODO:For each reaction, this filters through all reactions to count matching values,
+            //  resulting in O(n²) complexity. Consider using a Map to count reaction values in a single pass
+            //  for O(n) complexity instead.
+            //  https://github.com/haisenbergit/grupa/pull/29#discussion_r2637726445
             const reactionsWithCounts = reactions.map((reaction) => {
               return {
                 ...reaction,

@@ -15,8 +15,6 @@ const ChannelIdPage = () => {
     id: channelId,
   });
 
-  console.log(results);
-
   if (channelLoading)
     return (
       <div className="flex h-full flex-1 items-center justify-center">
@@ -32,6 +30,9 @@ const ChannelIdPage = () => {
       </div>
     );
 
+  // TODO: The JSON.stringify output is debug code that should be replaced
+  //  with proper message rendering components before merging to production.
+  // https://github.com/haisenbergit/grupa/pull/29#discussion_r2637726451
   return (
     <div className="flex h-full flex-col">
       <Header title={channel.name} />
