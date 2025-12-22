@@ -81,7 +81,26 @@ export const Message = ({
             </AvatarFallback>
           </Avatar>
         </button>
-        <Renderer value={body} />
+        <div className="flex w-full flex-col overflow-hidden">
+          <div className="text-sm">
+            <button
+              onClick={() => {}}
+              className="font-bold text-primary hover:underline"
+            >
+              {authorName}
+            </button>
+            <span>&nbsp;&nbsp;</span>
+            <Hint label={formatFullTime(new Date(createdAt))}>
+              <button className="text-xs text-muted-foreground hover:underline">
+                {format(new Date(createdAt), "h:mm a")}
+              </button>
+            </Hint>
+          </div>
+          <Renderer value={body} />
+          {updatedAt ? (
+            <span className="text-xs text-muted-foreground">(edited)</span>
+          ) : null}
+        </div>
       </div>
     </div>
   );
