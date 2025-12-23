@@ -9,6 +9,10 @@ const Renderer = ({ value }: RendererProps) => {
   const [isEmpty, setIsEmpty] = useState(false);
   const rendererRef = useRef<HTMLDivElement>(null);
 
+  // A new Quill instance is created on every render when the value changes.
+  // This could be inefficient for frequently updating messages. Consider memoizing the Quill instance
+  // or using a more lightweight parsing approach if only rendering is needed, not editing functionality.
+  // https://github.com/haisenbergit/grupa/pull/30#discussion_r2643787176
   useEffect(() => {
     if (!rendererRef.current) return;
 
