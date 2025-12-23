@@ -62,8 +62,13 @@ export const Message = ({
               {format(new Date(createdAt), "hh:mm")}
             </button>
           </Hint>
+          <div className="flex w-full flex-col">
+            <Renderer value={body} />
+            {updatedAt ? (
+              <span className="text-xs text-muted-foreground">(edited)</span>
+            ) : null}
+          </div>
         </div>
-        <Renderer value={body} />
       </div>
     );
   }
