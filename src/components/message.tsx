@@ -79,11 +79,9 @@ export const Message = ({
     <div className="group relative flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60">
       <div className="flex items-start gap-2">
         <button>
-          <Avatar className="mr-1 size-5 rounded-md">
-            <AvatarImage className="rounded-md" src={authorImage} />
-            <AvatarFallback className="rounded-md bg-sky-500 text-xs text-white">
-              {avatarFallback}
-            </AvatarFallback>
+          <Avatar>
+            <AvatarImage src={authorImage} />
+            <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
         </button>
         <div className="flex w-full flex-col overflow-hidden">
