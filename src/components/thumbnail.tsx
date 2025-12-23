@@ -2,7 +2,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -26,9 +25,10 @@ export const Thumbnail = ({ url }: ThumbnailProps) => {
         </div>
       </DialogTrigger>
       <DialogContent className="max-w-[800px] border-none bg-transparent p-0 shadow-none">
+        <DialogTitle className="sr-only">Message image</DialogTitle>
         <img
           src={url}
-          alt="Mesage image"
+          alt="Message image"
           className="size-full rounded-md object-cover"
         />
       </DialogContent>
