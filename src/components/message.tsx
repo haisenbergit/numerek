@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { format, isToday, isYesterday } from "date-fns";
 import { Hint } from "@/components/hint";
+import { Thumbnail } from "@/components/thumbnail";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Renderer = dynamic(() => import("./renderer"), { ssr: false });
@@ -64,6 +65,7 @@ export const Message = ({
           </Hint>
           <div className="flex w-full flex-col">
             <Renderer value={body} />
+            <Thumbnail url={image} />
             {updatedAt ? (
               <span className="text-xs text-muted-foreground">(edited)</span>
             ) : null}
@@ -100,6 +102,7 @@ export const Message = ({
             </Hint>
           </div>
           <Renderer value={body} />
+          <Thumbnail url={image} />
           {updatedAt ? (
             <span className="text-xs text-muted-foreground">(edited)</span>
           ) : null}
