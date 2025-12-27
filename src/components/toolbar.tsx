@@ -1,10 +1,4 @@
-import {
-  MessageSquareText,
-  MessageSquareTextIcon,
-  Pencil,
-  Smile,
-  Trash,
-} from "lucide-react";
+import { MessageSquareTextIcon, Pencil, Smile, Trash } from "lucide-react";
 import { EmojiPopover } from "@/components/emoji-popover";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
