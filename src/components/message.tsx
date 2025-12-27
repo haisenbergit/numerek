@@ -99,7 +99,7 @@ export const Message = ({
         {!isEditing && (
           <Toolbar
             isAuthor={isAuthor}
-            isPending={false}
+            isPending={isPending}
             handleEdit={() => setEditingId(id)}
             handleThread={() => {}}
             handleDelete={() => {}}
@@ -127,32 +127,44 @@ export const Message = ({
             <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
         </button>
-        <div className="flex w-full flex-col overflow-hidden">
-          <div className="text-sm">
-            <button
-              onClick={() => {}}
-              className="font-bold text-primary hover:underline"
-            >
-              {authorName}
-            </button>
-            <span>&nbsp;&nbsp;</span>
-            <Hint label={formatFullTime(new Date(createdAt))}>
-              <button className="text-xs text-muted-foreground hover:underline">
-                {format(new Date(createdAt), "h:mm a")}
-              </button>
-            </Hint>
+        {isEditing ? (
+          <div className="h-full w-full">
+            <Editor
+              onSubmit={handleUpdate}
+              disabled={isPending}
+              defaultValue={JSON.parse(body)}
+              onCancel={() => setEditingId(null)}
+              variant="edit"
+            />
           </div>
-          <Renderer value={body} />
-          <Thumbnail url={image} />
-          {updatedAt ? (
-            <span className="text-xs text-muted-foreground">(edited)</span>
-          ) : null}
-        </div>
+        ) : (
+          <div className="flex w-full flex-col overflow-hidden">
+            <div className="text-sm">
+              <button
+                onClick={() => {}}
+                className="font-bold text-primary hover:underline"
+              >
+                {authorName}
+              </button>
+              <span>&nbsp;&nbsp;</span>
+              <Hint label={formatFullTime(new Date(createdAt))}>
+                <button className="text-xs text-muted-foreground hover:underline">
+                  {format(new Date(createdAt), "h:mm a")}
+                </button>
+              </Hint>
+            </div>
+            <Renderer value={body} />
+            <Thumbnail url={image} />
+            {updatedAt ? (
+              <span className="text-xs text-muted-foreground">(edited)</span>
+            ) : null}
+          </div>
+        )}
       </div>
       {!isEditing && (
         <Toolbar
           isAuthor={isAuthor}
-          isPending={false}
+          isPending={isPending}
           handleEdit={() => setEditingId(id)}
           handleThread={() => {}}
           handleDelete={() => {}}
