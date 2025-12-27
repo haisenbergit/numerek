@@ -1,10 +1,12 @@
 import dynamic from "next/dynamic";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { format, isToday, isYesterday } from "date-fns";
+import { toast } from "sonner";
 import { Hint } from "@/components/hint";
 import { Thumbnail } from "@/components/thumbnail";
 import { Toolbar } from "@/components/toolbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUpdateMessage } from "@/features/messages/api/use-update-message";
 
 const Renderer = dynamic(() => import("./renderer"), { ssr: false });
 
@@ -55,6 +57,26 @@ export const Message = ({
   threadImage,
   threadTimestamp,
 }: MessageProps) => {
+  const { mutate: updateMessage, isPending: isUpdatingMessage } =
+    useUpdateMessage();
+
+  const isPending = isUpdatingMessage;
+
+  const handleUpdate = ({ body }: { body: string }) => {
+    updateMessage(
+      { id, body },
+      {
+        onSuccess: () => {
+          toast.success("Message updated");
+          setEditingId(null);
+        },
+        onError: () => {
+          toast.error("Failed to update message");
+        },
+      }
+    );
+  };
+
   if (isCompact) {
     return (
       <div className="group relative flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60">
@@ -72,6 +94,17 @@ export const Message = ({
             ) : null}
           </div>
         </div>
+        {!isEditing && (
+          <Toolbar
+            isAuthor={isAuthor}
+            isPending={false}
+            handleEdit={() => setEditingId(id)}
+            handleThread={() => {}}
+            handleDelete={() => {}}
+            handleReaction={() => {}}
+            hideThreadButton={hideThreadButton}
+          />
+        )}
       </div>
     );
   }
