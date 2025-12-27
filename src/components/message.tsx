@@ -7,8 +7,10 @@ import { Thumbnail } from "@/components/thumbnail";
 import { Toolbar } from "@/components/toolbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUpdateMessage } from "@/features/messages/api/use-update-message";
+import { cn } from "@/lib/utils";
 
 const Renderer = dynamic(() => import("./renderer"), { ssr: false });
+const Editor = dynamic(() => import("./editor"), { ssr: false });
 
 interface MessageProps {
   id: Id<"messages">;
@@ -112,7 +114,12 @@ export const Message = ({
   const avatarFallback = authorName.charAt(0).toUpperCase();
 
   return (
-    <div className="group relative flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60">
+    <div
+      className={cn(
+        "group relative flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60",
+        isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]"
+      )}
+    >
       <div className="flex items-start gap-2">
         <button>
           <Avatar>
