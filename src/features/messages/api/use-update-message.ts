@@ -48,6 +48,11 @@ export const useUpdateMessage = () => {
         if (options?.throwOnError) throw error;
         return null;
       } finally {
+        // The state management logic has a bug. Setting status to "settled" in the finally block will overwrite
+        // the "success" or "error" status that was just set in the try or catch blocks.
+        // This means the isSuccess and isError flags will never be true by the time they're returned to the caller.
+        // Consider removing the "settled" status or restructuring the logic to maintain the success/error state.
+        // https://github.com/haisenbergit/grupa/pull/33#discussion_r2649049807
         setStatus("settled");
         options?.onSettled?.();
       }

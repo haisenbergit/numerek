@@ -77,7 +77,7 @@ export const remove = mutation({
     const member = await getMember(ctx, message.workspaceId, userId);
     if (!member || member._id !== message.memberId)
       throw new Error(
-        "Unauthorized: Only the message author can update the message"
+        "Unauthorized: Only the message author can remove the message"
       );
 
     await ctx.db.delete(args.id);

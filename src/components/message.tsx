@@ -91,8 +91,8 @@ export const Message = ({
     );
   };
 
-  const handleUpdate = ({ body }: { body: string }) => {
-    updateMessage(
+  const handleUpdate = async ({ body }: { body: string }) => {
+    await updateMessage(
       { id, body },
       {
         onSuccess: () => {
@@ -129,6 +129,7 @@ export const Message = ({
                 <Editor
                   onSubmit={handleUpdate}
                   disabled={isPending}
+                  // https://github.com/haisenbergit/grupa/pull/33#discussion_r2649049814
                   defaultValue={JSON.parse(body)}
                   onCancel={() => setEditingId(null)}
                   variant="edit"
@@ -187,6 +188,7 @@ export const Message = ({
               <Editor
                 onSubmit={handleUpdate}
                 disabled={isPending}
+                // https://github.com/haisenbergit/grupa/pull/33#discussion_r2649049816
                 defaultValue={JSON.parse(body)}
                 onCancel={() => setEditingId(null)}
                 variant="edit"
