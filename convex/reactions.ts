@@ -28,7 +28,7 @@ export const toggle = mutation({
     const member = await getMember(ctx, message.workspaceId, userId);
     if (!member) throw new Error("Unauthorized");
 
-    const exisitingMessageReactionFromUser = await ctx.db
+    const existingMessageReactionFromUser = await ctx.db
       .query("reactions")
       .filter((q) =>
         q.and(
@@ -39,10 +39,10 @@ export const toggle = mutation({
       )
       .first();
 
-    if (exisitingMessageReactionFromUser) {
-      await ctx.db.delete(exisitingMessageReactionFromUser._id);
+    if (existingMessageReactionFromUser) {
+      await ctx.db.delete(existingMessageReactionFromUser._id);
 
-      return exisitingMessageReactionFromUser._id;
+      return existingMessageReactionFromUser._id;
     } else {
       return await ctx.db.insert("reactions", {
         value: args.value,

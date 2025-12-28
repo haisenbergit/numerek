@@ -22,6 +22,7 @@ export const Reactions = ({ data, onChange }: ReactionsProps) => {
   const currentMemberId = currentMember?._id;
   if (data.length === 0 || !currentMemberId) return null;
 
+  // https://github.com/haisenbergit/grupa/pull/34#discussion_r2649519564
   return (
     <div className="mb-1 mt-1 flex items-center gap-1">
       {data.map((reaction) => (
