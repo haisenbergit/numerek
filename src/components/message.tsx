@@ -12,6 +12,7 @@ import { useUpdateMessage } from "@/features/messages/api/use-update-message";
 import { useToggleReactions } from "@/features/reactions/api/use-toggle-reaction";
 import { cn } from "@/lib/utils";
 import { useConfirmationWindow } from "@/hooks/use-confirmation-window";
+import { usePanel } from "@/hooks/use-panel";
 
 const Renderer = dynamic(() => import("./renderer"), { ssr: false });
 const Editor = dynamic(() => import("./editor"), { ssr: false });
@@ -63,6 +64,8 @@ export const Message = ({
   threadImage,
   threadTimestamp,
 }: MessageProps) => {
+  const { parentMessageId, onOpenMessage, onClose } = usePanel();
+
   const [ConfirmDialog, confirm] = useConfirmationWindow(
     "Delete Message",
     "Are you sure you want to delete this message? This action cannot be undone."
@@ -89,7 +92,6 @@ export const Message = ({
 
   const handleRemove = async () => {
     const isConfirmed = await confirm();
-
     if (!isConfirmed) return;
 
     await removeMessage(
@@ -97,7 +99,7 @@ export const Message = ({
       {
         onSuccess: () => {
           toast.success("Message deleted");
-          // TODO: Close thread if opened
+          if (parentMessageId === id) onClose();
         },
         onError: () => {
           toast.error("Failed to delete message");
@@ -168,7 +170,7 @@ export const Message = ({
               isAuthor={isAuthor}
               isPending={isPending}
               handleEdit={() => setEditingId(id)}
-              handleThread={() => {}}
+              handleThread={() => onOpenMessage(id)}
               handleDelete={handleRemove}
               handleReaction={handleReaction}
               hideThreadButton={hideThreadButton}
@@ -240,7 +242,7 @@ export const Message = ({
             isAuthor={isAuthor}
             isPending={isPending}
             handleEdit={() => setEditingId(id)}
-            handleThread={() => {}}
+            handleThread={() => onOpenMessage(id)}
             handleDelete={handleRemove}
             handleReaction={handleReaction}
             hideThreadButton={hideThreadButton}
