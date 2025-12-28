@@ -23,6 +23,7 @@ export const Reactions = ({ data, onChange }: ReactionsProps) => {
     <div className="mb-1 mt-1 flex items-center gap-1">
       {data.map((reaction) => (
         <button
+          onClick={() => onChange(reaction.value)}
           className={cn(
             "flex h-6 items-center gap-x-1 rounded-full border border-transparent bg-slate-200/70 px-2 text-slate-800",
             reaction.memberIds.includes(currentMemberId) &&
