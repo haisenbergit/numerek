@@ -100,6 +100,7 @@ export const MessageList = ({
           })}
         </div>
       ))}
+      {/*https://github.com/haisenbergit/grupa/pull/35#discussion_r2649536271*/}
       <div
         className="h-1"
         ref={(el) => {
@@ -117,6 +118,7 @@ export const MessageList = ({
           }
         }}
       />
+      {/*https://github.com/haisenbergit/grupa/pull/35#discussion_r2649536273*/}
       {isLoadingMore && (
         <div className="relative my-2 text-center">
           <hr className="absolute left-0 right-0 top-1/2 border-t border-gray-300" />
