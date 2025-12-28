@@ -14,8 +14,16 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
   });
   if (loadingMessage)
     return (
-      <div className="flex h-full items-center justify-center">
-        <Loader className="size-5 animate-spin text-muted-foreground" />
+      <div className="flex h-full flex-col">
+        <div className="flex h-[49px] items-center justify-between border-b px-4">
+          <p className="text-lg font-bold">Thread</p>
+          <Button onClick={onClose} size="iconSm" variant="ghost">
+            <XIcon className="size-5 stroke-[1.5]" />
+          </Button>
+        </div>
+        <div className="flex h-full flex-col items-center justify-center gap-y-2">
+          <Loader className="size-5 animate-spin text-muted-foreground" />
+        </div>
       </div>
     );
 
