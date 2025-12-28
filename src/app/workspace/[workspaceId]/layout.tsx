@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Loader } from "lucide-react";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -41,7 +42,13 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
             <>
               <ResizableHandle withHandle />
               <ResizablePanel minSize={20} defaultSize={29}>
-                Load thread
+                {parentMessageId ? (
+                  <div>Thread</div>
+                ) : (
+                  <div className="flex h-full items-center justify-center">
+                    <Loader className="size-5 animate-spin text-muted-foreground" />
+                  </div>
+                )}
               </ResizablePanel>
             </>
           )}
