@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Id } from "@convex/_generated/dataModel";
 import { AlertTriangle, Loader, XIcon } from "lucide-react";
 import { Message } from "@/components/message";
 import { Button } from "@/components/ui/button";
+import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetMessage } from "@/features/messages/api/use-get-message";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 interface ThreadProps {
   messageId: Id<"messages">;
@@ -10,6 +13,11 @@ interface ThreadProps {
 }
 
 export const Thread = ({ messageId, onClose }: ThreadProps) => {
+  const workspaceId = useWorkspaceId();
+  const { data: currentMember } = useCurrentMember({ workspaceId });
+
+  const [editingId, setEditingId] = useState<Id<"messages"> | null>(null);
+
   const { data: message, isLoading: loadingMessage } = useGetMessage({
     id: messageId,
   });
@@ -58,15 +66,15 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
           memberId={message.memberId}
           authorImage={message.user.image}
           authorName={message.user.name}
-          isAuthor={false}
+          isAuthor={message.memberId === currentMember?._id}
           body={message.body}
           image={message.image}
           createdAt={message._creationTime}
           updatedAt={message.updatedAt}
           id={message._id}
           reactions={message.reactions}
-          isEditing={false}
-          setEditingId={() => {}}
+          isEditing={editingId === message._id}
+          setEditingId={setEditingId}
         />
       </div>
     </div>
