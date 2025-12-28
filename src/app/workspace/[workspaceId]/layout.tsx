@@ -1,12 +1,14 @@
 "use client";
 
 import React from "react";
+import { Id } from "@convex/_generated/dataModel";
 import { Loader } from "lucide-react";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Thread } from "@/features/messages/components/thread";
 import { Sidebar } from "@/app/workspace/[workspaceId]/sidebar";
 import { Toolbar } from "@/app/workspace/[workspaceId]/toolbar";
 import { WorkspaceSidebar } from "@/app/workspace/[workspaceId]/workspace-sidebar";
@@ -43,7 +45,10 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
               <ResizableHandle withHandle />
               <ResizablePanel minSize={20} defaultSize={29}>
                 {parentMessageId ? (
-                  <div>Thread</div>
+                  <Thread
+                    messageId={parentMessageId as Id<"messages">}
+                    onClose={onClose}
+                  />
                 ) : (
                   <div className="flex h-full items-center justify-center">
                     <Loader className="size-5 animate-spin text-muted-foreground" />
