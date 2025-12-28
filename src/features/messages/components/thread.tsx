@@ -1,5 +1,6 @@
 import { Id } from "@convex/_generated/dataModel";
 import { AlertTriangle, Loader, XIcon } from "lucide-react";
+import { Message } from "@/components/message";
 import { Button } from "@/components/ui/button";
 import { useGetMessage } from "@/features/messages/api/use-get-message";
 
@@ -51,7 +52,23 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
           <XIcon className="size-5 stroke-[1.5]" />
         </Button>
       </div>
-      <div>{JSON.stringify(message)}</div>
+      <div>
+        <Message
+          hideThreadButton
+          memberId={message.memberId}
+          authorImage={message.user.image}
+          authorName={message.user.name}
+          isAuthor={false}
+          body={message.body}
+          image={message.image}
+          createdAt={message._creationTime}
+          updatedAt={message.updatedAt}
+          id={message._id}
+          reactions={message.reactions}
+          isEditing={false}
+          setEditingId={() => {}}
+        />
+      </div>
     </div>
   );
 };
