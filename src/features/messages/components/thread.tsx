@@ -208,6 +208,7 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
 
         <div
           className="h-1"
+          // https://github.com/haisenbergit/grupa/pull/37#discussion_r2650767129
           ref={(el) => {
             if (el) {
               const observer = new IntersectionObserver(
