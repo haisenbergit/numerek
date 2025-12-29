@@ -206,6 +206,32 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
           </div>
         ))}
 
+        <div
+          className="h-1"
+          ref={(el) => {
+            if (el) {
+              const observer = new IntersectionObserver(
+                ([entry]) => {
+                  if (entry.isIntersecting && canLoadMore) {
+                    loadMore();
+                  }
+                },
+                { threshold: 1 }
+              );
+              observer.observe(el);
+              return () => observer.disconnect();
+            }
+          }}
+        />
+        {isLoadingMore && (
+          <div className="relative my-2 text-center">
+            <hr className="absolute left-0 right-0 top-1/2 border-t border-gray-300" />
+            <span className="relative inline-block rounded-full bg-white px-4 py-1 text-xs">
+              <Loader className="size-4 animate-spin" />
+            </span>
+          </div>
+        )}
+
         <Message
           hideThreadButton
           memberId={message.memberId}
