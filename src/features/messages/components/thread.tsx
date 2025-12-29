@@ -21,6 +21,7 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
   const { data: message, isLoading: loadingMessage } = useGetMessage({
     id: messageId,
   });
+  // https://github.com/haisenbergit/grupa/pull/36#discussion_r2649993979
   if (loadingMessage)
     return (
       <div className="flex h-full flex-col">

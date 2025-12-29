@@ -130,6 +130,7 @@ export const getById = query({
     if (!user) return null;
 
     const reactions = await populateReactions(ctx, message._id);
+    // https://github.com/haisenbergit/grupa/pull/36#discussion_r2649993949
     const reactionsWithCounts = reactions.map((reaction) => {
       return {
         ...reaction,
