@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Id } from "@convex/_generated/dataModel";
 import { AlertTriangle, Loader } from "lucide-react";
+import { toast } from "sonner";
 import { useCreateOrGetConversation } from "@/features/conversations/api/use-create-or-get-conversation";
 import { useMemberId } from "@/hooks/use-member-id";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
@@ -10,13 +12,26 @@ const MemberIdPage = () => {
   const memberId = useMemberId();
   const workspaceId = useWorkspaceId();
 
-  const { data, mutate, isPending } = useCreateOrGetConversation();
+  const [conversationId, setConversationId] =
+    useState<Id<"conversations"> | null>(null);
+
+  const { mutate, isPending } = useCreateOrGetConversation();
 
   useEffect(() => {
-    mutate({
-      workspaceId,
-      memberId,
-    });
+    mutate(
+      {
+        workspaceId,
+        memberId,
+      },
+      {
+        onSuccess(data) {
+          setConversationId(data);
+        },
+        onError() {
+          toast.error("Failed to create or get conversation");
+        },
+      }
+    );
   }, [memberId, workspaceId, mutate]);
 
   if (isPending) {
@@ -27,7 +42,7 @@ const MemberIdPage = () => {
     );
   }
 
-  if (!data)
+  if (!conversationId)
     return (
       <div className="flex h-full flex-col items-center justify-center gap-y-2">
         <AlertTriangle className="size-6 text-muted-foreground" />
@@ -37,7 +52,7 @@ const MemberIdPage = () => {
       </div>
     );
 
-  return <div>{JSON.stringify(data)}</div>;
+  return <div>{conversationId}</div>;
 };
 
 export default MemberIdPage;
