@@ -1,5 +1,6 @@
 import { Id } from "@convex/_generated/dataModel";
 import { Loader } from "lucide-react";
+import { MessageList } from "@/components/message-list";
 import { useGetMember } from "@/features/members/api/use-get-member";
 import { useGetMessages } from "@/features/messages/api/use-get-messages";
 import { ChatInput } from "@/app/workspace/[workspaceId]/member/[memberId]/chat-input";
@@ -31,6 +32,15 @@ export const Conversation = ({ id }: ConversationProps) => {
         memberName={member?.user.name}
         memberImage={member?.user.image}
         onClick={() => {}}
+      />
+      <MessageList
+        data={results}
+        variant="conversation"
+        memberImage={member?.user.image}
+        memberName={member?.user.name}
+        loadMore={loadMore}
+        isLoadingMore={status === "LoadingMore"}
+        canLoadMore={status === "CanLoadMore"}
       />
       <ChatInput
         placeholder={`Message ${member?.user.name}`}
