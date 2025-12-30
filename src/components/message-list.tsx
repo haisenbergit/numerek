@@ -131,7 +131,7 @@ export const MessageList = ({
       {variant === "channel" && channelName && channelCreationTime && (
         <ChannelHero name={channelName} creationTime={channelCreationTime} />
       )}
-      {variant == "conversation" && (
+      {variant === "conversation" && (
         <ConversationHero name={memberName} image={memberImage} />
       )}
     </div>
