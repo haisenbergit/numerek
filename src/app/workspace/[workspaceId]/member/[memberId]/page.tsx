@@ -5,6 +5,7 @@ import { Id } from "@convex/_generated/dataModel";
 import { AlertTriangle, Loader } from "lucide-react";
 import { toast } from "sonner";
 import { useCreateOrGetConversation } from "@/features/conversations/api/use-create-or-get-conversation";
+import { Conversation } from "@/app/workspace/[workspaceId]/member/[memberId]/conversation";
 import { useMemberId } from "@/hooks/use-member-id";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
@@ -52,7 +53,7 @@ const MemberIdPage = () => {
       </div>
     );
 
-  return <div>{conversationId}</div>;
+  return <Conversation id={conversationId} />;
 };
 
 export default MemberIdPage;
