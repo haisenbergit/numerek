@@ -3,6 +3,7 @@ import { Id } from "@convex/_generated/dataModel";
 import { differenceInMinutes, format, isToday, isYesterday } from "date-fns";
 import { Loader } from "lucide-react";
 import { ChannelHero } from "@/components/channel-hero";
+import { ConversationHero } from "@/components/conversation-hero";
 import { Message } from "@/components/message";
 import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { GetMessagesReturnType } from "@/features/messages/api/use-get-messages";
@@ -129,6 +130,9 @@ export const MessageList = ({
       )}
       {variant === "channel" && channelName && channelCreationTime && (
         <ChannelHero name={channelName} creationTime={channelCreationTime} />
+      )}
+      {variant === "conversation" && (
+        <ConversationHero name={memberName} image={memberImage} />
       )}
     </div>
   );
