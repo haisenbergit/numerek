@@ -26,7 +26,11 @@ export const Conversation = ({ id }: ConversationProps) => {
 
   return (
     <div className="flex h-full flex-col">
-      <Header />
+      <Header
+        memberName={member?.user.name}
+        memberImage={member?.user.image}
+        onClick={() => {}}
+      />
     </div>
   );
 };
