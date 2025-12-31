@@ -4,6 +4,7 @@ import { format, isToday, isYesterday } from "date-fns";
 import { toast } from "sonner";
 import { Hint } from "@/components/hint";
 import { Reactions } from "@/components/reactions";
+import { ThreadBar } from "@/components/thread-bar";
 import { Thumbnail } from "@/components/thumbnail";
 import { Toolbar } from "@/components/toolbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -162,6 +163,11 @@ export const Message = ({
                   </span>
                 ) : null}
                 <Reactions data={reactions} onChange={handleReaction} />
+                <ThreadBar
+                  count={threadCount}
+                  image={threadImage}
+                  timestamp={threadTimestamp}
+                />
               </div>
             )}
           </div>
@@ -234,6 +240,11 @@ export const Message = ({
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
               <Reactions data={reactions} onChange={handleReaction} />
+              <ThreadBar
+                count={threadCount}
+                image={threadImage}
+                timestamp={threadTimestamp}
+              />
             </div>
           )}
         </div>
