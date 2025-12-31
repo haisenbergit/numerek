@@ -4,6 +4,7 @@ import { format, isToday, isYesterday } from "date-fns";
 import { toast } from "sonner";
 import { Hint } from "@/components/hint";
 import { Reactions } from "@/components/reactions";
+import { ThreadBar } from "@/components/thread-bar";
 import { Thumbnail } from "@/components/thumbnail";
 import { Toolbar } from "@/components/toolbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -39,6 +40,7 @@ interface MessageProps {
   hideThreadButton?: boolean;
   threadCount?: number;
   threadImage?: string;
+  threadName?: string;
   threadTimestamp?: number;
 }
 const formatFullTime = (date: Date) => {
@@ -62,6 +64,7 @@ export const Message = ({
   hideThreadButton,
   threadCount,
   threadImage,
+  threadName,
   threadTimestamp,
 }: MessageProps) => {
   const { parentMessageId, onOpenMessage, onClose } = usePanel();
@@ -162,6 +165,13 @@ export const Message = ({
                   </span>
                 ) : null}
                 <Reactions data={reactions} onChange={handleReaction} />
+                <ThreadBar
+                  count={threadCount}
+                  image={threadImage}
+                  name={threadName}
+                  timestamp={threadTimestamp}
+                  onClick={() => onOpenMessage(id)}
+                />
               </div>
             )}
           </div>
@@ -234,6 +244,13 @@ export const Message = ({
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
               <Reactions data={reactions} onChange={handleReaction} />
+              <ThreadBar
+                count={threadCount}
+                image={threadImage}
+                name={threadName}
+                timestamp={threadTimestamp}
+                onClick={() => onOpenMessage(id)}
+              />
             </div>
           )}
         </div>
