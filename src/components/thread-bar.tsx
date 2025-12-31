@@ -23,7 +23,9 @@ export const ThreadBar = ({
 
   return (
     <button
+      type="button"
       onClick={onClick}
+      aria-label={`View thread with ${count} ${count > 1 ? "replies" : "reply"}`}
       className="group/thread-bar flex max-w-[600px] items-center justify-start rounded-md border border-transparent p-1 transition hover:border-border hover:bg-white"
     >
       <div className="flex items-center gap-2 overflow-hidden">
