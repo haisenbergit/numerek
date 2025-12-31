@@ -40,6 +40,7 @@ interface MessageProps {
   hideThreadButton?: boolean;
   threadCount?: number;
   threadImage?: string;
+  threadName?: string;
   threadTimestamp?: number;
 }
 const formatFullTime = (date: Date) => {
@@ -63,6 +64,7 @@ export const Message = ({
   hideThreadButton,
   threadCount,
   threadImage,
+  threadName,
   threadTimestamp,
 }: MessageProps) => {
   const { parentMessageId, onOpenMessage, onClose } = usePanel();
@@ -166,6 +168,7 @@ export const Message = ({
                 <ThreadBar
                   count={threadCount}
                   image={threadImage}
+                  name={threadName}
                   timestamp={threadTimestamp}
                   onClick={() => onOpenMessage(id)}
                 />
@@ -244,6 +247,7 @@ export const Message = ({
               <ThreadBar
                 count={threadCount}
                 image={threadImage}
+                name={threadName}
                 timestamp={threadTimestamp}
                 onClick={() => onOpenMessage(id)}
               />
