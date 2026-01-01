@@ -1,10 +1,20 @@
 import Link from "next/link";
 import { Id } from "@convex/_generated/dataModel";
-import { AlertTriangle, Loader, MailIcon, XIcon } from "lucide-react";
+import {
+  AlertTriangle,
+  ChevronDownIcon,
+  Loader,
+  MailIcon,
+  XIcon,
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetMember } from "@/features/members/api/use-get-member";
+import { useRemoveMember } from "@/features/members/api/use-remove-member";
+import { useUpdateMember } from "@/features/members/api/use-update-member";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 interface ProfileProps {
   memberId: Id<"members">;
@@ -12,11 +22,22 @@ interface ProfileProps {
 }
 
 export const Profile = ({ memberId, onClose }: ProfileProps) => {
+  const workspaceId = useWorkspaceId();
+
   const { data: member, isLoading: isLoadingMember } = useGetMember({
     id: memberId,
   });
+  const { data: currentMember, isLoading: isLoadingCurrentMember } =
+    useCurrentMember({
+      workspaceId,
+    });
 
-  if (isLoadingMember)
+  const { mutate: updateMember, isPending: isUpdatingMember } =
+    useUpdateMember();
+  const { mutate: removeMember, isPending: isRemovingMember } =
+    useRemoveMember();
+
+  if (isLoadingMember || isLoadingCurrentMember)
     return (
       <div className="flex h-full flex-col">
         <div className="flex h-[49px] items-center justify-between border-b px-4">
@@ -67,24 +88,29 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
       </div>
       <div className="flex flex-col p-4">
         <p className="text-xl font-bold">{member.user.name}</p>
-        <Separator />
-        <div className="flex flex-col p-4">
-          <p className="mb-4 text-sm font-bold">Contact information</p>
-          <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-md bg-muted">
-              <MailIcon className="size-4" />
-            </div>
-            <div className="flex flex-col">
-              <p className="text-[13px] font-semibold text-muted-foreground">
-                Email Address
-              </p>
-              <Link
-                href={`mailto:${member.user.email}`}
-                className="text-sm text-[#1264a3] hover:underline"
-              >
-                {member.user.email}
-              </Link>
-            </div>
+        {currentMember?.role === "admin" && currentMember?._id === memberId ? (
+          <Button variant="outline" className="w-full capitalize">
+            {member.role} <ChevronDownIcon className="ml-2 size-4" />
+          </Button>
+        ) : null}
+      </div>
+      <Separator />
+      <div className="flex flex-col p-4">
+        <p className="mb-4 text-sm font-bold">Contact information</p>
+        <div className="flex items-center gap-2">
+          <div className="flex size-9 items-center justify-center rounded-md bg-muted">
+            <MailIcon className="size-4" />
+          </div>
+          <div className="flex flex-col">
+            <p className="text-[13px] font-semibold text-muted-foreground">
+              Email Address
+            </p>
+            <Link
+              href={`mailto:${member.user.email}`}
+              className="text-sm text-[#1264a3] hover:underline"
+            >
+              {member.user.email}
+            </Link>
           </div>
         </div>
       </div>
