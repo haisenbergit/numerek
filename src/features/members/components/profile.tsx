@@ -11,6 +11,13 @@ import {
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetMember } from "@/features/members/api/use-get-member";
@@ -169,9 +176,28 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
           {currentMember?.role === "admin" &&
           currentMember?._id !== memberId ? (
             <div className="mt-4 flex items-center gap-2">
-              <Button variant="outline" className="w-full capitalize">
-                {member.role} <ChevronDownIcon className="ml-2 size-4" />
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-full capitalize">
+                    {member.role} <ChevronDownIcon className="ml-2 size-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-full">
+                  <DropdownMenuRadioGroup
+                    value={member.role}
+                    onValueChange={(role) =>
+                      onUpdate(role as "admin" | "member")
+                    }
+                  >
+                    <DropdownMenuRadioItem value="admin">
+                      Admin
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="member">
+                      Member
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Button onClick={onRemove} variant="outline" className="w-full">
                 Remove
               </Button>
