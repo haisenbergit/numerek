@@ -169,14 +169,14 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
               <Button variant="outline" className="w-full capitalize">
                 {member.role} <ChevronDownIcon className="ml-2 size-4" />
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button onClick={onRemove} variant="outline" className="w-full">
                 Remove
               </Button>
             </div>
           ) : currentMember?._id === memberId &&
             currentMember?.role !== "admin" ? (
             <div className="mt-4">
-              <Button variant="outline" className="w-full">
+              <Button onClick={onLeave} variant="outline" className="w-full">
                 Leave
               </Button>
             </div>
