@@ -88,10 +88,22 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
       </div>
       <div className="flex flex-col p-4">
         <p className="text-xl font-bold">{member.user.name}</p>
-        {currentMember?.role === "admin" && currentMember?._id === memberId ? (
-          <Button variant="outline" className="w-full capitalize">
-            {member.role} <ChevronDownIcon className="ml-2 size-4" />
-          </Button>
+        {currentMember?.role === "admin" && currentMember?._id !== memberId ? (
+          <div className="mt-4 flex items-center gap-2">
+            <Button variant="outline" className="w-full capitalize">
+              {member.role} <ChevronDownIcon className="ml-2 size-4" />
+            </Button>
+            <Button variant="outline" className="w-full">
+              Remove
+            </Button>
+          </div>
+        ) : currentMember?._id === memberId &&
+          currentMember?.role !== "admin" ? (
+          <div className="mt-4">
+            <Button variant="outline" className="w-full">
+              Leave
+            </Button>
+          </div>
         ) : null}
       </div>
       <Separator />
