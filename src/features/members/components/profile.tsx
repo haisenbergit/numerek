@@ -66,7 +66,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
         </Avatar>
       </div>
       <div className="flex flex-col p-4">
-        <p className="tex-xl font-bold">{member.user.name}</p>
+        <p className="text-xl font-bold">{member.user.name}</p>
         <Separator />
         <div className="flex flex-col p-4">
           <p className="mb-4 text-sm font-bold">Contact information</p>
