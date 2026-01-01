@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Id } from "@convex/_generated/dataModel";
 import {
   AlertTriangle,
@@ -24,6 +25,7 @@ interface ProfileProps {
 }
 
 export const Profile = ({ memberId, onClose }: ProfileProps) => {
+  const router = useRouter();
   const workspaceId = useWorkspaceId();
 
   const [UpdateDialog, confirmUpdate] = useConfirmationWindow(
@@ -80,6 +82,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
       { id: memberId },
       {
         onSuccess: () => {
+          router.replace("/");
           toast.success("You have left the workspace");
           onClose();
         },
