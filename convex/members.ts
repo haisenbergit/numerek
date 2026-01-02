@@ -138,6 +138,7 @@ export const remove = mutation({
     if (!currentMember)
       throw new Error("Not authorized to remove members from this workspace");
 
+    // https://github.com/haisenbergit/grupa/pull/41#discussion_r2656665327
     if (member.role === "admin")
       throw new Error("Cannot remove self admin member");
 
@@ -164,6 +165,7 @@ export const remove = mutation({
         .collect(),
     ]);
 
+    // https://github.com/haisenbergit/grupa/pull/41#discussion_r2656665329
     for (const message of messages) {
       await ctx.db.delete(message._id);
     }
