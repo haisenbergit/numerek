@@ -198,6 +198,7 @@ export const remove = mutation({
       throw new Error("Unauthorized: Only admins can delete the workspace");
     }
 
+    // https://github.com/haisenbergit/grupa/pull/42#discussion_r2658216565
     const [members, channels, conversations, messages, reactions] =
       await Promise.all([
         ctx.db

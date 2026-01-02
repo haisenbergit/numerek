@@ -31,7 +31,7 @@ export const remove = mutation({
         .withIndex("by_channel_id", (q) => q.eq("channelId", args.id))
         .collect(),
     ]);
-
+    // https://github.com/haisenbergit/grupa/pull/42#discussion_r2658216556
     for (const message of messages) {
       await ctx.db.delete(message._id);
     }
