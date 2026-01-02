@@ -25,8 +25,16 @@ export const remove = mutation({
     if (!member || member.role !== "admin")
       throw new Error("Unauthorized: Only admins can delete channels");
 
-    // TODO: Delete related data (e.g., messages) if necessary
-    // Delete related messages to prevent orphaned data
+    const [messages] = await Promise.all([
+      ctx.db
+        .query("messages")
+        .withIndex("by_channel_id", (q) => q.eq("channelId", args.id))
+        .collect(),
+    ]);
+
+    for (const message of messages) {
+      await ctx.db.delete(message._id);
+    }
 
     await ctx.db.delete(args.id);
 
