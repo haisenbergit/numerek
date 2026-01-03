@@ -28,9 +28,7 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) {
-    return null;
-  }
+  if (!isMounted) return null;
 
   return (
     <div className="h-full">
