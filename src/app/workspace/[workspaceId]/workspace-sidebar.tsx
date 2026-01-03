@@ -1,3 +1,5 @@
+"use client";
+
 import {
   AlertTriangle,
   HashIcon,
@@ -25,20 +27,20 @@ export const WorkspaceSidebar = () => {
 
   const [_open, setOpen] = useCreateChannelModal();
 
-  const { data: member, isLoading: memberLoading } = useCurrentMember({
+  const { data: member, isLoading: isMemberLoading } = useCurrentMember({
     workspaceId,
   });
-  const { data: workspace, isLoading: workspaceLoading } = useGetWorkspace({
+  const { data: workspace, isLoading: isWorkspaceLoading } = useGetWorkspace({
     id: workspaceId,
   });
-  const { data: channels, isLoading: channelsLoading } = useGetChannels({
+  const { data: channels } = useGetChannels({
     workspaceId,
   });
-  const { data: members, isLoading: membersLoading } = useGetMembers({
+  const { data: members } = useGetMembers({
     workspaceId,
   });
 
-  if (memberLoading || workspaceLoading)
+  if (isMemberLoading || isWorkspaceLoading)
     return (
       <div className="flex h-full flex-col items-center justify-center bg-[#5E2C5F]">
         <Loader className="size-6 animate-spin text-white" />
