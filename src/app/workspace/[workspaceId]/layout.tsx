@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Id } from "@convex/_generated/dataModel";
 import { Loader } from "lucide-react";
 import {
@@ -20,8 +20,17 @@ interface WorkspaceIdLayoutProps {
 }
 
 const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
+  const [isMounted, setIsMounted] = useState(false);
   const { parentMessageId, profileMemberId, onClose } = usePanel();
   const showPanel = !!parentMessageId || !!profileMemberId;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="h-full">
