@@ -55,6 +55,8 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@convex-dev/eslint-plugin": "^1.1.1",
+    "@eslint/eslintrc": "^3.3.3",
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
