@@ -56,7 +56,7 @@ export const verifyJoinCode = query({
       .filter((q) => q.eq(q.field("joinCode"), args.joinCode))
       .first();
 
-    return { valid: !!workspace };
+    return { isValid: !!workspace };
   },
 });
 

@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api } from "@convex/_generated/api";
-import { useQuery } from "convex/react";
 import { SignInCard } from "@/features/auth/components/sign-in-card";
 import { SignUpCard } from "@/features/auth/components/sign-up-card";
 import { SignUpVerificationCard } from "@/features/auth/components/sign-up-verification-card";
 import { SignInFlow } from "@/features/auth/types";
+import { useVerifyJoinCode } from "@/features/workspaces/api/use-verify-join-code";
 
 export const AuthScreen = () => {
   const [state, setState] = useState<SignInFlow>("signIn");
@@ -14,24 +13,21 @@ export const AuthScreen = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [verificationError, setVerificationError] = useState("");
 
-  const verificationResult = useQuery(
-    api.workspaces.verifyJoinCode,
-    verificationCode && !isVerified ? { joinCode: verificationCode } : "skip"
-  );
+  const { data: verificationResult } = useVerifyJoinCode({
+    joinCode: verificationCode,
+  });
 
   const handleVerified = (code: string) => {
     setVerificationCode(code);
     setVerificationError("");
   };
 
-  // Sprawdź wynik weryfikacji
   useEffect(() => {
     if (verificationCode && !isVerified && verificationResult !== undefined) {
-      if (verificationResult.valid) {
+      if (verificationResult.isValid) {
         setIsVerified(true);
         setState("signUp");
       } else {
-        // Pokaż błąd i reset kodu
         setVerificationError("Nieprawidłowy kod dostępu");
         setVerificationCode("");
       }
