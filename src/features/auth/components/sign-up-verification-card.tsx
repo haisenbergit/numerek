@@ -80,7 +80,7 @@ export const SignUpVerificationCard = ({
 
   return (
     <Card className="h-full w-full p-8">
-      <WelcomeHeader />
+      <Header />
       <ShowError error={errorToDisplay} />
       <CardContent className="space-y-5 px-0 pb-0">
         <form onSubmit={handleSubmit} className="space-y-2.5">
@@ -106,7 +106,7 @@ export const SignUpVerificationCard = ({
   );
 };
 
-function WelcomeHeader() {
+function Header() {
   return (
     <CardHeader className="px-0 pt-0">
       <CardTitle>Weryfikacja dostępu</CardTitle>
