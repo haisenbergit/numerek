@@ -17,16 +17,16 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { SignInFlow } from "@/features/auth/types";
+import { AuthFlow } from "@/features/auth/types";
 
 interface SignUpVerificationCardProps {
-  setState: (state: SignInFlow) => void;
+  setAuthState: (state: AuthFlow) => void;
   onVerified: (code: string) => void;
   error?: string;
 }
 
 export const SignUpVerificationCard = ({
-  setState,
+  setAuthState,
   onVerified,
   error: externalError,
 }: SignUpVerificationCardProps) => {
@@ -100,7 +100,7 @@ export const SignUpVerificationCard = ({
             {isChecking ? "Weryfikacja..." : "Kontynuuj"}
           </Button>
         </form>
-        <SignInLink setState={setState} />
+        <SignInLink setAuthState={setAuthState} />
       </CardContent>
     </Card>
   );
@@ -150,12 +150,16 @@ function AccessCodeInput({
   );
 }
 
-function SignInLink({ setState }: { setState: (state: SignInFlow) => void }) {
+function SignInLink({
+  setAuthState,
+}: {
+  setAuthState: (state: AuthFlow) => void;
+}) {
   return (
     <p className="text-xs text-muted-foreground">
       Masz już konto?{" "}
       <span
-        onClick={() => setState("signIn")}
+        onClick={() => setAuthState("signIn")}
         className="cursor-pointer text-sky-700 hover:underline"
       >
         Zaloguj się
