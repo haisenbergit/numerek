@@ -48,6 +48,24 @@ export const getInfoById = query({
   },
 });
 
+export const verifyJoinCode = query({
+  args: { joinCode: v.string() },
+  handler: async (ctx, args) => {
+    const normalizedCode = args.joinCode.toUpperCase().trim();
+
+    if (normalizedCode.length !== 6 || !/^[A-Z0-9]+$/.test(normalizedCode)) {
+      return { valid: false };
+    }
+
+    const workspace = await ctx.db
+      .query("workspaces")
+      .filter((q) => q.eq(q.field("joinCode"), normalizedCode))
+      .first();
+
+    return { valid: !!workspace };
+  },
+});
+
 export const getById = query({
   args: { id: v.id("workspaces") },
   handler: async (ctx, args) => {
