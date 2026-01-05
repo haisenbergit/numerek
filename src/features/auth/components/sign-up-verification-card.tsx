@@ -67,11 +67,9 @@ export const SignUpVerificationCard = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsChecking(true);
-    setTimeout(() => {
-      onVerified(accessCode.trim());
-      setIsChecking(false);
-      triggerOtpAutofocus();
-    }, 200);
+    onVerified(accessCode);
+    setIsChecking(false);
+    triggerOtpAutofocus();
   };
 
   useEffect(() => {
@@ -158,12 +156,13 @@ function SignInLink({
   return (
     <p className="text-xs text-muted-foreground">
       Masz już konto?{" "}
-      <span
+      <button
+        type="button"
         onClick={() => setAuthState("signIn")}
-        className="cursor-pointer text-sky-700 hover:underline"
+        className="cursor-pointer border-0 bg-transparent p-0 text-sky-700 hover:underline"
       >
         Zaloguj się
-      </span>
+      </button>
     </p>
   );
 }

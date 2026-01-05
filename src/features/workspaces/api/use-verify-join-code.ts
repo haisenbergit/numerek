@@ -8,7 +8,7 @@ interface UseVerifyJoinCodeProps {
 export const useVerifyJoinCode = ({ joinCode }: UseVerifyJoinCodeProps) => {
   const data = useQuery(
     api.workspaces.verifyJoinCode,
-    joinCode ? { joinCode } : "skip"
+    joinCode.trim().length === 6 ? { joinCode } : "skip"
   );
   const isLoading = data === undefined;
 

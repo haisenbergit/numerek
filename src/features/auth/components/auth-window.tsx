@@ -9,41 +9,42 @@ import { useVerifyJoinCode } from "@/features/workspaces/api/use-verify-join-cod
 
 export const AuthWindow = () => {
   const [authState, setAuthState] = useState<AuthFlow>("signIn");
-  const [receivedJoinCode, setReceivedJoinCode] = useState("");
-  const [isReceivedJoinCodeVerified, setIsReceivedJoinCodeVerified] =
+  const [enteredJoinCode, setEnteredJoinCode] = useState("");
+  const [isEnteredJoinCodeVerified, setIsEnteredJoinCodeVerified] =
     useState(false);
   const [
-    receivedJoinCodeVerificationError,
-    setReceivedJoinCodeVerificationError,
+    enteredJoinCodeVerificationError,
+    setEnteredJoinCodeVerificationError,
   ] = useState("");
 
   const { data: verificationResult } = useVerifyJoinCode({
-    joinCode: receivedJoinCode,
+    joinCode: enteredJoinCode,
   });
 
   const handleVerified = (code: string) => {
-    setReceivedJoinCode(code);
-    setReceivedJoinCodeVerificationError("");
+    setEnteredJoinCode(code);
+    setEnteredJoinCodeVerificationError("");
   };
 
   useEffect(() => {
     if (
-      receivedJoinCode &&
-      !isReceivedJoinCodeVerified &&
+      enteredJoinCode &&
+      !isEnteredJoinCodeVerified &&
       verificationResult !== undefined
     ) {
       if (verificationResult.isValid) {
-        setIsReceivedJoinCodeVerified(true);
+        setIsEnteredJoinCodeVerified(true);
         setAuthState("signUp");
       } else {
-        setReceivedJoinCodeVerificationError("Nieprawidłowy kod dostępu");
-        setReceivedJoinCode("");
+        setEnteredJoinCodeVerificationError("Nieprawidłowy kod dostępu");
+        setIsEnteredJoinCodeVerified(false);
+        setEnteredJoinCode("");
       }
     }
-  }, [verificationResult, receivedJoinCode, isReceivedJoinCodeVerified]);
+  }, [verificationResult, enteredJoinCode, isEnteredJoinCodeVerified]);
 
   const handleSignUpClick = () => {
-    if (!isReceivedJoinCodeVerified) {
+    if (!isEnteredJoinCodeVerified) {
       setAuthState("signUpVerification");
     } else {
       setAuthState("signUp");
@@ -67,7 +68,7 @@ export const AuthWindow = () => {
           <SignUpVerificationCard
             setAuthState={setAuthState}
             onVerified={handleVerified}
-            error={receivedJoinCodeVerificationError}
+            error={enteredJoinCodeVerificationError}
           />
         ) : (
           <SignUpCard setAuthState={setAuthState} />
