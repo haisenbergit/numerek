@@ -17,6 +17,7 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { Progress } from "@/components/ui/progress";
 import { AuthFlow } from "@/features/auth/types";
 
 interface SignUpVerificationCardProps {
@@ -76,10 +77,21 @@ export const SignUpVerificationCard = ({
     if (errorToDisplay) triggerOtpAutofocus();
   }, [errorToDisplay]);
 
+  const progressValue = (accessCode.length / 6) * 100;
+
   return (
     <Card className="h-full w-full p-8">
       <Header />
-      <ShowError error={errorToDisplay} />
+      {errorToDisplay ? (
+        <ShowError error={errorToDisplay} />
+      ) : (
+        <div className="mb-6 flex min-h-[44px] items-center justify-center gap-x-2 p-3">
+          <Progress
+            value={progressValue}
+            className="h-1 bg-gray-100 [&>div]:bg-green-600"
+          />
+        </div>
+      )}
       <CardContent className="space-y-5 px-0 pb-0">
         <form onSubmit={handleSubmit} className="space-y-2.5">
           <div className="flex justify-center" ref={otpContainerRef}>
@@ -167,8 +179,7 @@ function SignInLink({
   );
 }
 
-function ShowError({ error }: { error?: string }) {
-  if (!error) return null;
+function ShowError({ error }: { error: string }) {
   return (
     <div className="mb-6 flex items-center justify-center gap-x-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
       <TriangleAlert className="size-4" />
