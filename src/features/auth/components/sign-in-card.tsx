@@ -12,13 +12,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { OtpStep, SignInFlow } from "@/features/auth/types";
+import { AuthFlow, OtpStep } from "@/features/auth/types";
 
 interface SignInCardProps {
-  setState?: (state: SignInFlow) => void;
+  setAuthState?: (state: AuthFlow) => void;
 }
 
-export const SignInCard = ({ setState }: SignInCardProps) => {
+export const SignInCard = ({ setAuthState }: SignInCardProps) => {
   const { signIn } = useAuthActions();
 
   const [email, setEmail] = useState("");
@@ -185,7 +185,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
     <p className="text-xs text-muted-foreground">
       Nie masz konta?{" "}
       <span
-        onClick={() => setState && setState("signUp")}
+        onClick={() => setAuthState && setAuthState("signUp")}
         className="cursor-pointer text-sky-700 hover:underline"
       >
         Zarejestruj się

@@ -48,6 +48,18 @@ export const getInfoById = query({
   },
 });
 
+export const verifyJoinCode = query({
+  args: { joinCode: v.string() },
+  handler: async (ctx, args) => {
+    const workspace = await ctx.db
+      .query("workspaces")
+      .filter((q) => q.eq(q.field("joinCode"), args.joinCode))
+      .first();
+
+    return { isValid: !!workspace };
+  },
+});
+
 export const getById = query({
   args: { id: v.id("workspaces") },
   handler: async (ctx, args) => {
