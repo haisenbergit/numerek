@@ -4,7 +4,7 @@ import { FC } from "react";
 import ShiftingCountdown from "@/components/shifting-countdown";
 
 const Timer: FC = () => {
-  const countdownTo = "2026-02-14T19:30:00";
+  const countdownTo = "2026-02-14T20:30:00";
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-gray-50">

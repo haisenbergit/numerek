@@ -39,9 +39,9 @@ const ShiftingCountdown = ({ countdownTo }: ShiftingCountdownProps) => {
       : "max-w-5xl w-full";
 
   return (
-    <div className="bg-gradient-to-br from-violet-600 to-indigo-600 p-4">
+    <div className="bg-gradient-to-br from-violet-600 to-indigo-600 p-4 rounded-lg">
       <div
-        className={`mx-auto flex ${widthClass} items-center bg-white [&>*:last-child]:border-r-0`}
+        className={`mx-auto flex ${widthClass} items-center bg-white [&>*:last-child]:border-r-0 rounded-lg overflow-hidden`}
       >
         {visibleUnits.map((unit, idx) => (
           <CountdownItem
