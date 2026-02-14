@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { TriangleAlert } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -28,12 +28,12 @@ export const SignInCard = ({ setAuthState }: SignInCardProps) => {
   const [otpStep, setOtpStep] = useState<OtpStep>(OtpStep.Idle);
   const [otpCode, setOtpCode] = useState("");
 
-  const onProviderSignIn = (provider: string) => {
-    setPending(true);
-    signIn(provider)
-      .catch(() => setError("Nie udało się zalogować przez Google"))
-      .finally(() => setPending(false));
-  };
+  // const onProviderSignIn = (provider: string) => {
+  //   setPending(true);
+  //   signIn(provider)
+  //     .catch(() => setError("Nie udało się zalogować przez Google"))
+  //     .finally(() => setPending(false));
+  // };
 
   const onPasswordSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -163,23 +163,23 @@ export const SignInCard = ({ setAuthState }: SignInCardProps) => {
     </form>
   );
 
-  const renderGoogleButton = () => (
-    <div className="flex flex-col gap-y-2.5 pb-3 pt-2">
-      <Button
-        disabled={pending}
-        onClick={() => onProviderSignIn("google")}
-        variant="secondary"
-        size="lg"
-        className="relative w-full"
-      >
-        <FcGoogle
-          className="absolute left-2.5"
-          style={{ width: 20, height: 20 }}
-        />
-        Zaloguj przez Google
-      </Button>
-    </div>
-  );
+  // const renderGoogleButton = () => (
+  //   <div className="flex flex-col gap-y-2.5 pb-3 pt-2">
+  //     <Button
+  //       disabled={pending}
+  //       onClick={() => onProviderSignIn("google")}
+  //       variant="secondary"
+  //       size="lg"
+  //       className="relative w-full"
+  //     >
+  //       <FcGoogle
+  //         className="absolute left-2.5"
+  //         style={{ width: 20, height: 20 }}
+  //       />
+  //       Zaloguj przez Google
+  //     </Button>
+  //   </div>
+  // );
 
   const renderSignUpLink = () => (
     <p className="text-xs text-muted-foreground">
@@ -204,7 +204,7 @@ export const SignInCard = ({ setAuthState }: SignInCardProps) => {
         {isOtpCodeIdle() && (
           <CardDescription>Użyj Google lub e-mail</CardDescription>
         )}
-        {isOtpCodeIdle() && renderGoogleButton()}
+        {/* {isOtpCodeIdle() && renderGoogleButton()} */}
         {isOtpCodeIdle() && <Separator />}
         {isOtpCodeWaitingForApplication() && (
           <CardDescription>
