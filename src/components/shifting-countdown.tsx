@@ -30,10 +30,18 @@ const ShiftingCountdown = ({ countdownTo }: ShiftingCountdownProps) => {
     "Second" as const,
   ];
 
+  // Dynamiczna szerokość okna na podstawie liczby kolumn
+  // Jeśli są tylko 2 kolumny (Minute, Second) – szerokość 1/2 oryginalnej ramki
+  // W przeciwnym razie – pełna szerokość
+  const widthClass =
+    visibleUnits.length === 2
+      ? "max-w-xl w-1/2"
+      : "max-w-5xl w-full";
+
   return (
     <div className="bg-gradient-to-br from-violet-600 to-indigo-600 p-4">
       <div
-        className={`mx-auto flex w-full max-w-5xl items-center bg-white [&>*:last-child]:border-r-0`}
+        className={`mx-auto flex ${widthClass} items-center bg-white [&>*:last-child]:border-r-0`}
       >
         {visibleUnits.map((unit, idx) => (
           <CountdownItem
