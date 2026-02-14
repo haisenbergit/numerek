@@ -13,23 +13,51 @@ type ShiftingCountdownProps = {
 };
 
 const ShiftingCountdown = ({ countdownTo }: ShiftingCountdownProps) => {
+  // Oblicz liczbę dni i godzin do końca, aby warunkowo renderować pola Day i Hour
+  const end = new Date(countdownTo);
+  const now = new Date();
+  const distance = +end - +now;
+  const days = Math.floor(distance / DAY);
+  const hours = Math.floor((distance % DAY) / HOUR);
+
+  // Zmienna do kontroli liczby kolumn
+  const showDays = days > 0;
+  const showHours = showDays || hours > 0;
+  const visibleUnits: Units[] = [
+    ...(showDays ? ["Day" as const] : []),
+    ...(showHours ? ["Hour" as const] : []),
+    "Minute" as const,
+    "Second" as const,
+  ];
+
   return (
     <div className="bg-gradient-to-br from-violet-600 to-indigo-600 p-4">
-      <div className="mx-auto flex w-full max-w-5xl items-center bg-white">
-        <CountdownItem unit="Day" text="days" countdownTo={countdownTo} />
-        <CountdownItem unit="Hour" text="hours" countdownTo={countdownTo} />
-        <CountdownItem unit="Minute" text="minutes" countdownTo={countdownTo} />
-        <CountdownItem unit="Second" text="seconds" countdownTo={countdownTo} />
+      <div
+        className={`mx-auto flex w-full max-w-5xl items-center bg-white [&>*:last-child]:border-r-0`}
+      >
+        {visibleUnits.map((unit, idx) => (
+          <CountdownItem
+            key={unit}
+            unit={unit}
+            text={unit.toLowerCase() + (unit === "Day" ? "s" : unit === "Hour" ? "s" : unit === "Minute" ? "s" : "s")}
+            countdownTo={countdownTo}
+            isLast={idx === visibleUnits.length - 1}
+            columns={visibleUnits.length}
+          />
+        ))}
       </div>
     </div>
   );
 };
 
-const CountdownItem = ({ unit, text, countdownTo }: { unit: Units; text: string; countdownTo: string | Date }) => {
+const CountdownItem = ({ unit, text, countdownTo, isLast, columns }: { unit: Units; text: string; countdownTo: string | Date; isLast?: boolean; columns?: number }) => {
   const { ref, time } = useTimer(unit, countdownTo);
+  // Dynamiczna szerokość i border dla ostatniej kolumny
+  const widthClass = columns === 4 ? "w-1/4" : columns === 3 ? "w-1/3" : "w-1/2";
+  const borderClass = isLast ? "border-r-0" : "border-r-[1px] border-slate-200";
 
   return (
-    <div className="flex h-24 w-1/4 flex-col items-center justify-center gap-1 border-r-[1px] border-slate-200 font-mono md:h-36 md:gap-2">
+    <div className={`flex h-24 ${widthClass} flex-col items-center justify-center gap-1 ${borderClass} font-mono md:h-36 md:gap-2`}>
       <div className="relative w-full overflow-hidden text-center">
         <span
           ref={ref}
