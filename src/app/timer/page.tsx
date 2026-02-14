@@ -1,10 +1,13 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState, ChangeEvent } from "react";
 import ShiftingCountdown from "@/components/shifting-countdown";
 
 const Timer: FC = () => {
-  const countdownTo = "2026-02-14T20:30:00";
+  const [countdownTo, setCountdownTo] = useState<string>("2026-02-14T20:30:00");
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setCountdownTo(e.target.value);
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
@@ -20,6 +23,18 @@ const Timer: FC = () => {
               return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
             })()}
           </span>
+        </div>
+        <div className="mb-6 flex flex-col items-center gap-2">
+          <label htmlFor="countdown-input" className="text-lg font-medium">
+            Ustaw datę i godzinę:
+          </label>
+          <input
+            id="countdown-input"
+            type="datetime-local"
+            className="rounded border px-3 py-2 text-lg"
+            value={countdownTo}
+            onChange={handleChange}
+          />
         </div>
       </div>
     </div>
