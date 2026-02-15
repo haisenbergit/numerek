@@ -20,7 +20,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Mój Numerek",
-  description: "Moj Numerek to aplikacja do zarządzania kolejkami i rezerwacjami w lokalach gastronomicznych.",
+  description:
+    "Moj Numerek to aplikacja do zarządzania kolejkami i rezerwacjami w lokalach gastronomicznych.",
 };
 
 export default function RootLayout({

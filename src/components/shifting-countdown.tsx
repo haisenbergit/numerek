@@ -34,20 +34,27 @@ const ShiftingCountdown = ({ countdownTo }: ShiftingCountdownProps) => {
   // Jeśli są tylko 2 kolumny (Minute, Second) – szerokość 1/2 oryginalnej ramki
   // W przeciwnym razie – pełna szerokość
   const widthClass =
-    visibleUnits.length === 2
-      ? "max-w-xl w-1/2"
-      : "max-w-5xl w-full";
+    visibleUnits.length === 2 ? "max-w-xl w-1/2" : "max-w-5xl w-full";
 
   return (
-    <div className="bg-gradient-to-br from-violet-600 to-indigo-600 p-4 rounded-lg">
+    <div className="rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 p-4">
       <div
-        className={`mx-auto flex ${widthClass} items-center bg-white [&>*:last-child]:border-r-0 rounded-lg overflow-hidden`}
+        className={`mx-auto flex ${widthClass} items-center overflow-hidden rounded-lg bg-white [&>*:last-child]:border-r-0`}
       >
         {visibleUnits.map((unit, idx) => (
           <CountdownItem
             key={unit}
             unit={unit}
-            text={unit.toLowerCase() + (unit === "Day" ? "s" : unit === "Hour" ? "s" : unit === "Minute" ? "s" : "s")}
+            text={
+              unit.toLowerCase() +
+              (unit === "Day"
+                ? "s"
+                : unit === "Hour"
+                  ? "s"
+                  : unit === "Minute"
+                    ? "s"
+                    : "s")
+            }
             countdownTo={countdownTo}
             isLast={idx === visibleUnits.length - 1}
             columns={visibleUnits.length}
@@ -58,14 +65,29 @@ const ShiftingCountdown = ({ countdownTo }: ShiftingCountdownProps) => {
   );
 };
 
-const CountdownItem = ({ unit, text, countdownTo, isLast, columns }: { unit: Units; text: string; countdownTo: string | Date; isLast?: boolean; columns?: number }) => {
+const CountdownItem = ({
+  unit,
+  text,
+  countdownTo,
+  isLast,
+  columns,
+}: {
+  unit: Units;
+  text: string;
+  countdownTo: string | Date;
+  isLast?: boolean;
+  columns?: number;
+}) => {
   const { ref, time } = useTimer(unit, countdownTo);
   // Dynamiczna szerokość i border dla ostatniej kolumny
-  const widthClass = columns === 4 ? "w-1/4" : columns === 3 ? "w-1/3" : "w-1/2";
+  const widthClass =
+    columns === 4 ? "w-1/4" : columns === 3 ? "w-1/3" : "w-1/2";
   const borderClass = isLast ? "border-r-0" : "border-r-[1px] border-slate-200";
 
   return (
-    <div className={`flex h-24 ${widthClass} flex-col items-center justify-center gap-1 ${borderClass} font-mono md:h-36 md:gap-2`}>
+    <div
+      className={`flex h-24 ${widthClass} flex-col items-center justify-center gap-1 ${borderClass} font-mono md:h-36 md:gap-2`}
+    >
       <div className="relative w-full overflow-hidden text-center">
         <span
           ref={ref}
@@ -109,7 +131,8 @@ const useTimer = (unit: Units, countdownTo: string | Date) => {
     let newTime = 0;
     if (unit === "Day") newTime = Math.floor(distance / DAY);
     else if (unit === "Hour") newTime = Math.floor((distance % DAY) / HOUR);
-    else if (unit === "Minute") newTime = Math.floor((distance % HOUR) / MINUTE);
+    else if (unit === "Minute")
+      newTime = Math.floor((distance % HOUR) / MINUTE);
     else newTime = Math.floor((distance % MINUTE) / SECOND);
     if (newTime !== timeRef.current) {
       // Exit animation

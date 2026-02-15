@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState, ChangeEvent } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import ShiftingCountdown from "@/components/shifting-countdown";
 
 const Timer: FC = () => {
