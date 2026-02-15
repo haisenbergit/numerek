@@ -29,11 +29,12 @@ const Timer: FC = () => {
         <div className="mt-4 text-center text-lg text-gray-700">
           Odliczanie do:{" "}
           <span className="font-mono">
-            {countdownTo && (() => {
-              const d = new Date(countdownTo);
-              const pad = (n: number) => n.toString().padStart(2, "0");
-              return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-            })()}
+            {countdownTo &&
+              (() => {
+                const d = new Date(countdownTo);
+                const pad = (n: number) => n.toString().padStart(2, "0");
+                return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+              })()}
           </span>
         </div>
         <div className="mb-6 flex flex-col items-center gap-2">
