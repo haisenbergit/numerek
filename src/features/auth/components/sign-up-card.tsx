@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { TriangleAlert } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
+  // CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -27,12 +27,12 @@ export const SignUpCard = ({ setAuthState }: SignUpCardProps) => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
 
-  const onProviderSignUp = (provider: string) => {
-    setPending(true);
-    signIn(provider)
-      .catch(() => setError("Failed to sign up with provider"))
-      .finally(() => setPending(false));
-  };
+  // const onProviderSignUp = (provider: string) => {
+  //   setPending(true);
+  //   signIn(provider)
+  //     .catch(() => setError("Failed to sign up with provider"))
+  //     .finally(() => setPending(false));
+  // };
 
   const onPasswordSignUp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ export const SignUpCard = ({ setAuthState }: SignUpCardProps) => {
     <Card className="h-full w-full p-8">
       <CardHeader className="px-0 pt-0">
         <CardTitle>Zarejestruj się, aby kontynuować</CardTitle>
-        <CardDescription>Użyj Google lub e-mail</CardDescription>
+        {/* <CardDescription>Użyj Google lub e-mail</CardDescription> */}
       </CardHeader>
       {!!error && (
         <div className="mb-6 flex items-center gap-x-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
@@ -60,7 +60,7 @@ export const SignUpCard = ({ setAuthState }: SignUpCardProps) => {
       )}
       <CardContent className="space-y-5 px-0 pb-0">
         <div className="flex flex-col gap-y-2.5">
-          <Button
+          {/* <Button
             disabled={pending}
             onClick={() => {
               onProviderSignUp("google");
@@ -69,12 +69,9 @@ export const SignUpCard = ({ setAuthState }: SignUpCardProps) => {
             size="lg"
             className="relative w-full"
           >
-            <FcGoogle
-              className="absolute left-2.5"
-              style={{ width: 20, height: 20 }}
-            />
+            <FcGoogle className="w-5 h-5" style={{ width: 20, height: 20 }}/>
             Continue with Google
-          </Button>
+          </Button> */}
         </div>
         <Separator />
         <form onSubmit={onPasswordSignUp} className="space-y-2.5">

@@ -19,8 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Grupa Rodziców",
-  description: "Grupa Rodziców",
+  title: "Mój Numerek",
+  description:
+    "Moj Numerek to aplikacja do zarządzania kolejkami i rezerwacjami w lokalach gastronomicznych.",
 };
 
 export default function RootLayout({
