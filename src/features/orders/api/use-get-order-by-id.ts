@@ -8,4 +8,3 @@ export const useGetOrderById = (orderId: Id<"orders"> | null) => {
 
   return { data, isLoading };
 };
-

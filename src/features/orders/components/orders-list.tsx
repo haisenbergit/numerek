@@ -121,7 +121,9 @@ export const OrdersList = () => {
                         className={`text-sm font-medium ${order.isReady ? "text-green-600" : !order.isActive && !order.isReady ? "text-red-600" : isPast ? "text-red-600" : "text-blue-600"}`}
                       >
                         {order.isReady && order.readyTime
-                          ? `Gotowe od: ${new Date(order.readyTime).toLocaleString("pl-PL", {
+                          ? `Gotowe od: ${new Date(
+                              order.readyTime
+                            ).toLocaleString("pl-PL", {
                               day: "2-digit",
                               month: "2-digit",
                               year: "numeric",
@@ -148,7 +150,10 @@ export const OrdersList = () => {
                               </span>
                             )}
                           </div>
-                          <Link href={`/show-order/${order._id}`} className="w-full">
+                          <Link
+                            href={`/show-order/${order._id}`}
+                            className="w-full"
+                          >
                             <Button
                               variant="default"
                               size="sm"

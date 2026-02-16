@@ -37,10 +37,7 @@ const ShowOrder = () => {
     );
   }
 
-  return (
-    <CodeInputModal open={true} onCodeSubmitAction={handleCodeSubmit} />
-  );
+  return <CodeInputModal open={true} onCodeSubmitAction={handleCodeSubmit} />;
 };
 
 export default ShowOrder;
-

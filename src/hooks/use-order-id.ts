@@ -5,4 +5,3 @@ export const useOrderId = () => {
   const params = useParams();
   return params.orderId as Id<"orders">;
 };
-
