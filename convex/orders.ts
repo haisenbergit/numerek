@@ -31,6 +31,20 @@ export const getByCode = query({
   },
 });
 
+export const getById = query({
+  args: { orderId: v.id("orders") },
+  handler: async (ctx, args) => {
+    const order = await ctx.db.get(args.orderId);
+
+    if (!order) return null;
+
+    // Zwracamy zamówienie tylko jeśli jest aktywne
+    if (!order.isActive) return null;
+
+    return order;
+  },
+});
+
 export const create = mutation({
   args: {
     timeInMinutes: v.number(),

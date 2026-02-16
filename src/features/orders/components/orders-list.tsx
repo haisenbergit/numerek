@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -147,13 +148,22 @@ export const OrdersList = () => {
                               </span>
                             )}
                           </div>
+                          <Link href={`/timer/${order._id}`} className="w-full">
+                            <Button
+                              variant="default"
+                              size="sm"
+                              className="w-full text-xs"
+                            >
+                              Pokaż zamówienie
+                            </Button>
+                          </Link>
                           {!order.isReady && (
                             <Button
                               variant="default"
                               size="sm"
                               onClick={() => handleMarkAsReady(order._id)}
                               disabled={isMarkingReady}
-                              className="text-xs"
+                              className="w-full text-xs"
                             >
                               Do odbioru
                             </Button>
@@ -163,7 +173,7 @@ export const OrdersList = () => {
                             size="sm"
                             onClick={() => handleCloseOrder(order._id)}
                             disabled={isClosing}
-                            className="text-xs"
+                            className="w-full text-xs"
                           >
                             Zamknij
                           </Button>
