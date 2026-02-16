@@ -62,6 +62,17 @@ const schema = defineSchema({
     .index("by_message_id", ["messageId"])
     .index("by_member_id", ["memberId"])
     .index("by_message_id_member_id_value", ["messageId", "memberId", "value"]),
+  orders: defineTable({
+    userId: v.id("users"),
+    name: v.optional(v.string()),
+    code: v.string(),
+    orderTime: v.number(),
+    isActive: v.boolean(),
+    isReady: v.boolean(),
+    readyTime: v.optional(v.number()),
+  })
+    .index("by_user_id", ["userId"])
+    .index("by_active_code", ["code", "isActive"]),
 });
 
 export default schema;
