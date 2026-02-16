@@ -16,6 +16,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { Progress } from "@/components/ui/progress";
 
 type CodeInputModalProps = {
   open: boolean;
@@ -29,6 +30,7 @@ export const CodeInputModal = ({
   const [code, setCode] = useState("");
 
   const isCodeComplete = code.length === 3;
+  const progressValue = (code.length / 3) * 100;
 
   const handleChange = (value: string) => {
     setCode(value.toUpperCase());
@@ -51,6 +53,12 @@ export const CodeInputModal = ({
             Wpisz 3-znakowy kod odbioru zamówienia.
           </DialogDescription>
         </DialogHeader>
+        <div className="mb-2 flex min-h-[44px] items-center justify-center gap-x-2 p-3">
+          <Progress
+            value={progressValue}
+            className="h-1 max-w-[66%] bg-gray-100 [&>div]:bg-green-600"
+          />
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div className="flex justify-center">
