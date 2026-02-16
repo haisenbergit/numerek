@@ -100,7 +100,7 @@ export const OrdersList = () => {
                 <div
                   key={order._id}
                   className={`rounded-lg border p-4 transition-colors ${
-                    isPast ? "border-1" : "border-4"
+                    isPast ? "border-2 border-red-500" : "" //TODO: pokazywać rzeczywiste spóźnienie, a nie tylko czerwony kolor
                   }`}
                 >
                   <div className="flex items-center justify-between">
