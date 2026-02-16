@@ -100,7 +100,7 @@ export const OrdersList = () => {
                 <div
                   key={order._id}
                   className={`rounded-lg border p-4 transition-colors ${
-                    isPast ? "border-2 border-red-500" : "" //TODO: pokazywać rzeczywiste spóźnienie, a nie tylko czerwony kolor
+                    order.isActive && isPast ? "border-2 border-red-500" : ""
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -130,7 +130,7 @@ export const OrdersList = () => {
                           : !order.isActive && !order.isReady
                             ? "Nie wydano"
                             : isPast
-                              ? `Spóźnienie: ${Math.abs(minutesRemaining)} min`
+                              ? `Opóźnienie: ${Math.abs(minutesRemaining)} min`
                               : `Do odbioru za: ${minutesRemaining} min`}
                       </div>
                     </div>
