@@ -8,7 +8,7 @@ import ShiftingCountdown from "@/components/shifting-countdown";
 import { useGetOrderById } from "@/features/orders/api/use-get-order-by-id";
 import { useOrderId } from "@/hooks/use-order-id";
 
-const TimerPage = () => {
+const ShowOrderPage = () => {
   const router = useRouter();
   const orderId = useOrderId();
   const { data: order, isLoading } = useGetOrderById(orderId);
@@ -16,7 +16,7 @@ const TimerPage = () => {
   useEffect(() => {
     if (!isLoading && !order) {
       toast.error("Nie znaleziono aktywnego zamówienia");
-      router.push("/timer");
+      router.push("/show-order");
     }
   }, [order, isLoading, router]);
 
@@ -122,7 +122,7 @@ const TimerPage = () => {
         </div>
 
         <button
-          onClick={() => router.push("/timer")}
+          onClick={() => router.push("/show-order")}
           className="mt-6 w-full rounded-lg bg-gray-200 px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-300"
         >
           Zmień kod odbioru
@@ -132,5 +132,5 @@ const TimerPage = () => {
   );
 };
 
-export default TimerPage;
+export default ShowOrderPage;
 

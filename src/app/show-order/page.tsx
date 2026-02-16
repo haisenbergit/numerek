@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useGetOrderByCode } from "@/features/orders/api/use-get-order-by-code";
 import { CodeInputModal } from "@/features/orders/components/code-input-modal";
 
-const Timer = () => {
+const ShowOrder = () => {
   const router = useRouter();
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
   const { data: order, isLoading } = useGetOrderByCode(submittedCode);
@@ -19,7 +19,7 @@ const Timer = () => {
         setSubmittedCode(null);
       } else {
         // Przekieruj do strony z ID zamówienia
-        router.push(`/timer/${order._id}`);
+        router.push(`/show-order/${order._id}`);
       }
     }
   }, [order, isLoading, submittedCode, router]);
@@ -42,4 +42,5 @@ const Timer = () => {
   );
 };
 
-export default Timer;
+export default ShowOrder;
+

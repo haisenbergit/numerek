@@ -148,7 +148,7 @@ export const OrdersList = () => {
                               </span>
                             )}
                           </div>
-                          <Link href={`/timer/${order._id}`} className="w-full">
+                          <Link href={`/show-order/${order._id}`} className="w-full">
                             <Button
                               variant="default"
                               size="sm"
