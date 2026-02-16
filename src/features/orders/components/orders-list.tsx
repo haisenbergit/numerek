@@ -117,11 +117,19 @@ export const OrdersList = () => {
                         Data odbioru: {formattedDate}
                       </div>
                       <div
-                        className={`text-sm font-medium ${isPast ? "text-red-600" : "text-blue-600"}`}
+                        className={`text-sm font-medium ${order.isReady ? "text-blue-600" : isPast ? "text-red-600" : "text-blue-600"}`}
                       >
-                        {isPast
-                          ? `Spóźnienie: ${Math.abs(minutesRemaining)} min`
-                          : `Do odbioru: ${minutesRemaining} min`}
+                        {order.isReady && order.readyTime
+                          ? `Gotowe od: ${new Date(order.readyTime).toLocaleString("pl-PL", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}`
+                          : isPast
+                            ? `Spóźnienie: ${Math.abs(minutesRemaining)} min`
+                            : `Do odbioru: ${minutesRemaining} min`}
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-2">

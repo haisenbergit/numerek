@@ -62,12 +62,14 @@ const Timer = () => {
           <h1 className="text-4xl font-bold text-gray-800">
             Zamówienie #{order.code}
           </h1>
-          <p className="mt-2 text-lg text-gray-600">
-            {isPast ? "Termin odbioru minął" : "Czas do odbioru"}
-          </p>
+          {!order.isReady && (
+            <p className="mt-2 text-lg text-gray-600">
+              {isPast ? "Termin odbioru minął" : "Czas do odbioru"}
+            </p>
+          )}
         </div>
 
-        <ShiftingCountdown countdownTo={orderDate} />
+        {!order.isReady && <ShiftingCountdown countdownTo={orderDate} />}
 
         {order.isReady && (
           <div className="mt-6 rounded-lg border-2 border-green-500 bg-green-50 p-4 shadow-sm">
@@ -102,7 +104,7 @@ const Timer = () => {
             </div>
             <div>
               <span className="text-sm font-medium text-gray-500">
-                Data odbioru:
+                Szacowana data odbioru:
               </span>
               <p className="mt-1 text-lg text-gray-700">
                 {orderDate.toLocaleString("pl-PL", {
@@ -114,6 +116,22 @@ const Timer = () => {
                 })}
               </p>
             </div>
+            {order.isReady && order.readyTime && (
+              <div>
+                <span className="text-sm font-medium text-gray-500">
+                  Potwierdzona data odbioru:
+                </span>
+                <p className="mt-1 text-lg font-semibold text-green-700">
+                  {new Date(order.readyTime).toLocaleString("pl-PL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
