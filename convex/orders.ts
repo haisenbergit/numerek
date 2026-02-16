@@ -84,7 +84,10 @@ export const markAsReady = mutation({
 
     if (order.userId !== userId) throw new Error("Unauthorized");
 
-    await ctx.db.patch(args.orderId, { isReady: true });
+    await ctx.db.patch(args.orderId, {
+      isReady: true,
+      readyTime: Date.now()
+    });
 
     return args.orderId;
   },
