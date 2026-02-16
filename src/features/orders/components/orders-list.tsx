@@ -100,7 +100,7 @@ export const OrdersList = () => {
                 <div
                   key={order._id}
                   className={`rounded-lg border p-4 transition-colors ${
-                    isPast ? "border-2 border-red-500" : ""
+                    isPast ? "border-1" : "border-4"
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -117,7 +117,7 @@ export const OrdersList = () => {
                         Data odbioru: {formattedDate}
                       </div>
                       <div
-                        className={`text-sm font-medium ${order.isReady ? "text-blue-600" : isPast ? "text-red-600" : "text-blue-600"}`}
+                        className={`text-sm font-medium ${order.isReady ? "text-green-600" : !order.isActive && !order.isReady ? "text-red-600" : isPast ? "text-red-600" : "text-blue-600"}`}
                       >
                         {order.isReady && order.readyTime
                           ? `Gotowe od: ${new Date(order.readyTime).toLocaleString("pl-PL", {
@@ -127,9 +127,11 @@ export const OrdersList = () => {
                               hour: "2-digit",
                               minute: "2-digit",
                             })}`
-                          : isPast
-                            ? `Spóźnienie: ${Math.abs(minutesRemaining)} min`
-                            : `Do odbioru: ${minutesRemaining} min`}
+                          : !order.isActive && !order.isReady
+                            ? "Nie wydano"
+                            : isPast
+                              ? `Spóźnienie: ${Math.abs(minutesRemaining)} min`
+                              : `Do odbioru za: ${minutesRemaining} min`}
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-2">
