@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import ShiftingCountdown from "@/components/shifting-countdown";
+import { CircularProgressCombined } from "@/components/ui/circular-progress";
 import { useGetOrderById } from "@/features/orders/api/use-get-order-by-id";
 import { useOrderId } from "@/hooks/use-order-id";
 
@@ -12,6 +13,7 @@ const ShowOrderPage = () => {
   const router = useRouter();
   const orderId = useOrderId();
   const { data: order, isLoading } = useGetOrderById(orderId);
+  const [timeProgress, setTimeProgress] = useState(0);
 
   useEffect(() => {
     if (!isLoading && !order) {
@@ -19,6 +21,27 @@ const ShowOrderPage = () => {
       router.push("/show-order");
     }
   }, [order, isLoading, router]);
+
+  useEffect(() => {
+    if (!order || order.isReady) return;
+
+    const calculateProgress = () => {
+      const now = new Date().getTime();
+      const orderTime = new Date(order.orderTime).getTime();
+      const createdTime = new Date(order._creationTime).getTime();
+
+      const totalDuration = orderTime - createdTime;
+      const elapsed = now - createdTime;
+
+      const progress = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
+      setTimeProgress(Math.round(progress));
+    };
+
+    calculateProgress();
+    const interval = setInterval(calculateProgress, 1000);
+
+    return () => clearInterval(interval);
+  }, [order]);
 
   if (isLoading) {
     return (
@@ -54,6 +77,22 @@ const ShowOrderPage = () => {
             </p>
           )}
         </div>
+
+        {!order.isReady && (
+          <div className="mb-6 flex justify-center">
+            <div className="flex flex-col items-center gap-2">
+              <CircularProgressCombined
+                value={timeProgress}
+                size={120}
+                thickness={8}
+                className="text-indigo-600"
+              />
+              <p className="text-sm font-medium text-gray-600">
+                {timeProgress}% complete
+              </p>
+            </div>
+          </div>
+        )}
 
         {!order.isReady && <ShiftingCountdown countdownTo={orderDate} />}
 
