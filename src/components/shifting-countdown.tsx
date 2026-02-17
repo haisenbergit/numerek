@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAnimate } from "framer-motion";
 
 const SECOND = 1000;
@@ -114,16 +114,11 @@ const useTimer = (unit: Units, countdownTo: string | Date) => {
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeRef = useRef(0);
+  const isAnimatingRef = useRef(false);
 
   const [time, setTime] = useState(0);
 
-  useEffect(() => {
-    intervalRef.current = setInterval(handleCountdown, 1000);
-
-    return () => clearInterval(intervalRef.current || undefined);
-  }, [countdownTo]);
-
-  const handleCountdown = async () => {
+  const handleCountdown = useCallback(() => {
     const end = new Date(countdownTo);
     const now = new Date();
     const distance = +end - +now;
@@ -134,25 +129,36 @@ const useTimer = (unit: Units, countdownTo: string | Date) => {
     else if (unit === "Minute")
       newTime = Math.floor((distance % HOUR) / MINUTE);
     else newTime = Math.floor((distance % MINUTE) / SECOND);
-    if (newTime !== timeRef.current) {
+
+    if (newTime !== timeRef.current && !isAnimatingRef.current) {
+      isAnimatingRef.current = true;
+
       // Exit animation
-      await animate(
+      animate(
         ref.current,
         { y: ["0%", "-50%"], opacity: [1, 0] },
         { duration: 0.35 }
-      );
+      ).then(() => {
+        timeRef.current = newTime;
+        setTime(newTime);
 
-      timeRef.current = newTime;
-      setTime(newTime);
-
-      // Enter animation
-      await animate(
-        ref.current,
-        { y: ["50%", "0%"], opacity: [0, 1] },
-        { duration: 0.35 }
-      );
+        // Enter animation
+        return animate(
+          ref.current,
+          { y: ["50%", "0%"], opacity: [0, 1] },
+          { duration: 0.35 }
+        );
+      }).then(() => {
+        isAnimatingRef.current = false;
+      });
     }
-  };
+  }, [countdownTo, unit, animate, ref]);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(handleCountdown, 1000);
+
+    return () => clearInterval(intervalRef.current || undefined);
+  }, [handleCountdown]);
 
   return { ref, time };
 };
