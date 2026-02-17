@@ -1,11 +1,11 @@
 "use client";
 
+import * as React from "react";
 import { cva } from "class-variance-authority";
 import {
   Direction as DirectionPrimitive,
   Slot as SlotPrimitive,
 } from "radix-ui";
-import * as React from "react";
 import { useComposedRefs } from "@/lib/compose-refs";
 import { cn } from "@/lib/utils";
 import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect";
@@ -36,7 +36,7 @@ function getItemStatus(itemIndex: number, activeIndex?: number): Status {
 }
 
 function getSortedEntries(
-  entries: [string, React.RefObject<ItemElement | null>][],
+  entries: [string, React.RefObject<ItemElement | null>][]
 ) {
   return entries.sort((a, b) => {
     const elementA = a[1].current;
@@ -57,7 +57,7 @@ function useStore<T>(selector: (store: Store) => T): T {
 
   const getSnapshot = React.useCallback(
     () => selector(store),
-    [store, selector],
+    [store, selector]
   );
 
   return React.useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot);
@@ -73,7 +73,7 @@ interface Store {
   notify: () => void;
   onItemRegister: (
     id: string,
-    ref: React.RefObject<ItemElement | null>,
+    ref: React.RefObject<ItemElement | null>
   ) => void;
   onItemUnregister: (id: string) => void;
   getNextItemStatus: (id: string, activeIndex?: number) => Status | undefined;
@@ -146,7 +146,7 @@ const timelineVariants = cva(
       orientation: "vertical",
       variant: "default",
     },
-  },
+  }
 );
 
 interface TimelineProps extends DivProps {
@@ -188,7 +188,7 @@ function Timeline(props: TimelineProps) {
       },
       onItemRegister: (
         id: string,
-        ref: React.RefObject<ItemElement | null>,
+        ref: React.RefObject<ItemElement | null>
       ) => {
         stateRef.current.items.set(id, ref);
         store.notify();
@@ -224,7 +224,7 @@ function Timeline(props: TimelineProps) {
       variant,
       activeIndex,
     }),
-    [dir, orientation, variant, activeIndex],
+    [dir, orientation, variant, activeIndex]
   );
 
   const RootPrimitive = asChild ? SlotPrimitive.Slot : "div";
@@ -344,7 +344,7 @@ function TimelineItem(props: DivProps) {
 
   const itemContextValue = React.useMemo<TimelineItemContextValue>(
     () => ({ id: itemId, status, isAlternateRight }),
-    [itemId, status, isAlternateRight],
+    [itemId, status, isAlternateRight]
   );
 
   const ItemPrimitive = asChild ? SlotPrimitive.Slot : "div";
@@ -368,7 +368,7 @@ function TimelineItem(props: DivProps) {
             variant,
             isAlternateRight,
             className,
-          }),
+          })
         )}
       />
     </TimelineItemContext.Provider>
@@ -436,7 +436,7 @@ function TimelineContent(props: DivProps) {
           variant,
           isAlternateRight,
           className,
-        }),
+        })
       )}
     />
   );
@@ -501,7 +501,7 @@ const timelineDotVariants = cva(
       variant: "default",
       isAlternateRight: false,
     },
-  },
+  }
 );
 
 function TimelineDot(props: DivProps) {
@@ -525,7 +525,7 @@ function TimelineDot(props: DivProps) {
           variant,
           isAlternateRight,
           className,
-        }),
+        })
       )}
     />
   );
@@ -605,7 +605,7 @@ function TimelineConnector(props: TimelineConnectorProps) {
     useTimelineItemContext(CONNECTOR_NAME);
 
   const nextItemStatus = useStore((state) =>
-    state.getNextItemStatus(id, activeIndex),
+    state.getNextItemStatus(id, activeIndex)
   );
 
   const isLastItem = nextItemStatus === undefined;
@@ -632,7 +632,7 @@ function TimelineConnector(props: TimelineConnectorProps) {
           variant,
           isAlternateRight,
           className,
-        }),
+        })
       )}
     />
   );
@@ -675,7 +675,7 @@ function TimelineDescription(props: DivProps) {
     <DescriptionPrimitive
       data-slot="timeline-description"
       {...descriptionProps}
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-sm text-muted-foreground", className)}
     />
   );
 }
@@ -693,7 +693,7 @@ function TimelineTime(props: TimelineTimeProps) {
     <TimePrimitive
       data-slot="timeline-time"
       {...timeProps}
-      className={cn("text-muted-foreground text-xs", className)}
+      className={cn("text-xs text-muted-foreground", className)}
     />
   );
 }

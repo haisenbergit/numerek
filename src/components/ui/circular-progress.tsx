@@ -1,7 +1,7 @@
 "use client";
 
-import { Slot as SlotPrimitive } from "radix-ui";
 import * as React from "react";
+import { Slot as SlotPrimitive } from "radix-ui";
 import { cn } from "@/lib/utils";
 
 const CIRCULAR_PROGRESS_NAME = "CircularProgress";
@@ -16,7 +16,7 @@ type ProgressState = "indeterminate" | "complete" | "loading";
 
 function getProgressState(
   value: number | undefined | null,
-  maxValue: number,
+  maxValue: number
 ): ProgressState {
   return value == null
     ? "indeterminate"
@@ -36,7 +36,7 @@ function getIsValidMaxNumber(max: unknown): max is number {
 function getIsValidValueNumber(
   value: unknown,
   min: number,
-  max: number,
+  max: number
 ): value is number {
   return getIsValidNumber(value) && value <= max && value >= min;
 }
@@ -48,7 +48,7 @@ function getDefaultValueText(value: number, min: number, max: number): string {
 
 function getInvalidValueError(
   propValue: string,
-  componentName: string,
+  componentName: string
 ): string {
   return `Invalid prop \`value\` of value \`${propValue}\` supplied to \`${componentName}\`. The \`value\` prop must be a number between \`min\` and \`max\` (inclusive), or \`null\`/\`undefined\` for indeterminate progress. The value will be clamped to the valid range.`;
 }
@@ -79,7 +79,7 @@ function useCircularProgressContext(consumerName: string) {
   const context = React.useContext(CircularProgressContext);
   if (!context) {
     throw new Error(
-      `\`${consumerName}\` must be used within \`${CIRCULAR_PROGRESS_NAME}\``,
+      `\`${consumerName}\` must be used within \`${CIRCULAR_PROGRESS_NAME}\``
     );
   }
   return context;
@@ -123,14 +123,14 @@ function CircularProgress(props: CircularProgressProps) {
 
   if (process.env.NODE_ENV !== "production" && thickness >= size) {
     console.warn(
-      `CircularProgress: thickness (${thickness}) should be less than size (${size}) for proper rendering.`,
+      `CircularProgress: thickness (${thickness}) should be less than size (${size}) for proper rendering.`
     );
   }
 
   if (valueProp !== null && !getIsValidValueNumber(valueProp, min, max)) {
     if (process.env.NODE_ENV !== "production") {
       console.error(
-        getInvalidValueError(`${valueProp}`, CIRCULAR_PROGRESS_NAME),
+        getInvalidValueError(`${valueProp}`, CIRCULAR_PROGRESS_NAME)
       );
     }
   }
@@ -188,7 +188,7 @@ function CircularProgress(props: CircularProgressProps) {
       circumference,
       percentage,
       valueTextId,
-    ],
+    ]
   );
 
   const RootPrimitive = asChild ? SlotPrimitive.Slot : "div";
@@ -211,7 +211,7 @@ function CircularProgress(props: CircularProgressProps) {
         {...rootProps}
         className={cn(
           "relative inline-flex w-fit items-center justify-center",
-          className,
+          className
         )}
       >
         {children}
@@ -301,8 +301,8 @@ function CircularProgressRange(props: React.ComponentProps<"circle">) {
       className={cn(
         "origin-center text-primary transition-all duration-300 ease-in-out",
         context.state === "indeterminate" &&
-          "motion-reduce:animate-none motion-safe:[animation:var(--animate-spin-around)]",
-        className,
+          "motion-safe:[animation:var(--animate-spin-around)] motion-reduce:animate-none",
+        className
       )}
     />
   );
@@ -325,8 +325,8 @@ function CircularProgressValueText(props: CircularProgressValueTextProps) {
       data-state={context.state}
       {...valueTextProps}
       className={cn(
-        "absolute inset-0 flex items-center justify-center font-medium text-sm",
-        className,
+        "absolute inset-0 flex items-center justify-center text-sm font-medium",
+        className
       )}
     >
       {children ?? context.valueText}

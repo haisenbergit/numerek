@@ -81,7 +81,9 @@ export const OrderTimeProgress = ({
         className={isOverdue ? "text-red-600" : "text-green-600"}
       />
       <div className="text-center">
-        <p className={`text-lg font-semibold ${isOverdue ? "text-red-600" : "text-gray-700"}`}>
+        <p
+          className={`text-lg font-semibold ${isOverdue ? "text-red-600" : "text-gray-700"}`}
+        >
           {getRemainingTimeText()}
         </p>
         <p className="text-sm text-gray-500">
@@ -91,4 +93,3 @@ export const OrderTimeProgress = ({
     </div>
   );
 };
-

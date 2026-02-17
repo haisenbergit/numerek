@@ -2,22 +2,22 @@
 
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Package, CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, Loader2, Package, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { OrderTimeProgress } from "@/components/order-time-progress";
 import {
   Timeline,
-  TimelineItem,
-  TimelineDot,
   TimelineConnector,
   TimelineContent,
-  TimelineHeader,
-  TimelineTitle,
   TimelineDescription,
+  TimelineDot,
+  TimelineHeader,
+  TimelineItem,
   TimelineTime,
+  TimelineTitle,
 } from "@/components/ui/timeline";
 import { useGetOrderById } from "@/features/orders/api/use-get-order-by-id";
 import { useOrderId } from "@/hooks/use-order-id";
-import { OrderTimeProgress } from "@/components/order-time-progress";
 
 const ShowOrderByTimelinePage = () => {
   const router = useRouter();
@@ -119,10 +119,14 @@ const ShowOrderByTimelinePage = () => {
               <TimelineDot className="border-green-500 bg-green-500">
                 <Package className="h-5 w-5 text-white" />
               </TimelineDot>
-              <TimelineConnector className={order.isReady ? "!bg-green-500" : ""} />
+              <TimelineConnector
+                className={order.isReady ? "!bg-green-500" : ""}
+              />
               <TimelineContent>
                 <TimelineHeader>
-                  <TimelineTitle className="text-green-600">Utworzenie zamówienia</TimelineTitle>
+                  <TimelineTitle className="text-green-600">
+                    Utworzenie zamówienia
+                  </TimelineTitle>
                   <TimelineDescription className="text-green-600">
                     Zamówienie zostało zarejestrowane w systemie
                   </TimelineDescription>
@@ -143,22 +147,32 @@ const ShowOrderByTimelinePage = () => {
             </TimelineItem>
 
             <TimelineItem>
-              <TimelineDot className={order.isReady ? "border-green-500 bg-green-500" : ""}>
+              <TimelineDot
+                className={order.isReady ? "border-green-500 bg-green-500" : ""}
+              >
                 {order.isReady ? (
                   <CheckCircle className="h-5 w-5 text-white" />
                 ) : (
                   <Package className="h-5 w-5" />
                 )}
               </TimelineDot>
-              <TimelineConnector className={order.isReady && !order.isActive ? "!bg-green-500" : ""} />
+              <TimelineConnector
+                className={
+                  order.isReady && !order.isActive ? "!bg-green-500" : ""
+                }
+              />
               <TimelineContent>
                 <TimelineHeader>
-                  <TimelineTitle className={order.isReady ? "text-green-600" : ""}>
+                  <TimelineTitle
+                    className={order.isReady ? "text-green-600" : ""}
+                  >
                     {order.isReady
                       ? "Zamówienie gotowe do odbioru"
                       : "Oczekiwanie na realizację"}
                   </TimelineTitle>
-                  <TimelineDescription className={order.isReady ? "text-green-600" : ""}>
+                  <TimelineDescription
+                    className={order.isReady ? "text-green-600" : ""}
+                  >
                     {order.isReady
                       ? "Zamówienie zostało zrealizowane i jest gotowe"
                       : "Zamówienie jest w trakcie realizacji"}
@@ -166,7 +180,9 @@ const ShowOrderByTimelinePage = () => {
                 </TimelineHeader>
                 <TimelineTime
                   dateTime={
-                    readyDate ? readyDate.toISOString() : orderDate.toISOString()
+                    readyDate
+                      ? readyDate.toISOString()
+                      : orderDate.toISOString()
                   }
                   className={order.isReady ? "mt-2 text-green-600" : "mt-2"}
                 >
@@ -198,7 +214,11 @@ const ShowOrderByTimelinePage = () => {
             </TimelineItem>
 
             <TimelineItem>
-              <TimelineDot className={!order.isActive ? "border-green-500 bg-green-500" : ""}>
+              <TimelineDot
+                className={
+                  !order.isActive ? "border-green-500 bg-green-500" : ""
+                }
+              >
                 {!order.isActive ? (
                   <XCircle className="h-5 w-5 text-white" />
                 ) : (
@@ -207,12 +227,16 @@ const ShowOrderByTimelinePage = () => {
               </TimelineDot>
               <TimelineContent>
                 <TimelineHeader>
-                  <TimelineTitle className={!order.isActive ? "text-green-600" : ""}>
+                  <TimelineTitle
+                    className={!order.isActive ? "text-green-600" : ""}
+                  >
                     {!order.isActive
                       ? "Zamówienie zamknięte"
                       : "Oczekiwanie na zamknięcie"}
                   </TimelineTitle>
-                  <TimelineDescription className={!order.isActive ? "text-green-600" : ""}>
+                  <TimelineDescription
+                    className={!order.isActive ? "text-green-600" : ""}
+                  >
                     {!order.isActive
                       ? "Zamówienie zostało odebrane i zamknięte"
                       : "Zamówienie nie zostało jeszcze zamknięte"}
@@ -240,5 +264,3 @@ const ShowOrderByTimelinePage = () => {
 };
 
 export default ShowOrderByTimelinePage;
-
-
