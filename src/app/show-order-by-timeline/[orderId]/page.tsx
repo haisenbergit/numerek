@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/timeline";
 import { useGetOrderById } from "@/features/orders/api/use-get-order-by-id";
 import { useOrderId } from "@/hooks/use-order-id";
+import { OrderTimeProgress } from "@/components/order-time-progress";
 
 const ShowOrderByTimelinePage = () => {
   const router = useRouter();
@@ -87,6 +88,22 @@ const ShowOrderByTimelinePage = () => {
             )}
           </div>
         </div>
+
+        {!order.isReady && (
+          <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
+            <h3 className="mb-4 text-center text-lg font-semibold text-gray-800">
+              Postęp realizacji
+            </h3>
+            <div className="flex justify-center">
+              <OrderTimeProgress
+                creationTime={order._creationTime}
+                orderTime={order.orderTime}
+                size={140}
+                thickness={10}
+              />
+            </div>
+          </div>
+        )}
 
         <div className="rounded-lg bg-white p-8 shadow-sm">
           <h3 className="mb-6 text-xl font-semibold text-gray-800">

@@ -2,7 +2,7 @@
 
 ## Opis
 
-Moduł `show-order-by-timeline` wyświetla szczegóły i postęp realizacji zamówienia w formie timeline (osi czasu). **Działa dokładnie tak samo jak `show-order`** - używa tego samego przepływu z `CodeInputModal` i routingu przez `[orderId]`.
+Moduł `show-order-by-timeline` wyświetla szczegóły i postęp realizacji zamówienia w formie timeline (osi czasu) oraz **circular progress** pokazującego upływ czasu. **Działa dokładnie tak samo jak `show-order`** - używa tego samego przepływu z `CodeInputModal` i routingu przez `[orderId]`.
 
 ## Struktura
 
@@ -28,6 +28,38 @@ src/app/show-order-by-timeline/
 6. ❌ Jeśli nie istnieje → toast z błędem i reset formularza
 
 ## Komponenty
+
+### OrderTimeProgress (`/components/order-time-progress.tsx`)
+
+**Nowy komponent** pokazujący postęp w upływie czasu między utworzeniem zamówienia a przewidywanym czasem odbioru.
+
+**Funkcjonalność:**
+- 🔵 Circular progress bar pokazujący procent upływu czasu
+- ⏱️ Automatyczna aktualizacja co sekundę
+- 📊 Dynamiczne obliczanie progresu: `(now - creationTime) / (orderTime - creationTime) * 100`
+- 🔴 Kolor czerwony gdy termin minął
+- 🟢 Kolor zielony gdy zamówienie jest w trakcie realizacji
+- ⏰ Wyświetlanie pozostałego czasu w formacie:
+  - `Xd Xh` - gdy pozostały dni
+  - `Xh Xm` - gdy pozostały godziny
+  - `Xm Xs` - gdy pozostały minuty
+  - `Xs` - gdy pozostały sekundy
+  - "Termin minął" - gdy czas upłynął
+
+**Props:**
+```typescript
+interface OrderTimeProgressProps {
+  creationTime: number;    // timestamp utworzenia (_creationTime)
+  orderTime: number;       // timestamp przewidywanego odbioru
+  size?: number;          // rozmiar koła (default: 120)
+  thickness?: number;     // grubość linii (default: 8)
+}
+```
+
+**Użycie w Timeline:**
+- Pokazuje się tylko gdy `!order.isReady` (zamówienie jeszcze nie gotowe)
+- Umieszczony między sekcją z kodem a historią zamówienia
+- Używa `CircularProgressCombined` z UI components
 
 ### Strona główna (`page.tsx`)
 
