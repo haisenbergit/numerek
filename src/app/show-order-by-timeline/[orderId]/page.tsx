@@ -82,26 +82,26 @@ const ShowOrderByTimelinePage = () => {
             style={{ "--timeline-dot-size": "2rem" } as React.CSSProperties}
           >
             <TimelineItem>
-              <TimelineDot className="border-green-500 bg-green-500">
+              <TimelineDot className="border-green-700 bg-green-700">
                 <Package className="h-5 w-5 text-white" />
               </TimelineDot>
               <TimelineConnector
-                className={order.isReady ? "!bg-green-500" : ""}
+                className={order.isReady ? "!bg-green-700" : ""}
               />
               <TimelineContent>
                 <TimelineHeader>
-                  <TimelineTitle className="text-green-600">
+                  <TimelineTitle className="text-green-700">
                     Utworzono zamówienie #{order.code}
                   </TimelineTitle>
                   {order.name && (
-                    <TimelineDescription className="text-green-600">
+                    <TimelineDescription className="text-green-700">
                       Dotyczy: <strong>{order.name}</strong>
                     </TimelineDescription>
                   )}
                 </TimelineHeader>
                 <TimelineTime
                   dateTime={creationDate.toISOString()}
-                  className="mt-2 text-green-600"
+                  className="mt-2 text-green-700"
                 >
                   Czas utworzenia:{" "}
                   {creationDate.toLocaleString("pl-PL", {
@@ -117,7 +117,7 @@ const ShowOrderByTimelinePage = () => {
 
             <TimelineItem>
               <TimelineDot
-                className={order.isReady ? "border-green-500 bg-green-500" : ""}
+                className={order.isReady ? "border-green-700 bg-green-700" : ""}
               >
                 {order.isReady ? (
                   <CheckCircle className="h-5 w-5 text-white" />
@@ -127,20 +127,20 @@ const ShowOrderByTimelinePage = () => {
               </TimelineDot>
               <TimelineConnector
                 className={
-                  order.isReady && !order.isActive ? "!bg-green-500" : ""
+                  order.isReady && !order.isActive ? "!bg-green-700" : ""
                 }
               />
               <TimelineContent>
                 <TimelineHeader>
                   <TimelineTitle
-                    className={order.isReady ? "text-green-600" : ""}
+                    className={order.isReady ? "text-green-700" : ""}
                   >
                     {order.isReady
                       ? "Zamówienie gotowe do odbioru"
                       : "Oczekiwanie na realizację"}
                   </TimelineTitle>
                   <TimelineDescription
-                    className={order.isReady ? "text-green-600" : ""}
+                    className={order.isReady ? "text-green-700" : ""}
                   >
                     {order.isReady
                       ? "Zamówienie zostało zrealizowane i jest gotowe"
@@ -153,7 +153,7 @@ const ShowOrderByTimelinePage = () => {
                       ? readyDate.toISOString()
                       : orderDate.toISOString()
                   }
-                  className={order.isReady ? "mt-2 text-green-600" : "mt-2"}
+                  className={order.isReady ? "mt-2 text-green-700" : "mt-2"}
                 >
                   {order.isReady && readyDate ? (
                     <>
@@ -185,7 +185,7 @@ const ShowOrderByTimelinePage = () => {
             <TimelineItem>
               <TimelineDot
                 className={
-                  !order.isActive ? "border-green-500 bg-green-500" : ""
+                  !order.isActive ? "border-green-700 bg-green-700" : ""
                 }
               >
                 {!order.isActive ? (
@@ -197,14 +197,14 @@ const ShowOrderByTimelinePage = () => {
               <TimelineContent>
                 <TimelineHeader>
                   <TimelineTitle
-                    className={!order.isActive ? "text-green-600" : ""}
+                    className={!order.isActive ? "text-green-700" : ""}
                   >
                     {!order.isActive
                       ? "Zamówienie zamknięte"
                       : "Oczekiwanie na zamknięcie"}
                   </TimelineTitle>
                   <TimelineDescription
-                    className={!order.isActive ? "text-green-600" : ""}
+                    className={!order.isActive ? "text-green-700" : ""}
                   >
                     {!order.isActive
                       ? "Zamówienie zostało odebrane i zamknięte"
@@ -212,7 +212,7 @@ const ShowOrderByTimelinePage = () => {
                   </TimelineDescription>
                 </TimelineHeader>
                 {!order.isActive && (
-                  <TimelineTime className="mt-2 text-green-600">
+                  <TimelineTime className="mt-2 text-green-700">
                     Zamknięte
                   </TimelineTime>
                 )}

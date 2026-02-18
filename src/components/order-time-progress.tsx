@@ -87,8 +87,8 @@ export const OrderTimeProgress = ({
         thickness={thickness}
       >
         <CircularProgressIndicator>
-          <CircularProgressTrack className="text-green-200 dark:text-green-900" />
-          <CircularProgressRange className="text-green-600" />
+          <CircularProgressTrack className="text-gray-200 dark:text-green-900" />
+          <CircularProgressRange className="text-green-700" />
         </CircularProgressIndicator>
         <CircularProgressValueText className="text-2xl font-semibold text-green-700 dark:text-green-300" />
       </CircularProgress>
