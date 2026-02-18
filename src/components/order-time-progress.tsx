@@ -89,7 +89,7 @@ export const OrderTimeProgress = ({
           <CircularProgressTrack className="text-green-200 dark:text-green-900" />
           <CircularProgressRange className="text-green-600" />
         </CircularProgressIndicator>
-        <CircularProgressValueText className="text-green-700 dark:text-green-300" />
+        <CircularProgressValueText className="text-green-700 dark:text-green-300 text-2xl font-semibold" />
       </CircularProgress>
       <div className="text-center">
         <p
