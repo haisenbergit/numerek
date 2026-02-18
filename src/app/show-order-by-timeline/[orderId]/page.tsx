@@ -55,40 +55,6 @@ const ShowOrderByTimelinePage = () => {
   return (
     <div className="flex min-h-screen w-screen flex-col items-center bg-gray-50 p-4 py-8">
       <div className="w-full max-w-2xl">
-        <div className="mb-8 text-center">
-          {order.name && (
-            <h2 className="mb-2 text-2xl font-semibold text-gray-700">
-              {order.name}
-            </h2>
-          )}
-          <h1 className="text-4xl font-bold text-gray-800">
-            Zamówienie #{order.code}
-          </h1>
-        </div>
-
-        <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
-          <div className="space-y-3 text-center">
-            <div>
-              <span className="text-sm font-medium text-gray-500">
-                Kod odbioru:
-              </span>
-              <p className="mt-1 font-mono text-3xl font-bold tracking-wider text-indigo-600">
-                {order.code}
-              </p>
-            </div>
-            {order.name && (
-              <div>
-                <span className="text-sm font-medium text-gray-500">
-                  Nazwa zamówienia:
-                </span>
-                <p className="mt-1 text-xl font-semibold text-gray-800">
-                  {order.name}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-
         {!order.isReady && (
           <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-center text-lg font-semibold text-gray-800">
@@ -125,17 +91,19 @@ const ShowOrderByTimelinePage = () => {
               <TimelineContent>
                 <TimelineHeader>
                   <TimelineTitle className="text-green-600">
-                    Utworzenie zamówienia
+                    Utworzono zamówienie #{order.code}
                   </TimelineTitle>
-                  <TimelineDescription className="text-green-600">
-                    Zamówienie zostało zarejestrowane w systemie
-                  </TimelineDescription>
+                  {order.name && (
+                    <TimelineDescription className="text-green-600">
+                      Dotyczy: <strong>{order.name}</strong>
+                    </TimelineDescription>
+                  )}
                 </TimelineHeader>
                 <TimelineTime
                   dateTime={creationDate.toISOString()}
                   className="mt-2 text-green-600"
                 >
-                  {creationDate.toLocaleString("pl-PL", {
+                  Czas utworzenia: {creationDate.toLocaleString("pl-PL", {
                     day: "2-digit",
                     month: "2-digit",
                     year: "numeric",
@@ -199,7 +167,7 @@ const ShowOrderByTimelinePage = () => {
                     </>
                   ) : (
                     <>
-                      Szacowany czas:{" "}
+                      Szacowany czas odbioru:{" "}
                       {orderDate.toLocaleString("pl-PL", {
                         day: "2-digit",
                         month: "2-digit",
