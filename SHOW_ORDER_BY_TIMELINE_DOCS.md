@@ -2,7 +2,7 @@
 
 ## Opis
 
-Moduł `show-order-by-timeline` wyświetla szczegóły i postęp realizacji zamówienia w formie timeline (osi czasu) oraz **circular progress** pokazującego upływ czasu. **Działa dokładnie tak samo jak `show-order`** - używa tego samego przepływu z `CodeInputModal` i routingu przez `[orderId]`.
+Moduł `show-order-by-timeline` wyświetla szczegóły i postęp realizacji zamówienia w formie timeline (osi czasu) oraz **circular progress** pokazującego upływ czasu. Używa przepływu z `CodeInputModal` i routingu przez `[orderId]`.
 
 ## Struktura
 
@@ -189,17 +189,7 @@ const { data: order, isLoading } = useGetOrderById(orderId);
 }
 ```
 
-## Porównanie z `/show-order`
-
-| Cecha | `/show-order` | `/show-order-by-timeline` |
-|-------|---------------|---------------------------|
-| Wprowadzanie kodu | ✅ `CodeInputModal` | ✅ `CodeInputModal` |
-| Routing | `[orderId]` | `[orderId]` |
-| API | `useGetOrderByCode` + `useGetOrderById` | `useGetOrderByCode` + `useGetOrderById` |
-| Wyświetlanie | Countdown + status | Timeline z historią |
-| Cel | Szybki podgląd czasu | Szczegółowa historia |
-
-## Przykład użycia
+## Wyświetlanie zamówienia
 
 ```typescript
 // 1. Użytkownik wchodzi na stronę
@@ -229,5 +219,4 @@ Timeline with activeIndex based on order status
 
 ## Gotowe! 🎉
 
-Moduł działa dokładnie tak samo jak `show-order`, ale zamiast countdown wyświetla timeline z historią zamówienia.
-
+Moduł wyświetla zamówienie w formie timeline z historią oraz circular progress pokazującym postęp realizacji zamówienia.

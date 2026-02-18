@@ -103,7 +103,8 @@ const ShowOrderByTimelinePage = () => {
                   dateTime={creationDate.toISOString()}
                   className="mt-2 text-green-600"
                 >
-                  Czas utworzenia: {creationDate.toLocaleString("pl-PL", {
+                  Czas utworzenia:{" "}
+                  {creationDate.toLocaleString("pl-PL", {
                     day: "2-digit",
                     month: "2-digit",
                     year: "numeric",

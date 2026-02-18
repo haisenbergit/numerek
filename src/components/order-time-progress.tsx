@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import {
   CircularProgress,
   CircularProgressIndicator,
-  CircularProgressTrack,
   CircularProgressRange,
+  CircularProgressTrack,
   CircularProgressValueText,
 } from "@/components/ui/circular-progress";
 
@@ -58,7 +58,8 @@ export const OrderTimeProgress = ({
 
   // Oblicz pozostały czas
   const getRemainingTimeText = () => {
-    if (isOverdue) return "Upłynął zadeklarowany termin przygotowania zamówienia";
+    if (isOverdue)
+      return "Upłynął zadeklarowany termin przygotowania zamówienia";
 
     const totalSeconds = Math.floor(remainingTime / 1000);
     const days = Math.floor(totalSeconds / (24 * 3600));
@@ -89,7 +90,7 @@ export const OrderTimeProgress = ({
           <CircularProgressTrack className="text-green-200 dark:text-green-900" />
           <CircularProgressRange className="text-green-600" />
         </CircularProgressIndicator>
-        <CircularProgressValueText className="text-green-700 dark:text-green-300 text-2xl font-semibold" />
+        <CircularProgressValueText className="text-2xl font-semibold text-green-700 dark:text-green-300" />
       </CircularProgress>
       <div className="text-center">
         <p
