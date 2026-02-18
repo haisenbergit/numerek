@@ -262,7 +262,7 @@ const ShowOrderByTimelinePage = () => {
                   >
                     {!order.isActive
                       ? "Zamówienie zostało odebrane i zamknięte"
-                      : "Zamówienie nie zostało jeszcze zamknięte"}
+                      : "Zamówienie zostanie wkrótkce zamknięte"}
                   </TimelineDescription>
                 </TimelineHeader>
                 {!order.isActive && (
