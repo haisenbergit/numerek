@@ -104,6 +104,25 @@ export const markAsReady = mutation({
   },
 });
 
+export const markAsDelivered = mutation({
+  args: { orderId: v.id("orders") },
+  handler: async (ctx, args) => {
+    const userId = await getAuthenticatedUserId(ctx);
+
+    const order = await ctx.db.get(args.orderId);
+
+    if (!order) throw new Error("Order not found");
+
+    if (order.userId !== userId) throw new Error("Unauthorized");
+
+    await ctx.db.patch(args.orderId, {
+      deliveryTime: Date.now()
+    });
+
+    return args.orderId;
+  },
+});
+
 function generateJoinCode(): string {
   const length = 3;
   const chars = "ABCDEFGHJKMNPQRSTUVWXYZ123456789";
