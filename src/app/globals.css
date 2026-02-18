@@ -57,6 +57,9 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  .theme {
+    --animate-spin-around: spin-around 0.8s linear infinite;
+  }
 }
 
 @layer base {
@@ -118,4 +121,15 @@
 .messages-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #dcdcdc #f8f8f8;
+}
+
+@theme inline {
+  @keyframes spin-around {
+    0% {
+      transform: rotate(-90deg);
+    }
+    100% {
+      transform: rotate(270deg);
+    }
+  }
 }

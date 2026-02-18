@@ -151,7 +151,7 @@ export const OrdersList = () => {
                             )}
                           </div>
                           <Link
-                            href={`/show-order/${order._id}`}
+                            href={`/show-order-by-timeline/${order._id}`}
                             className="w-full"
                           >
                             <Button
