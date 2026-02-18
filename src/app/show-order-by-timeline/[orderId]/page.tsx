@@ -26,7 +26,7 @@ const ShowOrderByTimelinePage = () => {
 
   useEffect(() => {
     if (!isLoading && !order) {
-      toast.error("Nie znaleziono aktywnego zamówienia");
+      toast.error("Nie znaleziono zamówienia");
       router.push("/show-order-by-timeline");
     }
   }, [order, isLoading, router]);
