@@ -84,6 +84,7 @@ export const OrdersList = () => {
         ) : (
           <div className="space-y-3">
             {data.map((order) => {
+              const isReady = order.readyTime !== undefined;
               const estimatedReadinessDate = new Date(
                 order.estReadyTime
               );
@@ -124,9 +125,9 @@ export const OrdersList = () => {
                         Data odbioru: {formattedDate}
                       </div>
                       <div
-                        className={`text-sm font-medium ${order.isReady ? "text-green-600" : !order.isActive && !order.isReady ? "text-red-600" : isPast ? "text-red-600" : "text-blue-600"}`}
+                        className={`text-sm font-medium ${isReady ? "text-green-600" : !order.isActive && !isReady ? "text-red-600" : isPast ? "text-red-600" : "text-blue-600"}`}
                       >
-                        {order.isReady && order.readyTime
+                        {isReady && order.readyTime
                           ? `Gotowe od: ${new Date(
                               order.readyTime
                             ).toLocaleString("pl-PL", {
@@ -136,7 +137,7 @@ export const OrdersList = () => {
                               hour: "2-digit",
                               minute: "2-digit",
                             })}`
-                          : !order.isActive && !order.isReady
+                          : !order.isActive && !isReady
                             ? "Nie wydano"
                             : isPast
                               ? `Opóźnienie: ${Math.abs(minutesRemaining)} min`
@@ -150,7 +151,7 @@ export const OrdersList = () => {
                             <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
                               Aktywne
                             </span>
-                            {order.isReady && (
+                            {isReady && (
                               <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
                                 Gotowe
                               </span>
@@ -168,7 +169,7 @@ export const OrdersList = () => {
                               Pokaż zamówienie
                             </Button>
                           </Link>
-                          {!order.isReady && (
+                          {!isReady && (
                             <Button
                               variant="default"
                               size="sm"

@@ -34,7 +34,7 @@ const ShowOrderByTimelinePage = () => {
   const activeIndex = useMemo(() => {
     if (!order) return 0;
     if (!order.isActive) return 2;
-    if (order.isReady) return 1;
+    if (order.readyTime !== undefined) return 1;
     return 0;
   }, [order]);
 
@@ -48,6 +48,7 @@ const ShowOrderByTimelinePage = () => {
 
   if (!order) return null;
 
+  const isReady = order.readyTime !== undefined;
   const creationDate = new Date(order._creationTime);
   const estReadyTime = new Date(order.estReadyTime);
   const readyDate = order.readyTime ? new Date(order.readyTime) : null;
@@ -55,7 +56,7 @@ const ShowOrderByTimelinePage = () => {
   return (
     <div className="flex min-h-screen w-screen flex-col items-center bg-gray-50 p-4 py-8">
       <div className="w-full max-w-2xl">
-        {!order.isReady && (
+        {!isReady && (
           <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-center text-lg font-semibold text-gray-800">
               Postęp realizacji
@@ -86,7 +87,7 @@ const ShowOrderByTimelinePage = () => {
                 <Package className="h-5 w-5 text-white" />
               </TimelineDot>
               <TimelineConnector
-                className={order.isReady ? "!bg-green-700" : ""}
+                className={isReady ? "!bg-green-700" : ""}
               />
               <TimelineContent>
                 <TimelineHeader>
@@ -117,9 +118,9 @@ const ShowOrderByTimelinePage = () => {
 
             <TimelineItem>
               <TimelineDot
-                className={order.isReady ? "border-green-700 bg-green-700" : ""}
+                className={isReady ? "border-green-700 bg-green-700" : ""}
               >
-                {order.isReady ? (
+                {isReady ? (
                   <CheckCircle className="h-5 w-5 text-white" />
                 ) : (
                   <Package className="h-5 w-5" />
@@ -127,22 +128,22 @@ const ShowOrderByTimelinePage = () => {
               </TimelineDot>
               <TimelineConnector
                 className={
-                  order.isReady && !order.isActive ? "!bg-green-700" : ""
+                  isReady && !order.isActive ? "!bg-green-700" : ""
                 }
               />
               <TimelineContent>
                 <TimelineHeader>
                   <TimelineTitle
-                    className={order.isReady ? "text-green-700" : ""}
+                    className={isReady ? "text-green-700" : ""}
                   >
-                    {order.isReady
+                    {isReady
                       ? "Zamówienie gotowe do odbioru"
                       : "Oczekiwanie na realizację"}
                   </TimelineTitle>
                   <TimelineDescription
-                    className={order.isReady ? "text-green-700" : ""}
+                    className={isReady ? "text-green-700" : ""}
                   >
-                    {order.isReady
+                    {isReady
                       ? "Zamówienie zostało zrealizowane i jest gotowe"
                       : "Zamówienie jest w trakcie realizacji"}
                   </TimelineDescription>
@@ -153,9 +154,9 @@ const ShowOrderByTimelinePage = () => {
                       ? readyDate.toISOString()
                       : estReadyTime.toISOString()
                   }
-                  className={order.isReady ? "mt-2 text-green-700" : "mt-2"}
+                  className={isReady ? "mt-2 text-green-700" : "mt-2"}
                 >
-                  {order.isReady && readyDate ? (
+                  {isReady && readyDate ? (
                     <>
                       Gotowe:{" "}
                       {readyDate.toLocaleString("pl-PL", {

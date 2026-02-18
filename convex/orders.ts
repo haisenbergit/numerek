@@ -57,14 +57,12 @@ export const create = mutation({
     const timePreparationInMilliseconds = args.timePreparationInMinutes * 60 * 1000;
     const estReadyTime = timestampNow + timePreparationInMilliseconds;
     const isActive = true;
-    const isReady = false;
 
     return await ctx.db.insert("orders", {
       userId,
       code,
       estReadyTime,
       isActive,
-      isReady,
       name: args.name,
     });
   },
@@ -99,7 +97,6 @@ export const markAsReady = mutation({
     if (order.userId !== userId) throw new Error("Unauthorized");
 
     await ctx.db.patch(args.orderId, {
-      isReady: true,
       readyTime: Date.now()
     });
 
