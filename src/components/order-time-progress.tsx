@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CircularProgressCombined } from "@/components/ui/circular-progress";
+import {
+  CircularProgress,
+  CircularProgressIndicator,
+  CircularProgressTrack,
+  CircularProgressRange,
+  CircularProgressValueText,
+} from "@/components/ui/circular-progress";
 
 interface OrderTimeProgressProps {
   creationTime: number;
@@ -73,13 +79,18 @@ export const OrderTimeProgress = ({
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <CircularProgressCombined
+      <CircularProgress
         value={progress}
         max={100}
         size={size}
         thickness={thickness}
-        className={isOverdue ? "text-red-600" : "text-green-600"}
-      />
+      >
+        <CircularProgressIndicator>
+          <CircularProgressTrack className="text-green-200 dark:text-green-900" />
+          <CircularProgressRange className="text-green-600" />
+        </CircularProgressIndicator>
+        <CircularProgressValueText className="text-green-700 dark:text-green-300" />
+      </CircularProgress>
       <div className="text-center">
         <p
           className={`text-lg font-semibold ${isOverdue ? "text-red-600" : "text-gray-700"}`}
