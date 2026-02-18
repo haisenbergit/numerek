@@ -55,14 +55,14 @@ export const create = mutation({
     const code = generateJoinCode();
     const timestampNow = Date.now();
     const timePreparationInMilliseconds = args.timePreparationInMinutes * 60 * 1000;
-    const estimatedReadinessTime = timestampNow + timePreparationInMilliseconds;
+    const estReadyTime = timestampNow + timePreparationInMilliseconds;
     const isActive = true;
     const isReady = false;
 
     return await ctx.db.insert("orders", {
       userId,
       code,
-      estimatedReadinessTime,
+      estReadyTime,
       isActive,
       isReady,
       name: args.name,

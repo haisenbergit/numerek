@@ -85,7 +85,7 @@ export const OrdersList = () => {
           <div className="space-y-3">
             {data.map((order) => {
               const estimatedReadinessDate = new Date(
-                order.estimatedReadinessTime
+                order.estReadyTime
               );
               const now = new Date();
               const isPast = estimatedReadinessDate < now;

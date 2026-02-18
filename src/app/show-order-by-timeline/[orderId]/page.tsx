@@ -49,7 +49,7 @@ const ShowOrderByTimelinePage = () => {
   if (!order) return null;
 
   const creationDate = new Date(order._creationTime);
-  const estimatedReadinessTime = new Date(order.estimatedReadinessTime);
+  const estReadyTime = new Date(order.estReadyTime);
   const readyDate = order.readyTime ? new Date(order.readyTime) : null;
 
   return (
@@ -63,7 +63,7 @@ const ShowOrderByTimelinePage = () => {
             <div className="flex justify-center">
               <OrderTimeProgress
                 creationTime={order._creationTime}
-                estimatedReadinessTime={order.estimatedReadinessTime}
+                estReadyTime={order.estReadyTime}
                 size={140}
                 thickness={10}
               />
@@ -151,7 +151,7 @@ const ShowOrderByTimelinePage = () => {
                   dateTime={
                     readyDate
                       ? readyDate.toISOString()
-                      : estimatedReadinessTime.toISOString()
+                      : estReadyTime.toISOString()
                   }
                   className={order.isReady ? "mt-2 text-green-700" : "mt-2"}
                 >
@@ -169,7 +169,7 @@ const ShowOrderByTimelinePage = () => {
                   ) : (
                     <>
                       Szacowany czas odbioru:{" "}
-                      {estimatedReadinessTime.toLocaleString("pl-PL", {
+                      {estReadyTime.toLocaleString("pl-PL", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",
