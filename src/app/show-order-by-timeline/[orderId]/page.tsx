@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle, Loader2, Package, XCircle } from "lucide-react";
+import { CheckCircle, Loader2, Package, Truck, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { OrderTimeProgress } from "@/components/order-time-progress";
 import {
@@ -33,7 +33,8 @@ const ShowOrderByTimelinePage = () => {
 
   const activeIndex = useMemo(() => {
     if (!order) return 0;
-    if (!order.isActive) return 2;
+    if (!order.isActive) return 3;
+    if (order.deliveryTime !== undefined) return 2;
     if (order.readyTime !== undefined) return 1;
     return 0;
   }, [order]);
@@ -49,9 +50,11 @@ const ShowOrderByTimelinePage = () => {
   if (!order) return null;
 
   const isReady = order.readyTime !== undefined;
+  const isDelivered = order.deliveryTime !== undefined;
   const creationDate = new Date(order._creationTime);
   const estReadyTime = new Date(order.estReadyTime);
   const readyDate = order.readyTime ? new Date(order.readyTime) : null;
+  const deliveryDate = order.deliveryTime ? new Date(order.deliveryTime) : null;
 
   return (
     <div className="flex min-h-screen w-screen flex-col items-center bg-gray-50 p-4 py-8">
@@ -87,7 +90,7 @@ const ShowOrderByTimelinePage = () => {
                 <Package className="h-5 w-5 text-white" />
               </TimelineDot>
               <TimelineConnector
-                className={isReady ? "!bg-green-700" : ""}
+                className={isDelivered ? "!bg-green-700" : ""}
               />
               <TimelineContent>
                 <TimelineHeader>
@@ -127,9 +130,7 @@ const ShowOrderByTimelinePage = () => {
                 )}
               </TimelineDot>
               <TimelineConnector
-                className={
-                  isReady && !order.isActive ? "!bg-green-700" : ""
-                }
+                className={isDelivered ? "!bg-green-700" : ""}
               />
               <TimelineContent>
                 <TimelineHeader>
@@ -180,6 +181,58 @@ const ShowOrderByTimelinePage = () => {
                     </>
                   )}
                 </TimelineTime>
+              </TimelineContent>
+            </TimelineItem>
+
+            <TimelineItem>
+              <TimelineDot
+                className={
+                  isDelivered ? "border-green-700 bg-green-700" : ""
+                }
+              >
+                {isDelivered ? (
+                  <Truck className="h-5 w-5 text-white" />
+                ) : (
+                  <Package className="h-5 w-5" />
+                )}
+              </TimelineDot>
+              <TimelineConnector
+                className={
+                  isDelivered && !order.isActive ? "!bg-green-700" : ""
+                }
+              />
+              <TimelineContent>
+                <TimelineHeader>
+                  <TimelineTitle
+                    className={isDelivered ? "text-green-700" : ""}
+                  >
+                    {isDelivered
+                      ? "Zamówienie wydane"
+                      : "Oczekiwanie na wydanie"}
+                  </TimelineTitle>
+                  <TimelineDescription
+                    className={isDelivered ? "text-green-700" : ""}
+                  >
+                    {isDelivered
+                      ? "Zamówienie zostało przekazane klientowi"
+                      : "Zamówienie jeszcze nie zostało wydane"}
+                  </TimelineDescription>
+                </TimelineHeader>
+                {isDelivered && deliveryDate && (
+                  <TimelineTime
+                    dateTime={deliveryDate.toISOString()}
+                    className="mt-2 text-green-700"
+                  >
+                    Wydane:{" "}
+                    {deliveryDate.toLocaleString("pl-PL", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </TimelineTime>
+                )}
               </TimelineContent>
             </TimelineItem>
 

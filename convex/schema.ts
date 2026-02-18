@@ -69,6 +69,7 @@ const schema = defineSchema({
     estReadyTime: v.number(),
     isActive: v.boolean(),
     readyTime: v.optional(v.number()),
+    deliveryTime: v.optional(v.number()),
   })
     .index("by_user_id", ["userId"])
     .index("by_active_code", ["code", "isActive"]),
