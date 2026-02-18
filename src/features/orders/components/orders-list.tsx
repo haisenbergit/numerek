@@ -84,18 +84,24 @@ export const OrdersList = () => {
         ) : (
           <div className="space-y-3">
             {data.map((order) => {
-              const orderDate = new Date(order.orderTime);
+              const estimatedReadinessDate = new Date(
+                order.estimatedReadinessTime
+              );
               const now = new Date();
-              const isPast = orderDate < now;
-              const timeDiffMs = orderDate.getTime() - now.getTime();
+              const isPast = estimatedReadinessDate < now;
+              const timeDiffMs =
+                estimatedReadinessDate.getTime() - now.getTime();
               const minutesRemaining = Math.floor(timeDiffMs / (1000 * 60));
-              const formattedDate = orderDate.toLocaleString("pl-PL", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              });
+              const formattedDate = estimatedReadinessDate.toLocaleString(
+                "pl-PL",
+                {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }
+              );
 
               return (
                 <div

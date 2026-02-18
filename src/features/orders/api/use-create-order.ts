@@ -4,7 +4,7 @@ import { Id } from "@convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 
 type RequestType = {
-  timeInMinutes: number;
+  timePreparationInMinutes: number;
   name?: string;
 };
 type ResponseType = Id<"orders"> | null;

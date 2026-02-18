@@ -47,22 +47,22 @@ export const getById = query({
 
 export const create = mutation({
   args: {
-    timeInMinutes: v.number(),
+    timePreparationInMinutes: v.number(),
     name: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthenticatedUserId(ctx);
     const code = generateJoinCode();
     const timestampNow = Date.now();
-    const timeInMilliseconds = args.timeInMinutes * 60 * 1000;
-    const orderTime = timestampNow + timeInMilliseconds;
+    const timePreparationInMilliseconds = args.timePreparationInMinutes * 60 * 1000;
+    const estimatedReadinessTime = timestampNow + timePreparationInMilliseconds;
     const isActive = true;
     const isReady = false;
 
     return await ctx.db.insert("orders", {
       userId,
       code,
-      orderTime,
+      estimatedReadinessTime,
       isActive,
       isReady,
       name: args.name,

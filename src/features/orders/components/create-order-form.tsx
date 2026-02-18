@@ -16,7 +16,8 @@ import { useCreateOrder } from "@/features/orders/api/use-create-order";
 
 export const CreateOrderForm = () => {
   const router = useRouter();
-  const [orderTime, setOrderTime] = useState<string>("");
+  const [estimatedReadinessTime, setEstimatedReadinessTime] =
+    useState<string>("");
   const [orderName, setOrderName] = useState<string>("");
 
   const { mutate, isPending } = useCreateOrder();
@@ -24,23 +25,29 @@ export const CreateOrderForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const timeInMinutes = parseInt(orderTime, 10);
+    const estimatedReadinessTimeInMinutes = parseInt(
+      estimatedReadinessTime,
+      10
+    );
 
-    if (isNaN(timeInMinutes) || timeInMinutes <= 0) {
+    if (
+      isNaN(estimatedReadinessTimeInMinutes) ||
+      estimatedReadinessTimeInMinutes <= 0
+    ) {
       toast.error("Wprowadź prawidłową liczbę minut");
       return;
     }
 
     void mutate(
       {
-        timeInMinutes,
+        timePreparationInMinutes: estimatedReadinessTimeInMinutes,
         name: orderName.trim() || undefined,
       },
       {
         onSuccess(orderId) {
           if (orderId) {
             toast.success("Zamówienie utworzone pomyślnie!");
-            setOrderTime("");
+            setEstimatedReadinessTime("");
             setOrderName("");
             router.refresh();
           } else {
@@ -84,8 +91,8 @@ export const CreateOrderForm = () => {
             <Input
               id="orderTime"
               type="number"
-              value={orderTime}
-              onChange={(e) => setOrderTime(e.target.value)}
+              value={estimatedReadinessTime}
+              onChange={(e) => setEstimatedReadinessTime(e.target.value)}
               disabled={isPending}
               required
               autoFocus

@@ -66,7 +66,7 @@ const schema = defineSchema({
     userId: v.id("users"),
     name: v.optional(v.string()),
     code: v.string(),
-    orderTime: v.number(),
+    estimatedReadinessTime: v.number(),
     isActive: v.boolean(),
     isReady: v.boolean(),
     readyTime: v.optional(v.number()),

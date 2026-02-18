@@ -11,14 +11,14 @@ import {
 
 interface OrderTimeProgressProps {
   creationTime: number;
-  orderTime: number;
+  estimatedReadinessTime: number;
   size?: number;
   thickness?: number;
 }
 
 export const OrderTimeProgress = ({
   creationTime,
-  orderTime,
+  estimatedReadinessTime,
   size = 120,
   thickness = 8,
 }: OrderTimeProgressProps) => {
@@ -27,10 +27,10 @@ export const OrderTimeProgress = ({
   useEffect(() => {
     const calculateProgress = () => {
       const now = Date.now();
-      const totalDuration = orderTime - creationTime;
+      const totalDuration = estimatedReadinessTime - creationTime;
       const elapsed = now - creationTime;
 
-      if (now >= orderTime) {
+      if (now >= estimatedReadinessTime) {
         return 100;
       }
 
@@ -51,9 +51,9 @@ export const OrderTimeProgress = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [creationTime, orderTime]);
+  }, [creationTime, estimatedReadinessTime]);
 
-  const remainingTime = orderTime - Date.now();
+  const remainingTime = estimatedReadinessTime - Date.now();
   const isOverdue = remainingTime < 0;
 
   // Oblicz pozostały czas
