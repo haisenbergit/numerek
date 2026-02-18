@@ -52,7 +52,7 @@ export const OrderTimeProgress = ({
 
   // Oblicz pozostały czas
   const getRemainingTimeText = () => {
-    if (isOverdue) return "Termin minął";
+    if (isOverdue) return "Upłynął zadeklarowany termin przygotowania zamówienia";
 
     const totalSeconds = Math.floor(remainingTime / 1000);
     const days = Math.floor(totalSeconds / (24 * 3600));
@@ -85,9 +85,6 @@ export const OrderTimeProgress = ({
           className={`text-lg font-semibold ${isOverdue ? "text-red-600" : "text-gray-700"}`}
         >
           {getRemainingTimeText()}
-        </p>
-        <p className="text-sm text-gray-500">
-          {isOverdue ? "do realizacji" : "pozostało"}
         </p>
       </div>
     </div>
