@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -29,16 +27,18 @@ export const CodeInputModal = ({
 }: CodeInputModalProps) => {
   const [code, setCode] = useState("");
 
-  const isCodeComplete = code.length === 3;
   const progressValue = (code.length / 3) * 100;
 
   const handleChange = (value: string) => {
-    setCode(value.toUpperCase());
-  };
+    const upperValue = value.toUpperCase();
+    setCode(upperValue);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isCodeComplete) onCodeSubmitAction(code);
+    // Auto-submit when code is complete with delay
+    if (upperValue.length === 3) {
+      setTimeout(() => {
+        onCodeSubmitAction(upperValue);
+      }, 600);
+    }
   };
 
   return (
@@ -59,30 +59,21 @@ export const CodeInputModal = ({
             className="h-1 max-w-[66%] bg-gray-100 [&>div]:bg-green-600"
           />
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div className="flex justify-center">
-              <InputOTP
-                maxLength={3}
-                pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                value={code}
-                onChange={handleChange}
-                autoFocus={false}
-              >
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                </InputOTPGroup>
-              </InputOTP>
-            </div>
-          </div>
-          <DialogFooter className="mt-4">
-            <Button type="submit" className="w-full" disabled={!isCodeComplete}>
-              Pokaż zamówienie
-            </Button>
-          </DialogFooter>
-        </form>
+        <div className="flex justify-center">
+          <InputOTP
+            maxLength={3}
+            pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+            value={code}
+            onChange={handleChange}
+            autoFocus={false}
+          >
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+            </InputOTPGroup>
+          </InputOTP>
+        </div>
       </DialogContent>
     </Dialog>
   );
