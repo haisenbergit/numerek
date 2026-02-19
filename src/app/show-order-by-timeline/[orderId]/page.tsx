@@ -143,7 +143,7 @@ const ShowOrderByTimelinePage = () => {
                 <CheckCircle className="h-5 w-5 text-white" />
               </TimelineDot>
               <TimelineConnector
-                className={isDelivered ? "!bg-green-700" : ""}
+                className={isReady ? "!bg-green-700" : ""}
               />
               <TimelineContent>
                 <TimelineHeader>
