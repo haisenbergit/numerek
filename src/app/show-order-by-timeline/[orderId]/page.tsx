@@ -105,17 +105,6 @@ const ShowOrderByTimelinePage = () => {
   return (
     <div className="flex min-h-screen w-screen flex-col items-center bg-gray-50 p-4 py-8">
       <div className="w-full max-w-2xl">
-        {soundIntervalId && (
-          <div className="mb-4 rounded-lg bg-green-100 p-4 shadow-sm">
-            <button
-              onClick={stopLoopingSound}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-green-700"
-            >
-              <VolumeX className="h-5 w-5" />
-              Wycisz
-            </button>
-          </div>
-        )}
 
         {!isReady && (
           <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
@@ -234,6 +223,15 @@ const ShowOrderByTimelinePage = () => {
                     </>
                   )}
                 </TimelineTime>
+                {isReady && soundIntervalId && (
+                  <button
+                    onClick={stopLoopingSound}
+                    className="mt-3 flex items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700"
+                  >
+                    <VolumeX className="h-4 w-4" />
+                    Wycisz
+                  </button>
+                )}
               </TimelineContent>
             </TimelineItem>
 
