@@ -90,14 +90,21 @@ export const OrdersList = () => {
         <CardTitle>Twoje zamówienia</CardTitle>
         <CardDescription>
           {data && data.length > 0
-            ? `Masz ${data.length} ${data.length === 1 ? "zamówienie" : "zamówień"}`
+            ? (() => {
+                const activeCount = data.filter((order) => order.isActive).length;
+                return activeCount > 0
+                  ? `Masz ${activeCount} ${activeCount === 1 ? "aktywne zamówienie" : "aktywnych zamówień"}`
+                  : "Nie masz aktywnych zamówień";
+              })()
             : "Nie masz jeszcze żadnych zamówień"}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {!data || data.length === 0 ? (
+        {!data || data.length === 0 || data.filter((order) => order.isActive).length === 0 ? (
           <div className="py-8 text-center text-slate-500">
-            Utwórz swoje pierwsze zamówienie
+            {!data || data.length === 0
+              ? "Utwórz swoje pierwsze zamówienie"
+              : "Nie masz aktywnych zamówień"}
           </div>
         ) : (
           <Scroller
@@ -107,7 +114,10 @@ export const OrdersList = () => {
             size={20}
           >
             <div className="space-y-3">
-              {data.map((order) => {
+              {[...data]
+                .filter((order) => order.isActive)
+                .sort((a, b) => a.estReadyTime - b.estReadyTime)
+                .map((order) => {
               const isReady = order.readyTime !== undefined;
               const isDelivered = order.deliveryTime !== undefined;
               const estimatedReadinessDate = new Date(order.estReadyTime);
