@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Scroller } from "@/components/ui/scroller";
 import { useCloseOrder } from "@/features/orders/api/use-close-order";
 import { useGetOrders } from "@/features/orders/api/use-get-orders";
 import { useMarkAsDelivered } from "@/features/orders/api/use-mark-as-delivered";
@@ -99,8 +100,14 @@ export const OrdersList = () => {
             Utwórz swoje pierwsze zamówienie
           </div>
         ) : (
-          <div className="space-y-3">
-            {data.map((order) => {
+          <Scroller
+            orientation="vertical"
+            hideScrollbar={true}
+            className="max-h-[600px] pr-2"
+            size={20}
+          >
+            <div className="space-y-3">
+              {data.map((order) => {
               const isReady = order.readyTime !== undefined;
               const isDelivered = order.deliveryTime !== undefined;
               const estimatedReadinessDate = new Date(order.estReadyTime);
@@ -123,25 +130,31 @@ export const OrdersList = () => {
               return (
                 <div
                   key={order._id}
-                  className={`rounded-lg border p-4 transition-colors ${
-                    order.isActive && isPast ? "border-2 border-red-500" : ""
+                  className={`rounded-lg border bg-white p-5 shadow-sm transition-all hover:shadow-md ${
+                    order.isActive && isPast 
+                      ? "border-2 border-red-500 bg-red-50" 
+                      : order.isActive 
+                        ? "border-slate-200" 
+                        : "border-slate-200 bg-slate-50"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-2">
                       {order.name && (
-                        <div className="text-base font-semibold text-gray-900">
+                        <div className="text-lg font-bold text-gray-900">
                           {order.name}
                         </div>
                       )}
-                      <div className="font-mono text-sm font-semibold">
-                        Kod odbioru: {order.code}
+                      <div className="flex items-center gap-2 rounded-md bg-slate-100 px-3 py-1.5 font-mono text-sm font-semibold text-slate-900">
+                        <span className="text-slate-500">Kod:</span>
+                        <span>{order.code}</span>
                       </div>
                       <div className="text-sm text-slate-600">
-                        Data odbioru: {formattedDate}
+                        <span className="font-medium">Data odbioru:</span>{" "}
+                        {formattedDate}
                       </div>
                       <div
-                        className={`text-sm font-medium ${isDelivered && order.deliveryTime ? "text-purple-600" : isReady ? "text-green-600" : !order.isActive && !isReady ? "text-red-600" : isPast ? "text-red-600" : "text-blue-600"}`}
+                        className={`rounded-md px-3 py-1.5 text-sm font-semibold ${isDelivered && order.deliveryTime ? "bg-purple-100 text-purple-700" : isReady ? "bg-green-100 text-green-700" : !order.isActive && !isReady ? "bg-red-100 text-red-700" : isPast ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"}`}
                       >
                         {isDelivered && order.deliveryTime
                           ? `Wydane: ${new Date(
@@ -242,7 +255,8 @@ export const OrdersList = () => {
                 </div>
               );
             })}
-          </div>
+            </div>
+          </Scroller>
         )}
       </CardContent>
     </Card>
