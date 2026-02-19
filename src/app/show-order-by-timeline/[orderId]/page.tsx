@@ -1,8 +1,15 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle, Handshake, Hourglass, Loader2 } from "lucide-react";
+import {
+  BellRing,
+  CheckCircle,
+  Handshake,
+  Hourglass,
+  Loader2,
+  VolumeX,
+} from "lucide-react";
 import { toast } from "sonner";
 import { OrderTimeProgress } from "@/components/order-time-progress";
 import {
@@ -17,12 +24,54 @@ import {
   TimelineTitle,
 } from "@/components/ui/timeline";
 import { useGetOrderById } from "@/features/orders/api/use-get-order-by-id";
+import { useTurnOffSound } from "@/features/orders/api/use-turn-off-sound";
+import { voiceoverPackMaleReadySound } from "@/lib/voiceover-pack-male-ready";
 import { useOrderId } from "@/hooks/use-order-id";
+import { useSound } from "@/hooks/use-sound";
 
 const ShowOrderByTimelinePage = () => {
   const router = useRouter();
   const orderId = useOrderId();
   const { data: order, isLoading } = useGetOrderById(orderId);
+  const { mutate: turnOffSound } = useTurnOffSound();
+  const previousReadyTimeRef = useRef<number | undefined>(undefined);
+  const [soundIntervalId, setSoundIntervalId] = useState<NodeJS.Timeout | null>(
+    null
+  );
+
+  const [playSound, { stop: stopSound }] = useSound(
+    voiceoverPackMaleReadySound,
+    {
+      volume: 1,
+      interrupt: true,
+    }
+  );
+
+  const [playTestSound] = useSound(voiceoverPackMaleReadySound, {
+    volume: 1,
+    interrupt: true,
+  });
+
+  const startLoopingSound = useCallback(() => {
+    if (soundIntervalId) return;
+
+    playSound();
+    const intervalId = setInterval(() => {
+      playSound();
+    }, 2000);
+
+    setSoundIntervalId(intervalId);
+  }, [soundIntervalId, playSound]);
+
+  const stopLoopingSound = useCallback(() => {
+    if (soundIntervalId) {
+      clearInterval(soundIntervalId);
+      setSoundIntervalId(null);
+    }
+    stopSound();
+
+    turnOffSound({ orderId });
+  }, [soundIntervalId, stopSound, turnOffSound, orderId]);
 
   useEffect(() => {
     if (!isLoading && !order) {
@@ -31,10 +80,32 @@ const ShowOrderByTimelinePage = () => {
     }
   }, [order, isLoading, router]);
 
+  useEffect(() => {
+    if (
+      order &&
+      order.readyTime !== undefined &&
+      previousReadyTimeRef.current === undefined
+    ) {
+      if (!order.turnOffSoundTime) {
+        startLoopingSound();
+      }
+    }
+    previousReadyTimeRef.current = order?.readyTime;
+  }, [order?.readyTime, order, startLoopingSound]);
+
+  useEffect(() => {
+    return () => {
+      if (soundIntervalId) {
+        clearInterval(soundIntervalId);
+      }
+    };
+  }, [soundIntervalId]);
+
   const activeIndex = useMemo(() => {
     if (!order) return 0;
-    if (!order.isActive) return 3;
-    if (order.deliveryTime !== undefined) return 2;
+    if (!order.isActive) return 4;
+    if (order.deliveryTime !== undefined) return 3;
+    if (order.readyTime !== undefined && order.turnOffSoundTime) return 2;
     if (order.readyTime !== undefined) return 1;
     return 0;
   }, [order]);
@@ -89,9 +160,7 @@ const ShowOrderByTimelinePage = () => {
               <TimelineDot className="border-green-700 bg-green-700">
                 <CheckCircle className="h-5 w-5 text-white" />
               </TimelineDot>
-              <TimelineConnector
-                className={isDelivered ? "!bg-green-700" : ""}
-              />
+              <TimelineConnector className={isReady ? "!bg-green-700" : ""} />
               <TimelineContent>
                 <TimelineHeader>
                   <TimelineTitle className="text-green-700">
@@ -128,9 +197,7 @@ const ShowOrderByTimelinePage = () => {
                   <Hourglass className="h-5 w-5" />
                 )}
               </TimelineDot>
-              <TimelineConnector
-                className={isDelivered ? "!bg-green-700" : ""}
-              />
+              <TimelineConnector className={isReady ? "!bg-green-700" : ""} />
               <TimelineContent>
                 <TimelineHeader>
                   <TimelineTitle className={isReady ? "text-green-700" : ""}>
@@ -176,6 +243,102 @@ const ShowOrderByTimelinePage = () => {
                     </>
                   )}
                 </TimelineTime>
+              </TimelineContent>
+            </TimelineItem>
+
+            <TimelineItem>
+              <TimelineDot
+                className={
+                  isReady && order.turnOffSoundTime
+                    ? "border-green-700 bg-green-700"
+                    : isReady
+                      ? "border-green-700 bg-green-700"
+                      : ""
+                }
+              >
+                {isReady && order.turnOffSoundTime ? (
+                  <CheckCircle className="h-5 w-5 text-white" />
+                ) : isReady ? (
+                  <BellRing className="h-5 w-5 text-white" />
+                ) : (
+                  <BellRing className="h-5 w-5" />
+                )}
+              </TimelineDot>
+              <TimelineConnector
+                className={isDelivered ? "!bg-green-700" : ""}
+              />
+              <TimelineContent>
+                <TimelineHeader>
+                  <TimelineTitle
+                    className={
+                      isReady && order.turnOffSoundTime
+                        ? "text-green-700"
+                        : isReady
+                          ? "text-green-700"
+                          : ""
+                    }
+                  >
+                    {isReady && order.turnOffSoundTime
+                      ? "Powiadomienie wyciszone"
+                      : isReady
+                        ? "Oczekiwanie na powiadomienie"
+                        : "Oczekiwanie na powiadomienie"}
+                  </TimelineTitle>
+                  <TimelineDescription
+                    className={
+                      isReady && order.turnOffSoundTime
+                        ? "text-green-700"
+                        : isReady
+                          ? "text-green-700"
+                          : ""
+                    }
+                  >
+                    {isReady && order.turnOffSoundTime
+                      ? "Powiadomienie dźwiękowe o możliwości odbioru wyciszone przez klienta"
+                      : isReady
+                        ? "Wycisz powiadomienie dźwiękowe o możliwości odbioru zamówienia"
+                        : "Oczekiwanie na pojawienie się powiadomienia dzwiękowego"}
+                  </TimelineDescription>
+                </TimelineHeader>
+                {isReady && order.turnOffSoundTime && (
+                  <TimelineTime
+                    dateTime={new Date(order.turnOffSoundTime).toISOString()}
+                    className="mt-2 text-green-700"
+                  >
+                    Wyciszono:{" "}
+                    <strong>
+                      {new Date(order.turnOffSoundTime).toLocaleString(
+                        "pl-PL",
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }
+                      )}
+                    </strong>
+                  </TimelineTime>
+                )}
+                {!isReady && (
+                  <button
+                    onClick={() => playTestSound()}
+                    className="relative mt-3 flex items-center justify-center gap-2 rounded-lg bg-gray-400 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-500"
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      <BellRing className="h-4 w-4" />
+                      Testuj dźwięk powiadomienia
+                    </span>
+                  </button>
+                )}
+                {isReady && soundIntervalId && !order.turnOffSoundTime && (
+                  <button
+                    onClick={stopLoopingSound}
+                    className="relative mt-3 flex items-center justify-center gap-2 rounded-lg bg-green-700 px-4 py-2 text-sm font-medium text-white transition-colors before:absolute before:inset-[12.5%] before:animate-[ping_2s_ease-in-out_infinite] before:rounded-lg before:bg-green-700 hover:bg-green-700"
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      <VolumeX className="h-4 w-4" />
+                      Wycisz
+                    </span>
+                  </button>
+                )}
               </TimelineContent>
             </TimelineItem>
 

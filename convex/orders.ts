@@ -123,6 +123,21 @@ export const markAsDelivered = mutation({
   },
 });
 
+export const turnOffSound = mutation({
+  args: { orderId: v.id("orders") },
+  handler: async (ctx, args) => {
+    const order = await ctx.db.get(args.orderId);
+
+    if (!order) throw new Error("Order not found");
+
+    await ctx.db.patch(args.orderId, {
+      turnOffSoundTime: Date.now()
+    });
+
+    return args.orderId;
+  },
+});
+
 function generateJoinCode(): string {
   const length = 3;
   const chars = "ABCDEFGHJKMNPQRSTUVWXYZ123456789";
