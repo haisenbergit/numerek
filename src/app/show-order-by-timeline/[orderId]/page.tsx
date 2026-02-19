@@ -226,10 +226,12 @@ const ShowOrderByTimelinePage = () => {
                 {isReady && soundIntervalId && (
                   <button
                     onClick={stopLoopingSound}
-                    className="mt-3 flex items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700"
+                    className="relative mt-3 flex items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700 before:absolute before:inset-0 before:rounded-lg before:bg-green-600 before:animate-[ping_1s_ease-in-out_infinite] [&::before]:scale-[1.025]"
                   >
-                    <VolumeX className="h-4 w-4" />
-                    Wycisz
+                    <span className="relative z-10 flex items-center gap-2">
+                      <VolumeX className="h-4 w-4" />
+                      Wycisz
+                    </span>
                   </button>
                 )}
               </TimelineContent>
