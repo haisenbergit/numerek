@@ -35,6 +35,14 @@ const ShowOrderByTimelinePage = () => {
     }
   );
 
+  const [playTestSound] = useSound(
+    voiceoverPackMaleReadySound,
+    {
+      volume: 1,
+      interrupt: true,
+    }
+  );
+
   const startLoopingSound = useCallback(() => {
     if (soundIntervalId) return;
 
@@ -261,7 +269,7 @@ const ShowOrderByTimelinePage = () => {
                       ? "Powiadomienie dźwiękowe o możliwości odbioru wyciszone przez klienta"
                       : isReady
                       ? "Wycisz powiadomienie dźwiękowe o możliwości odbioru zamówienia"
-                      : "Oczekiwanie na wyciszenie powiadomienia"}
+                      : "Oczekiwanie na pojawienie się powiadomienia dzwiękowego"}
                   </TimelineDescription>
                 </TimelineHeader>
                 {isReady && order.turnOffSoundTime && (
@@ -277,6 +285,17 @@ const ShowOrderByTimelinePage = () => {
                       })}
                     </strong>
                   </TimelineTime>
+                )}
+                {!isReady && (
+                  <button
+                    onClick={() => playTestSound()}
+                    className="relative mt-3 flex items-center justify-center gap-2 rounded-lg bg-gray-400 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-500"
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      <BellRing className="h-4 w-4" />
+                      Testuj dźwięk powiadomienia
+                    </span>
+                  </button>
                 )}
                 {isReady && soundIntervalId && !order.turnOffSoundTime && (
                   <button
