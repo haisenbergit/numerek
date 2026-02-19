@@ -7,7 +7,6 @@ import {
   Handshake,
   Hourglass,
   Loader2,
-  Truck,
 } from "lucide-react";
 import { toast } from "sonner";
 import { OrderTimeProgress } from "@/components/order-time-progress";
@@ -114,13 +113,12 @@ const ShowOrderByTimelinePage = () => {
                   className="mt-2 text-green-700"
                 >
                   Czas utworzenia:{" "}
-                  {creationDate.toLocaleString("pl-PL", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  <strong>
+                    {creationDate.toLocaleString("pl-PL", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </strong>
                 </TimelineTime>
               </TimelineContent>
             </TimelineItem>
@@ -166,24 +164,22 @@ const ShowOrderByTimelinePage = () => {
                   {isReady && readyDate ? (
                     <>
                       Gotowe:{" "}
-                      {readyDate.toLocaleString("pl-PL", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      <strong>
+                        {readyDate.toLocaleString("pl-PL", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </strong>
                     </>
                   ) : (
                     <>
                       Szacowany czas odbioru:{" "}
-                      {estReadyTime.toLocaleString("pl-PL", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      <strong>
+                        {estReadyTime.toLocaleString("pl-PL", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </strong>
                     </>
                   )}
                 </TimelineTime>
@@ -230,13 +226,12 @@ const ShowOrderByTimelinePage = () => {
                     className="mt-2 text-green-700"
                   >
                     Wydane:{" "}
-                    {deliveryDate.toLocaleString("pl-PL", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    <strong>
+                      {deliveryDate.toLocaleString("pl-PL", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </strong>
                   </TimelineTime>
                 )}
               </TimelineContent>
