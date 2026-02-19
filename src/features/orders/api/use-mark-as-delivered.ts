@@ -54,4 +54,3 @@ export const useMarkAsDelivered = () => {
 
   return { mutate, data, error, isPending, isSuccess, isError, isSettled };
 };
-

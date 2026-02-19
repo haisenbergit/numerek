@@ -13,14 +13,15 @@ import {
 } from "@/components/ui/card";
 import { useCloseOrder } from "@/features/orders/api/use-close-order";
 import { useGetOrders } from "@/features/orders/api/use-get-orders";
-import { useMarkAsReady } from "@/features/orders/api/use-mark-as-ready";
 import { useMarkAsDelivered } from "@/features/orders/api/use-mark-as-delivered";
+import { useMarkAsReady } from "@/features/orders/api/use-mark-as-ready";
 
 export const OrdersList = () => {
   const { data, isLoading } = useGetOrders();
   const { mutate: closeOrder, isPending: isClosing } = useCloseOrder();
   const { mutate: markAsReady, isPending: isMarkingReady } = useMarkAsReady();
-  const { mutate: markAsDelivered, isPending: isMarkingDelivered } = useMarkAsDelivered();
+  const { mutate: markAsDelivered, isPending: isMarkingDelivered } =
+    useMarkAsDelivered();
 
   const handleCloseOrder = (orderId: string) => {
     closeOrder(
@@ -102,9 +103,7 @@ export const OrdersList = () => {
             {data.map((order) => {
               const isReady = order.readyTime !== undefined;
               const isDelivered = order.deliveryTime !== undefined;
-              const estimatedReadinessDate = new Date(
-                order.estReadyTime
-              );
+              const estimatedReadinessDate = new Date(order.estReadyTime);
               const now = new Date();
               const isPast = estimatedReadinessDate < now;
               const timeDiffMs =
@@ -218,7 +217,7 @@ export const OrdersList = () => {
                               size="sm"
                               onClick={() => handleMarkAsDelivered(order._id)}
                               disabled={isMarkingDelivered}
-                              className="w-full text-xs bg-purple-600 hover:bg-purple-700"
+                              className="w-full bg-purple-600 text-xs hover:bg-purple-700"
                             >
                               Wydane
                             </Button>

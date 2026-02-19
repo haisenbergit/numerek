@@ -2,27 +2,22 @@
 
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import {
-  CheckCircle,
-  Handshake,
-  Hourglass,
-  Loader2,
-} from "lucide-react";
+import { CheckCircle, Handshake, Hourglass, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { OrderTimeProgress } from "@/components/order-time-progress";
-import { Timeline, TimelineConnector, TimelineContent, TimelineDescription, TimelineDot, TimelineHeader, TimelineItem, TimelineTime, TimelineTitle } from "@/components/ui/timeline";
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDescription,
+  TimelineDot,
+  TimelineHeader,
+  TimelineItem,
+  TimelineTime,
+  TimelineTitle,
+} from "@/components/ui/timeline";
 import { useGetOrderById } from "@/features/orders/api/use-get-order-by-id";
 import { useOrderId } from "@/hooks/use-order-id";
-
-
-
-
-
-
-
-
-
-
 
 const ShowOrderByTimelinePage = () => {
   const router = useRouter();
@@ -138,9 +133,7 @@ const ShowOrderByTimelinePage = () => {
               />
               <TimelineContent>
                 <TimelineHeader>
-                  <TimelineTitle
-                    className={isReady ? "text-green-700" : ""}
-                  >
+                  <TimelineTitle className={isReady ? "text-green-700" : ""}>
                     {isReady
                       ? "Zamówienie gotowe"
                       : "Oczekiwanie na realizację"}
@@ -188,9 +181,7 @@ const ShowOrderByTimelinePage = () => {
 
             <TimelineItem>
               <TimelineDot
-                className={
-                  isDelivered ? "border-green-700 bg-green-700" : ""
-                }
+                className={isDelivered ? "border-green-700 bg-green-700" : ""}
               >
                 {isDelivered ? (
                   <CheckCircle className="h-5 w-5 text-white" />
