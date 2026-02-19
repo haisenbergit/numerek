@@ -2,25 +2,22 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle, Handshake, Hourglass, Loader2, VolumeX } from "lucide-react";
+import {
+  BellRing,
+  CheckCircle,
+  Handshake,
+  Hourglass,
+  Loader2,
+  VolumeX,
+} from "lucide-react";
 import { toast } from "sonner";
 import { OrderTimeProgress } from "@/components/order-time-progress";
-import { useSound } from "@/hooks/use-sound";
-import { voiceoverPackMaleReadySound } from "@/lib/voiceover-pack-male-ready";
-import {
-  Timeline,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDescription,
-  TimelineDot,
-  TimelineHeader,
-  TimelineItem,
-  TimelineTime,
-  TimelineTitle,
-} from "@/components/ui/timeline";
+import { Timeline, TimelineConnector, TimelineContent, TimelineDescription, TimelineDot, TimelineHeader, TimelineItem, TimelineTime, TimelineTitle } from "@/components/ui/timeline";
 import { useGetOrderById } from "@/features/orders/api/use-get-order-by-id";
 import { useTurnOffSound } from "@/features/orders/api/use-turn-off-sound";
+import { voiceoverPackMaleReadySound } from "@/lib/voiceover-pack-male-ready";
 import { useOrderId } from "@/hooks/use-order-id";
+import { useSound } from "@/hooks/use-sound";
 
 const ShowOrderByTimelinePage = () => {
   const router = useRouter();
@@ -85,8 +82,9 @@ const ShowOrderByTimelinePage = () => {
 
   const activeIndex = useMemo(() => {
     if (!order) return 0;
-    if (!order.isActive) return 3;
-    if (order.deliveryTime !== undefined) return 2;
+    if (!order.isActive) return 4;
+    if (order.deliveryTime !== undefined) return 3;
+    if (order.readyTime !== undefined && order.turnOffSoundTime) return 2;
     if (order.readyTime !== undefined) return 1;
     return 0;
   }, [order]);
@@ -182,7 +180,7 @@ const ShowOrderByTimelinePage = () => {
                 )}
               </TimelineDot>
               <TimelineConnector
-                className={isDelivered ? "!bg-green-700" : ""}
+                className={isReady ? "!bg-green-700" : ""}
               />
               <TimelineContent>
                 <TimelineHeader>
@@ -229,6 +227,57 @@ const ShowOrderByTimelinePage = () => {
                     </>
                   )}
                 </TimelineTime>
+              </TimelineContent>
+            </TimelineItem>
+
+            <TimelineItem>
+              <TimelineDot
+                className={isReady && order.turnOffSoundTime ? "border-green-700 bg-green-700" : isReady ? "border-green-700 bg-green-700" : ""}
+              >
+                {isReady && order.turnOffSoundTime ? (
+                  <CheckCircle className="h-5 w-5 text-white" />
+                ) : isReady ? (
+                  <BellRing className="h-5 w-5 text-white" />
+                ) : (
+                  <BellRing className="h-5 w-5" />
+                )}
+              </TimelineDot>
+              <TimelineConnector
+                className={isDelivered ? "!bg-green-700" : ""}
+              />
+              <TimelineContent>
+                <TimelineHeader>
+                  <TimelineTitle className={isReady && order.turnOffSoundTime ? "text-green-700" : isReady ? "text-green-700" : ""}>
+                    {isReady && order.turnOffSoundTime
+                      ? "Powiadomienie wyciszone"
+                      : isReady
+                      ? "Oczekiwanie na powiadomienie"
+                      : "Oczekiwanie na powiadomienie"}
+                  </TimelineTitle>
+                  <TimelineDescription
+                    className={isReady && order.turnOffSoundTime ? "text-green-700" : isReady ? "text-green-700" : ""}
+                  >
+                    {isReady && order.turnOffSoundTime
+                      ? "Powiadomienie dźwiękowe o możliwości odbioru wyciszone przez klienta"
+                      : isReady
+                      ? "Wycisz powiadomienie dźwiękowe o możliwości odbioru zamówienia"
+                      : "Oczekiwanie na wyciszenie powiadomienia"}
+                  </TimelineDescription>
+                </TimelineHeader>
+                {isReady && order.turnOffSoundTime && (
+                  <TimelineTime
+                    dateTime={new Date(order.turnOffSoundTime).toISOString()}
+                    className="mt-2 text-green-700"
+                  >
+                    Wyciszono:{" "}
+                    <strong>
+                      {new Date(order.turnOffSoundTime).toLocaleString("pl-PL", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </strong>
+                  </TimelineTime>
+                )}
                 {isReady && soundIntervalId && !order.turnOffSoundTime && (
                   <button
                     onClick={stopLoopingSound}
