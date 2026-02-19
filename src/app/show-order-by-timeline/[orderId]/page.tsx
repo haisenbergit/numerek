@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle, Handshake, Hourglass, Loader2 } from "lucide-react";
+import { CheckCircle, Handshake, Hourglass, Loader2, VolumeX } from "lucide-react";
 import { toast } from "sonner";
 import { OrderTimeProgress } from "@/components/order-time-progress";
+import { useSound } from "@/hooks/use-sound";
+import { voiceoverPackMaleReadySound } from "@/lib/voiceover-pack-male-ready";
 import {
   Timeline,
   TimelineConnector,
@@ -23,6 +25,15 @@ const ShowOrderByTimelinePage = () => {
   const router = useRouter();
   const orderId = useOrderId();
   const { data: order, isLoading } = useGetOrderById(orderId);
+  const previousReadyTimeRef = useRef<number | undefined>(undefined);
+
+  const [playSound, { stop: stopSound, isPlaying }] = useSound(
+    voiceoverPackMaleReadySound,
+    {
+      volume: 1,
+      interrupt: true,
+    }
+  );
 
   useEffect(() => {
     if (!isLoading && !order) {
@@ -30,6 +41,13 @@ const ShowOrderByTimelinePage = () => {
       router.push("/show-order-by-timeline");
     }
   }, [order, isLoading, router]);
+
+  useEffect(() => {
+    if (order && order.readyTime !== undefined && previousReadyTimeRef.current === undefined) {
+      playSound();
+    }
+    previousReadyTimeRef.current = order?.readyTime;
+  }, [order?.readyTime, order, playSound]);
 
   const activeIndex = useMemo(() => {
     if (!order) return 0;
@@ -59,6 +77,18 @@ const ShowOrderByTimelinePage = () => {
   return (
     <div className="flex min-h-screen w-screen flex-col items-center bg-gray-50 p-4 py-8">
       <div className="w-full max-w-2xl">
+        {isPlaying && (
+          <div className="mb-4 rounded-lg bg-green-100 p-4 shadow-sm">
+            <button
+              onClick={stopSound}
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-green-700"
+            >
+              <VolumeX className="h-5 w-5" />
+              Wycisz
+            </button>
+          </div>
+        )}
+
         {!isReady && (
           <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-center text-lg font-semibold text-gray-800">
