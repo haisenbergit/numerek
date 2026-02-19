@@ -68,7 +68,9 @@ const ShowOrderByTimelinePage = () => {
 
   useEffect(() => {
     if (order && order.readyTime !== undefined && previousReadyTimeRef.current === undefined) {
-      startLoopingSound();
+      if (!order.turnOffSoundTime) {
+        startLoopingSound();
+      }
     }
     previousReadyTimeRef.current = order?.readyTime;
   }, [order?.readyTime, order, startLoopingSound]);
@@ -227,7 +229,7 @@ const ShowOrderByTimelinePage = () => {
                     </>
                   )}
                 </TimelineTime>
-                {isReady && soundIntervalId && (
+                {isReady && soundIntervalId && !order.turnOffSoundTime && (
                   <button
                     onClick={stopLoopingSound}
                     className="relative mt-3 flex items-center justify-center gap-2 rounded-lg bg-green-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700 before:absolute before:inset-[12.5%] before:rounded-lg before:bg-green-700 before:animate-[ping_2s_ease-in-out_infinite] "
