@@ -19,12 +19,14 @@ import {
   TimelineTitle,
 } from "@/components/ui/timeline";
 import { useGetOrderById } from "@/features/orders/api/use-get-order-by-id";
+import { useTurnOffSound } from "@/features/orders/api/use-turn-off-sound";
 import { useOrderId } from "@/hooks/use-order-id";
 
 const ShowOrderByTimelinePage = () => {
   const router = useRouter();
   const orderId = useOrderId();
   const { data: order, isLoading } = useGetOrderById(orderId);
+  const { mutate: turnOffSound } = useTurnOffSound();
   const previousReadyTimeRef = useRef<number | undefined>(undefined);
   const [soundIntervalId, setSoundIntervalId] = useState<NodeJS.Timeout | null>(null);
 
@@ -53,7 +55,9 @@ const ShowOrderByTimelinePage = () => {
       setSoundIntervalId(null);
     }
     stopSound();
-  }, [soundIntervalId, stopSound]);
+
+    turnOffSound({ orderId });
+  }, [soundIntervalId, stopSound, turnOffSound, orderId]);
 
   useEffect(() => {
     if (!isLoading && !order) {
