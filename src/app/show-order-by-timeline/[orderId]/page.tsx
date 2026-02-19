@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle, Handshake, Hourglass, Loader2, VolumeX } from "lucide-react";
 import { toast } from "sonner";
@@ -26,14 +26,34 @@ const ShowOrderByTimelinePage = () => {
   const orderId = useOrderId();
   const { data: order, isLoading } = useGetOrderById(orderId);
   const previousReadyTimeRef = useRef<number | undefined>(undefined);
+  const [soundIntervalId, setSoundIntervalId] = useState<NodeJS.Timeout | null>(null);
 
-  const [playSound, { stop: stopSound, isPlaying }] = useSound(
+  const [playSound, { stop: stopSound }] = useSound(
     voiceoverPackMaleReadySound,
     {
       volume: 1,
       interrupt: true,
     }
   );
+
+  const startLoopingSound = useCallback(() => {
+    if (soundIntervalId) return;
+
+    playSound();
+    const intervalId = setInterval(() => {
+      playSound();
+    }, 2000);
+
+    setSoundIntervalId(intervalId);
+  }, [soundIntervalId, playSound]);
+
+  const stopLoopingSound = useCallback(() => {
+    if (soundIntervalId) {
+      clearInterval(soundIntervalId);
+      setSoundIntervalId(null);
+    }
+    stopSound();
+  }, [soundIntervalId, stopSound]);
 
   useEffect(() => {
     if (!isLoading && !order) {
@@ -44,10 +64,18 @@ const ShowOrderByTimelinePage = () => {
 
   useEffect(() => {
     if (order && order.readyTime !== undefined && previousReadyTimeRef.current === undefined) {
-      playSound();
+      startLoopingSound();
     }
     previousReadyTimeRef.current = order?.readyTime;
-  }, [order?.readyTime, order, playSound]);
+  }, [order?.readyTime, order, startLoopingSound]);
+
+  useEffect(() => {
+    return () => {
+      if (soundIntervalId) {
+        clearInterval(soundIntervalId);
+      }
+    };
+  }, [soundIntervalId]);
 
   const activeIndex = useMemo(() => {
     if (!order) return 0;
@@ -77,10 +105,10 @@ const ShowOrderByTimelinePage = () => {
   return (
     <div className="flex min-h-screen w-screen flex-col items-center bg-gray-50 p-4 py-8">
       <div className="w-full max-w-2xl">
-        {isPlaying && (
+        {soundIntervalId && (
           <div className="mb-4 rounded-lg bg-green-100 p-4 shadow-sm">
             <button
-              onClick={stopSound}
+              onClick={stopLoopingSound}
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-green-700"
             >
               <VolumeX className="h-5 w-5" />
