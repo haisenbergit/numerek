@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle, Loader2, Package, XCircle } from "lucide-react";
+import { CheckCircle, Handshake, Hourglass, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { OrderTimeProgress } from "@/components/order-time-progress";
 import {
@@ -26,15 +26,16 @@ const ShowOrderByTimelinePage = () => {
 
   useEffect(() => {
     if (!isLoading && !order) {
-      toast.error("Nie znaleziono aktywnego zamówienia");
+      toast.error("Nie znaleziono zamówienia");
       router.push("/show-order-by-timeline");
     }
   }, [order, isLoading, router]);
 
   const activeIndex = useMemo(() => {
     if (!order) return 0;
-    if (!order.isActive) return 2;
-    if (order.isReady) return 1;
+    if (!order.isActive) return 3;
+    if (order.deliveryTime !== undefined) return 2;
+    if (order.readyTime !== undefined) return 1;
     return 0;
   }, [order]);
 
@@ -48,14 +49,17 @@ const ShowOrderByTimelinePage = () => {
 
   if (!order) return null;
 
+  const isReady = order.readyTime !== undefined;
+  const isDelivered = order.deliveryTime !== undefined;
   const creationDate = new Date(order._creationTime);
-  const orderDate = new Date(order.orderTime);
+  const estReadyTime = new Date(order.estReadyTime);
   const readyDate = order.readyTime ? new Date(order.readyTime) : null;
+  const deliveryDate = order.deliveryTime ? new Date(order.deliveryTime) : null;
 
   return (
     <div className="flex min-h-screen w-screen flex-col items-center bg-gray-50 p-4 py-8">
       <div className="w-full max-w-2xl">
-        {!order.isReady && (
+        {!isReady && (
           <div className="mb-6 rounded-lg bg-white p-6 shadow-sm">
             <h3 className="mb-4 text-center text-lg font-semibold text-gray-800">
               Postęp realizacji
@@ -63,7 +67,7 @@ const ShowOrderByTimelinePage = () => {
             <div className="flex justify-center">
               <OrderTimeProgress
                 creationTime={order._creationTime}
-                orderTime={order.orderTime}
+                estReadyTime={order.estReadyTime}
                 size={140}
                 thickness={10}
               />
@@ -83,10 +87,10 @@ const ShowOrderByTimelinePage = () => {
           >
             <TimelineItem>
               <TimelineDot className="border-green-700 bg-green-700">
-                <Package className="h-5 w-5 text-white" />
+                <CheckCircle className="h-5 w-5 text-white" />
               </TimelineDot>
               <TimelineConnector
-                className={order.isReady ? "!bg-green-700" : ""}
+                className={isDelivered ? "!bg-green-700" : ""}
               />
               <TimelineContent>
                 <TimelineHeader>
@@ -104,78 +108,71 @@ const ShowOrderByTimelinePage = () => {
                   className="mt-2 text-green-700"
                 >
                   Czas utworzenia:{" "}
-                  {creationDate.toLocaleString("pl-PL", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  <strong>
+                    {creationDate.toLocaleString("pl-PL", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </strong>
                 </TimelineTime>
               </TimelineContent>
             </TimelineItem>
 
             <TimelineItem>
               <TimelineDot
-                className={order.isReady ? "border-green-700 bg-green-700" : ""}
+                className={isReady ? "border-green-700 bg-green-700" : ""}
               >
-                {order.isReady ? (
+                {isReady ? (
                   <CheckCircle className="h-5 w-5 text-white" />
                 ) : (
-                  <Package className="h-5 w-5" />
+                  <Hourglass className="h-5 w-5" />
                 )}
               </TimelineDot>
               <TimelineConnector
-                className={
-                  order.isReady && !order.isActive ? "!bg-green-700" : ""
-                }
+                className={isDelivered ? "!bg-green-700" : ""}
               />
               <TimelineContent>
                 <TimelineHeader>
-                  <TimelineTitle
-                    className={order.isReady ? "text-green-700" : ""}
-                  >
-                    {order.isReady
-                      ? "Zamówienie gotowe do odbioru"
+                  <TimelineTitle className={isReady ? "text-green-700" : ""}>
+                    {isReady
+                      ? "Zamówienie gotowe"
                       : "Oczekiwanie na realizację"}
                   </TimelineTitle>
                   <TimelineDescription
-                    className={order.isReady ? "text-green-700" : ""}
+                    className={isReady ? "text-green-700" : ""}
                   >
-                    {order.isReady
-                      ? "Zamówienie zostało zrealizowane i jest gotowe"
-                      : "Zamówienie jest w trakcie realizacji"}
+                    {isReady
+                      ? "Zamówienie zrealizowane i jest gotowe do odbioru"
+                      : "Zamówienie jest w trakcie przygotowania"}
                   </TimelineDescription>
                 </TimelineHeader>
                 <TimelineTime
                   dateTime={
                     readyDate
                       ? readyDate.toISOString()
-                      : orderDate.toISOString()
+                      : estReadyTime.toISOString()
                   }
-                  className={order.isReady ? "mt-2 text-green-700" : "mt-2"}
+                  className={isReady ? "mt-2 text-green-700" : "mt-2"}
                 >
-                  {order.isReady && readyDate ? (
+                  {isReady && readyDate ? (
                     <>
                       Gotowe:{" "}
-                      {readyDate.toLocaleString("pl-PL", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      <strong>
+                        {readyDate.toLocaleString("pl-PL", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </strong>
                     </>
                   ) : (
                     <>
                       Szacowany czas odbioru:{" "}
-                      {orderDate.toLocaleString("pl-PL", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      <strong>
+                        {estReadyTime.toLocaleString("pl-PL", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </strong>
                     </>
                   )}
                 </TimelineTime>
@@ -184,36 +181,48 @@ const ShowOrderByTimelinePage = () => {
 
             <TimelineItem>
               <TimelineDot
-                className={
-                  !order.isActive ? "border-green-700 bg-green-700" : ""
-                }
+                className={isDelivered ? "border-green-700 bg-green-700" : ""}
               >
-                {!order.isActive ? (
-                  <XCircle className="h-5 w-5 text-white" />
+                {isDelivered ? (
+                  <CheckCircle className="h-5 w-5 text-white" />
                 ) : (
-                  <Package className="h-5 w-5" />
+                  <Handshake className="h-5 w-5" />
                 )}
               </TimelineDot>
+              <TimelineConnector
+                className={
+                  isDelivered && !order.isActive ? "!bg-green-700" : ""
+                }
+              />
               <TimelineContent>
                 <TimelineHeader>
                   <TimelineTitle
-                    className={!order.isActive ? "text-green-700" : ""}
+                    className={isDelivered ? "text-green-700" : ""}
                   >
-                    {!order.isActive
-                      ? "Zamówienie zamknięte"
-                      : "Oczekiwanie na zamknięcie"}
+                    {isDelivered
+                      ? "Zamówienie oderbane"
+                      : "Oczekiwanie na odbiór"}
                   </TimelineTitle>
                   <TimelineDescription
-                    className={!order.isActive ? "text-green-700" : ""}
+                    className={isDelivered ? "text-green-700" : ""}
                   >
-                    {!order.isActive
-                      ? "Zamówienie zostało odebrane i zamknięte"
-                      : "Zamówienie nie zostało jeszcze zamknięte"}
+                    {isDelivered
+                      ? "Zamówienie zostało oderbane przez klienta"
+                      : "Zamówienie jeszcze nie oderbane przez klienta"}
                   </TimelineDescription>
                 </TimelineHeader>
-                {!order.isActive && (
-                  <TimelineTime className="mt-2 text-green-700">
-                    Zamknięte
+                {isDelivered && deliveryDate && (
+                  <TimelineTime
+                    dateTime={deliveryDate.toISOString()}
+                    className="mt-2 text-green-700"
+                  >
+                    Wydane:{" "}
+                    <strong>
+                      {deliveryDate.toLocaleString("pl-PL", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </strong>
                   </TimelineTime>
                 )}
               </TimelineContent>

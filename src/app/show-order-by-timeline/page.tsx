@@ -15,7 +15,7 @@ const ShowOrderByTimelinePage = () => {
   useEffect(() => {
     if (submittedCode && !isLoading) {
       if (!order) {
-        toast.error("Nie znaleziono aktywnego zamówienia o podanym kodzie");
+        toast.error("Nie znaleziono zamówienia o podanym kodzie");
         setSubmittedCode(null);
       } else {
         router.push(`/show-order-by-timeline/${order._id}`);

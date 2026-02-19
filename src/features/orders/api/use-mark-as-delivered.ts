@@ -3,10 +3,7 @@ import { api } from "@convex/_generated/api";
 import { Id } from "@convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 
-type RequestType = {
-  timePreparationInMinutes: number;
-  name?: string;
-};
+type RequestType = { orderId: Id<"orders"> };
 type ResponseType = Id<"orders"> | null;
 
 type Options = {
@@ -16,7 +13,7 @@ type Options = {
   throwOnError?: boolean;
 };
 
-export const useCreateOrder = () => {
+export const useMarkAsDelivered = () => {
   const [data, setData] = useState<ResponseType>(null);
   const [error, setError] = useState<Error | null>(null);
   const [status, setStatus] = useState<
@@ -27,7 +24,7 @@ export const useCreateOrder = () => {
   const isError = useMemo(() => status === "error", [status]);
   const isSettled = useMemo(() => status === "settled", [status]);
 
-  const mutation = useMutation(api.orders.create);
+  const mutation = useMutation(api.orders.markAsDelivered);
 
   const mutate = useCallback(
     async (values: RequestType, options?: Options) => {
@@ -54,13 +51,6 @@ export const useCreateOrder = () => {
     },
     [mutation]
   );
-  return {
-    mutate,
-    data,
-    error,
-    isPending,
-    isSuccess,
-    isError,
-    isSettled,
-  };
+
+  return { mutate, data, error, isPending, isSuccess, isError, isSettled };
 };

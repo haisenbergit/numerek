@@ -13,12 +13,15 @@ import {
 } from "@/components/ui/card";
 import { useCloseOrder } from "@/features/orders/api/use-close-order";
 import { useGetOrders } from "@/features/orders/api/use-get-orders";
+import { useMarkAsDelivered } from "@/features/orders/api/use-mark-as-delivered";
 import { useMarkAsReady } from "@/features/orders/api/use-mark-as-ready";
 
 export const OrdersList = () => {
   const { data, isLoading } = useGetOrders();
   const { mutate: closeOrder, isPending: isClosing } = useCloseOrder();
   const { mutate: markAsReady, isPending: isMarkingReady } = useMarkAsReady();
+  const { mutate: markAsDelivered, isPending: isMarkingDelivered } =
+    useMarkAsDelivered();
 
   const handleCloseOrder = (orderId: string) => {
     closeOrder(
@@ -43,6 +46,20 @@ export const OrdersList = () => {
         },
         onError() {
           toast.error("Nie udało się oznaczyć zamówienia");
+        },
+      }
+    );
+  };
+
+  const handleMarkAsDelivered = (orderId: string) => {
+    markAsDelivered(
+      { orderId: orderId as any },
+      {
+        onSuccess() {
+          toast.success("Zamówienie oznaczone jako wydane");
+        },
+        onError() {
+          toast.error("Nie udało się oznaczyć zamówienia jako wydane");
         },
       }
     );
@@ -84,18 +101,24 @@ export const OrdersList = () => {
         ) : (
           <div className="space-y-3">
             {data.map((order) => {
-              const orderDate = new Date(order.orderTime);
+              const isReady = order.readyTime !== undefined;
+              const isDelivered = order.deliveryTime !== undefined;
+              const estimatedReadinessDate = new Date(order.estReadyTime);
               const now = new Date();
-              const isPast = orderDate < now;
-              const timeDiffMs = orderDate.getTime() - now.getTime();
+              const isPast = estimatedReadinessDate < now;
+              const timeDiffMs =
+                estimatedReadinessDate.getTime() - now.getTime();
               const minutesRemaining = Math.floor(timeDiffMs / (1000 * 60));
-              const formattedDate = orderDate.toLocaleString("pl-PL", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              });
+              const formattedDate = estimatedReadinessDate.toLocaleString(
+                "pl-PL",
+                {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }
+              );
 
               return (
                 <div
@@ -118,11 +141,11 @@ export const OrdersList = () => {
                         Data odbioru: {formattedDate}
                       </div>
                       <div
-                        className={`text-sm font-medium ${order.isReady ? "text-green-600" : !order.isActive && !order.isReady ? "text-red-600" : isPast ? "text-red-600" : "text-blue-600"}`}
+                        className={`text-sm font-medium ${isDelivered && order.deliveryTime ? "text-purple-600" : isReady ? "text-green-600" : !order.isActive && !isReady ? "text-red-600" : isPast ? "text-red-600" : "text-blue-600"}`}
                       >
-                        {order.isReady && order.readyTime
-                          ? `Gotowe od: ${new Date(
-                              order.readyTime
+                        {isDelivered && order.deliveryTime
+                          ? `Wydane: ${new Date(
+                              order.deliveryTime
                             ).toLocaleString("pl-PL", {
                               day: "2-digit",
                               month: "2-digit",
@@ -130,11 +153,21 @@ export const OrdersList = () => {
                               hour: "2-digit",
                               minute: "2-digit",
                             })}`
-                          : !order.isActive && !order.isReady
-                            ? "Nie wydano"
-                            : isPast
-                              ? `Opóźnienie: ${Math.abs(minutesRemaining)} min`
-                              : `Do odbioru za: ${minutesRemaining} min`}
+                          : isReady && order.readyTime
+                            ? `Gotowe od: ${new Date(
+                                order.readyTime
+                              ).toLocaleString("pl-PL", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}`
+                            : !order.isActive && !isReady
+                              ? "Nie wydano"
+                              : isPast
+                                ? `Opóźnienie: ${Math.abs(minutesRemaining)} min`
+                                : `Do odbioru za: ${minutesRemaining} min`}
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-2">
@@ -144,9 +177,14 @@ export const OrdersList = () => {
                             <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
                               Aktywne
                             </span>
-                            {order.isReady && (
+                            {isReady && (
                               <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
                                 Gotowe
+                              </span>
+                            )}
+                            {isDelivered && (
+                              <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">
+                                Wydane
                               </span>
                             )}
                           </div>
@@ -162,7 +200,7 @@ export const OrdersList = () => {
                               Pokaż zamówienie
                             </Button>
                           </Link>
-                          {!order.isReady && (
+                          {!isReady && (
                             <Button
                               variant="default"
                               size="sm"
@@ -171,6 +209,17 @@ export const OrdersList = () => {
                               className="w-full text-xs"
                             >
                               Do odbioru
+                            </Button>
+                          )}
+                          {isReady && !isDelivered && (
+                            <Button
+                              variant="default"
+                              size="sm"
+                              onClick={() => handleMarkAsDelivered(order._id)}
+                              disabled={isMarkingDelivered}
+                              className="w-full bg-purple-600 text-xs hover:bg-purple-700"
+                            >
+                              Wydane
                             </Button>
                           )}
                           <Button
